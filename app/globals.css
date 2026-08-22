@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tokens — mirror of design-system/MASTER.md. Brand hex pending: swap here only. */
+:root {
+  --bg: #faf8f5;
+  --bg-deep: #f3efe9;
+  --surface: #ffffff;
+  --ink: #1a1f24;
+  --ink-2: #3d454d;
+  --muted: #5f6973;
+  --muted-2: #8a939c;
+  --line: rgba(26, 31, 36, 0.08);
+  --primary: #1e4d3b;
+  --primary-deep: #153829;
+  --primary-soft: #e4eee8;
+  --on-primary: #faf8f5;
+  --accent: #c8963e;
+  --accent-deep: #a87b2c;
+  --accent-soft: #f5ebd8;
+  --on-accent: #1a1f24;
+  --ring: #c8963e;
+
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+
+  --sh-1: 0 1px 2px rgba(26, 31, 36, 0.04), 0 4px 12px rgba(26, 31, 36, 0.05);
+  --sh-2: 0 2px 4px rgba(26, 31, 36, 0.04), 0 12px 32px rgba(26, 31, 36, 0.08);
+  --sh-3: 0 4px 8px rgba(26, 31, 36, 0.05), 0 24px 56px rgba(26, 31, 36, 0.12);
+  --sh-brass: 0 8px 24px rgba(200, 150, 62, 0.28);
+
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --d-fast: 220ms;
+  --d: 320ms;
+  --d-slow: 420ms;
+
+  --t-display: clamp(2.5rem, 1.5rem + 4.2vw, 4.5rem);
+  --t-3xl: clamp(2.25rem, 1.6rem + 2.6vw, 3.25rem);
+  --t-2xl: clamp(1.75rem, 1.3rem + 1.6vw, 2.25rem);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+
+/* Native accordion marker reset */
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .faq-chevron {
+  transform: rotate(180deg);
+}
+
+/* Logo row: CSS-only drift, pauses on hover */
+@keyframes drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.logo-track {
+  animation: drift 38s linear infinite;
+}
+.logo-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .logo-track { animation: none; }
+}

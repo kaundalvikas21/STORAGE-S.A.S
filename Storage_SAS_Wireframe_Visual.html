@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Storage S.A.S — Wireframes · storagebogota.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EFEBE1; --paper-2:#F7F4EC; --ink:#141C25; --ink-60:rgba(20,28,37,.6);
+  --ink-35:rgba(20,28,37,.35); --ink-14:rgba(20,28,37,.14); --ink-07:rgba(20,28,37,.07);
+  --acc:#BE3E10; --acc-soft:rgba(190,62,16,.10); --acc-line:rgba(190,62,16,.35);
+  --blue:#1F4E68; --blue-soft:rgba(31,78,104,.09);
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:72px; --s9:104px;
+  --r1:2px; --r2:4px; --r3:10px;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --disp:'Bricolage Grotesque',sans-serif;
+  --prose:'Newsreader',Georgia,serif;
+  --t:200ms cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:var(--s5)}
+body{
+  background:var(--paper); color:var(--ink); font-family:var(--prose);
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+  background-image:
+    linear-gradient(var(--ink-07) 1px,transparent 1px),
+    linear-gradient(90deg,var(--ink-07) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.32;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+}
+.shell{display:grid;grid-template-columns:236px minmax(0,1fr);gap:var(--s8);max-width:1440px;margin:0 auto;padding:var(--s7) var(--s6) var(--s9)}
+@media(max-width:1080px){.shell{grid-template-columns:1fr;gap:var(--s6);padding:var(--s5) var(--s4) var(--s8)}}
+
+/* ─── side nav ─── */
+nav.side{position:sticky;top:var(--s5);align-self:start;font-family:var(--mono);font-size:11px;letter-spacing:.02em}
+@media(max-width:1080px){nav.side{position:static}}
+nav.side .lbl{text-transform:uppercase;letter-spacing:.16em;font-size:9px;color:var(--ink-35);margin:var(--s5) 0 var(--s2)}
+nav.side .lbl:first-child{margin-top:0}
+nav.side a{display:block;color:var(--ink-60);text-decoration:none;padding:5px 0 5px var(--s3);
+  border-left:1px solid var(--ink-14);transition:var(--t)}
+nav.side a:hover,nav.side a:focus-visible{color:var(--acc);border-left-color:var(--acc);padding-left:18px;outline:none}
+nav.side a b{font-weight:600;color:var(--ink);margin-right:6px}
+
+/* ─── masthead ─── */
+.mast{border-top:3px solid var(--ink);padding-top:var(--s4);margin-bottom:var(--s8);
+  animation:rise .7s cubic-bezier(.2,.7,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.mast .kick{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:var(--s4)}
+.mast h1{font-family:var(--disp);font-weight:800;font-size:clamp(34px,5.6vw,66px);line-height:.98;letter-spacing:-.032em;max-width:15ch}
+.mast h1 em{font-style:normal;color:var(--acc)}
+.mast .sub{font-size:19px;line-height:1.55;color:var(--ink-60);max-width:56ch;margin-top:var(--s5);font-weight:300}
+.meta{display:flex;flex-wrap:wrap;gap:var(--s5);margin-top:var(--s6);padding-top:var(--s4);border-top:1px solid var(--ink-14);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--ink-60)}
+.meta span b{display:block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-35);font-weight:500;margin-bottom:3px}
+
+/* ─── section chrome ─── */
+section{margin-bottom:var(--s9);scroll-margin-top:var(--s5)}
+.shead{display:flex;align-items:baseline;gap:var(--s4);border-bottom:1px solid var(--ink);padding-bottom:var(--s3);margin-bottom:var(--s6)}
+.shead .num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--acc);letter-spacing:.1em;flex:none}
+.shead h2{font-family:var(--disp);font-weight:600;font-size:clamp(21px,2.5vw,31px);letter-spacing:-.02em;line-height:1.12}
+.shead .tag{margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-60);border:1px solid var(--ink-14);padding:3px 9px;border-radius:var(--r3);flex:none;white-space:nowrap}
+.lede{font-size:17.5px;font-weight:300;line-height:1.66;color:var(--ink-60);max-width:70ch;margin-bottom:var(--s6)}
+.lede strong{font-weight:400;color:var(--ink)}
+
+/* ─── wireframe canvas ─── */
+.wf{background:var(--paper-2);border:1px solid var(--ink-14);border-radius:var(--r3);padding:var(--s5);
+  box-shadow:0 1px 0 rgba(255,255,255,.7) inset, 0 12px 30px -22px rgba(20,28,37,.5)}
+.wf + .wf{margin-top:var(--s5)}
+.wfcap{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-35);
+  margin-bottom:var(--s4);display:flex;gap:var(--s3);align-items:center}
+.wfcap::after{content:'';flex:1;height:1px;background:var(--ink-14)}
+.frame{border:1.5px solid var(--ink-35);border-radius:var(--r2);overflow:hidden;background:#fff}
+.frame.mob{max-width:322px}
+
+/* blocks */
+.blk{border-bottom:1px dashed var(--ink-35);padding:var(--s4);position:relative;background:#fff}
+.blk:last-child{border-bottom:none}
+.blk.alt{background:var(--ink-07)}
+.blk.hot{background:var(--acc-soft);border-bottom-color:var(--acc-line)}
+.blk.cool{background:var(--blue-soft)}
+.blk .bn{position:absolute;top:9px;right:9px;width:19px;height:19px;border-radius:50%;
+  background:var(--ink);color:var(--paper-2);font-family:var(--mono);font-size:9.5px;font-weight:600;
+  display:grid;place-items:center;line-height:1}
+.blk.hot .bn{background:var(--acc)}
+.blk .bt{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-35);margin-bottom:6px;padding-right:26px}
+.blk.hot .bt{color:var(--acc)}
+.blk .bc{font-family:var(--disp);font-size:14.5px;font-weight:600;letter-spacing:-.01em;line-height:1.3}
+.blk .bd{font-size:13.5px;font-weight:300;color:var(--ink-60);margin-top:5px;line-height:1.5}
+.blk .h1x{font-family:var(--disp);font-size:clamp(19px,2.6vw,27px);font-weight:800;letter-spacing:-.028em;line-height:1.08}
+
+/* nav bar mock */
+.navbar{display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap}
+.logo{font-family:var(--disp);font-weight:800;font-size:15px;letter-spacing:-.02em}
+.navbar .lk{font-family:var(--mono);font-size:10.5px;color:var(--ink-60)}
+.navbar .lk.on{color:var(--acc);font-weight:600}
+.navbar .sp{flex:1}
+
+/* buttons */
+.btn{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.06em;
+  padding:8px 15px;border-radius:var(--r2);background:var(--acc);color:#fff;text-transform:uppercase}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink-35)}
+.btn.blue{background:var(--blue)}
+
+/* grids */
+.g2,.g3,.g4,.g5{display:grid;gap:var(--s3);margin-top:var(--s3)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g5{grid-template-columns:repeat(5,1fr)}
+@media(max-width:720px){.g3,.g4,.g5{grid-template-columns:repeat(2,1fr)}}
+.card{border:1px dashed var(--ink-35);border-radius:var(--r2);padding:var(--s3);min-height:66px;
+  display:flex;flex-direction:column;gap:4px;transition:var(--t)}
+.card:hover{border-color:var(--acc);border-style:solid}
+.card.pri{border:1.5px solid var(--acc);background:var(--acc-soft)}
+.card .ct{font-family:var(--disp);font-size:12.5px;font-weight:600;line-height:1.25}
+.card .cs{font-family:var(--mono);font-size:9px;color:var(--ink-35);letter-spacing:.05em}
+.card .cp{font-size:12px;font-weight:300;color:var(--ink-60);line-height:1.42}
+.flag{display:inline-block;font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--acc);border:1px solid var(--acc-line);padding:1px 5px;border-radius:var(--r1);width:fit-content}
+.img{border:1px dashed var(--ink-35);border-radius:var(--r2);min-height:76px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-35);
+  background:repeating-linear-gradient(45deg,transparent,transparent 7px,var(--ink-07) 7px,var(--ink-07) 14px)}
+.img.tall{min-height:150px}
+.line{height:7px;border-radius:99px;background:var(--ink-14);margin-top:7px}
+.line.s{width:58%}.line.m{width:78%}.line.l{width:93%}
+
+/* annotation list */
+.notes{margin-top:var(--s5);display:grid;gap:var(--s3)}
+.note{display:grid;grid-template-columns:22px 1fr;gap:var(--s3);align-items:start}
+.note .nn{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--ink);font-family:var(--mono);
+  font-size:9.5px;font-weight:600;display:grid;place-items:center;line-height:1;margin-top:2px}
+.note.key .nn{background:var(--acc);border-color:var(--acc);color:#fff}
+.note p{font-size:14.5px;font-weight:300;line-height:1.58;color:var(--ink-60)}
+.note p b{font-weight:400;color:var(--ink);font-family:var(--disp);font-size:14px}
+.note.key p b{color:var(--acc)}
+
+/* callout */
+.call{border-left:2.5px solid var(--acc);background:var(--acc-soft);padding:var(--s4) var(--s5);border-radius:0 var(--r2) var(--r2) 0;margin-top:var(--s5)}
+.call .ch{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc);margin-bottom:7px;font-weight:600}
+.call p{font-size:14.5px;font-weight:300;line-height:1.6}
+.call p + p{margin-top:var(--s3)}
+.call.neutral{border-left-color:var(--blue);background:var(--blue-soft)}
+.call.neutral .ch{color:var(--blue)}
+
+/* silo diagram */
+.tree{font-family:var(--mono);font-size:12px;line-height:1.95;background:var(--paper-2);border:1px solid var(--ink-14);
+  border-radius:var(--r3);padding:var(--s5);overflow-x:auto;white-space:pre}
+.tree .p{color:var(--acc);font-weight:600}
+.tree .c{color:var(--ink)}
+.tree .g{color:var(--ink-35)}
+.tree .u{color:var(--blue);font-weight:500}
+
+/* spec table */
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:var(--s4)}
+.tbl th{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;text-align:left;
+  padding:8px 10px;border-bottom:1.5px solid var(--ink);color:var(--ink-60);font-weight:600;vertical-align:bottom}
+.tbl td{padding:10px;border-bottom:1px solid var(--ink-14);vertical-align:top;font-weight:300;line-height:1.5}
+.tbl td:first-child{font-family:var(--mono);font-size:11.5px;color:var(--ink);font-weight:500;white-space:nowrap}
+.tbl tr:hover td{background:var(--ink-07)}
+
+hr.rule{border:none;border-top:1px solid var(--ink-14);margin:var(--s7) 0}
+.foot{border-top:3px solid var(--ink);padding-top:var(--s4);font-family:var(--mono);font-size:10.5px;color:var(--ink-35);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s4)}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<nav class="side">
+  <div class="lbl">Structure</div>
+  <a href="#map"><b>00</b>Silo map</a>
+  <a href="#global"><b>01</b>Global header / footer</a>
+  <div class="lbl">Templates</div>
+  <a href="#t1"><b>T1</b>Home</a>
+  <a href="#t2"><b>T2</b>Silo pillar</a>
+  <a href="#t3"><b>T3</b>Segment</a>
+  <a href="#t4"><b>T4</b>Location hub</a>
+  <a href="#t5"><b>T5</b>Sede</a>
+  <a href="#t8"><b>T8</b>Size</a>
+  <a href="#t7"><b>T7</b>Quote / calculator</a>
+  <a href="#t6"><b>T6</b>Info</a>
+  <a href="#t9"><b>T9</b>Blog hub</a>
+  <div class="lbl">Reference</div>
+  <a href="#mobile">Mobile behaviour</a>
+  <a href="#rules">Linking rules</a>
+</nav>
+
+<main>
+<header class="mast">
+  <div class="kick">Fanatic Coders &nbsp;×&nbsp; Storage S.A.S &nbsp;·&nbsp; 14 August 2026 &nbsp;·&nbsp; v1.0</div>
+  <h1>Website wireframe &amp; <em>silo structure</em></h1>
+  <p class="sub">Annotated page templates for storagebogota.com. Structure only — no visual design, no brand colours, no final copy. Every block is placed for a reason, and every reason is written next to it.</p>
+  <div class="meta">
+    <span><b>Domain</b>storagebogota.com</span>
+    <span><b>Pages specified</b>33 + 6 launch articles</span>
+    <span><b>Pages today</b>5</span>
+    <span><b>Templates</b>9</span>
+    <span><b>Companion file</b>Storage_SAS_Wireframe_Silo_Spec.xlsx</span>
+  </div>
+</header>
+
+<!-- ═══════════ 00 SILO MAP ═══════════ -->
+<section id="map">
+  <div class="shead"><span class="num">00</span><h2>Silo map</h2><span class="tag">Read this first</span></div>
+  <p class="lede">Three commercial axes run at once inside the storage silo — <strong>segment</strong>, <strong>size</strong> and <strong>location</strong> — because those are the three ways a customer arrives at the problem. Mudanzas sits alongside as a supporting silo that feeds traffic inward.</p>
+
+<div class="tree"><span class="p">HOME  /</span>
+<span class="g">│</span>
+<span class="g">├──</span> <span class="p">SILO 1 · BODEGAJE Y MINIBODEGAS</span>   <span class="g">/bodegaje-bogota/</span>          <span class="u">◀ money silo</span>
+<span class="g">│    │</span>
+<span class="g">│    ├─ 1A  BY SEGMENT</span>
+<span class="g">│    │   ├─</span> <span class="c">Minibodegas para hogar</span>              <span class="g">/minibodegas-para-hogar/</span>
+<span class="g">│    │   ├─</span> <span class="c">Minibodegas para empresas</span>           <span class="g">/minibodegas-para-empresas/</span>
+<span class="g">│    │   ├─</span> <span class="c">Bodegas para e-commerce</span>             <span class="g">/bodegas-para-ecommerce/</span>
+<span class="g">│    │   ├─</span> <span class="c">Almacenamiento de archivo</span>           <span class="g">/almacenamiento-de-archivo-y-documentos/</span>
+<span class="g">│    │   └─</span> <span class="c">Bodegas para constructoras</span>          <span class="g">/bodegas-para-constructoras/</span>
+<span class="g">│    │</span>
+<span class="g">│    ├─ 1B  BY SIZE</span>                                          <span class="u">◀ strongest conversion axis</span>
+<span class="g">│    │   ├─</span> <span class="c">Bodegas pequeñas</span>                    <span class="g">/bodegas-pequenas/</span>
+<span class="g">│    │   ├─</span> <span class="c">Bodegas medianas</span>                    <span class="g">/bodegas-medianas/</span>
+<span class="g">│    │   ├─</span> <span class="c">Bodegas grandes</span>                     <span class="g">/bodegas-grandes/</span>
+<span class="g">│    │   └─</span> <span class="c">Espacios personalizados</span>             <span class="g">/espacios-personalizados/</span>
+<span class="g">│    │</span>
+<span class="g">│    └─ 1C  BY LOCATION</span>
+<span class="g">│        ├─</span> <span class="c">Nuestras sedes  (hub)</span>              <span class="g">/sedes/</span>
+<span class="g">│        ├─</span> <span class="c">Autopista Norte · Calle 197</span>        <span class="g">/sedes/autopista-norte-197/</span>   <span class="u">◀ priority</span>
+<span class="g">│        ├─</span> <span class="c">Toberín  (3 addresses, 1 page)</span>     <span class="g">/sedes/toberin/</span>
+<span class="g">│        ├─</span> <span class="c">Spring · Calle 135</span>                 <span class="g">/sedes/spring-calle-135/</span>
+<span class="g">│        └─</span> <span class="c">Paloquemao  (2 addresses, 1 page)</span>  <span class="g">/sedes/paloquemao/</span>
+<span class="g">│</span>
+<span class="g">├──</span> <span class="p">SILO 2 · MUDANZAS Y TRANSPORTE</span>   <span class="g">/mudanzas-bogota/</span>          <span class="u">◀ feeds silo 1</span>
+<span class="g">│    ├─</span> <span class="c">Trasteos en Bogotá</span>                    <span class="g">/trasteos-bogota/</span>
+<span class="g">│    ├─</span> <span class="c">Mudanzas empresariales</span>                <span class="g">/mudanzas-empresariales/</span>
+<span class="g">│    └─</span> <span class="c">Transporte de mercancías</span>              <span class="g">/transporte-de-mercancias/</span>
+<span class="g">│</span>
+<span class="g">├──</span> <span class="p">SILO 3 · SERVICIOS COMPLEMENTARIOS</span>
+<span class="g">│    ├─</span> <span class="c">Empaque y embalaje</span>   <span class="g">├─</span> <span class="c">Seguros y pólizas</span>   <span class="g">├─</span> <span class="c">Asesoría logística</span>
+<span class="g">│</span>
+<span class="g">├──</span> <span class="p">SILO 4 · EMPRESA Y CONFIANZA</span>
+<span class="g">│    ├─</span> <span class="c">Quiénes somos</span>  <span class="g">├─</span> <span class="c">Seguridad</span>  <span class="g">├─</span> <span class="c">Precios</span>  <span class="g">├─</span> <span class="c">FAQ</span>  <span class="g">├─</span> <span class="c">Contacto</span>  <span class="g">├─</span> <span class="c">Legales</span>  <span class="g">├─</span> <span class="c">PQRS</span>
+<span class="g">│</span>
+<span class="g">├──</span> <span class="p">SILO 5 · BLOG</span>   <span class="g">/blog/</span>   <span class="u">◀ links upward into silo 1</span>
+<span class="g">│</span>
+<span class="g">└──</span> <span class="p">CONVERSION LAYER</span>  <span class="g">(site-wide, not a silo)</span>
+<span class="g">     ├─</span> <span class="c">Calculadora de espacio</span>                <span class="g">/calculadora-de-espacio/</span>
+<span class="g">     └─</span> <span class="c">Cotizar</span>                               <span class="g">/cotizar/</span>
+</div>
+
+  <div class="call neutral">
+    <div class="ch">Why three axes and not one</div>
+    <p>Someone who has just sold a flat searches by <em>size</em>. Someone running an online shop searches by <em>segment</em>. Someone who lives in Usaquén searches by <em>location</em>. A single flat services page serves one of those three and loses the other two. Each axis is a separate entry point into the same commercial offer, and the internal linking pulls all of them toward the same quote form.</p>
+  </div>
+</section>
+
+<!-- ═══════════ 01 GLOBAL ═══════════ -->
+<section id="global">
+  <div class="shead"><span class="num">01</span><h2>Global header &amp; footer</h2><span class="tag">Every page</span></div>
+  <p class="lede">The header carries the silo structure. It is the only place cross-silo links are permitted, which is what keeps the body-copy linking clean.</p>
+
+  <div class="wf">
+    <div class="wfcap">Header · desktop</div>
+    <div class="frame">
+      <div class="blk alt" style="padding:9px 16px">
+        <div class="navbar" style="font-family:var(--mono);font-size:10px;color:var(--ink-35)">
+          <span>7 sedes en Bogotá</span><span>·</span><span>Lun–Vie 8:00–17:30 · Sáb 8:00–13:30</span>
+          <span class="sp"></span><span>PBX · WhatsApp</span>
+        </div>
+      </div>
+      <div class="blk">
+        <span class="bn">1</span>
+        <div class="navbar">
+          <span class="logo">STORAGE S.A.S</span>
+          <span class="lk on">Bodegaje ▾</span>
+          <span class="lk">Sedes ▾</span>
+          <span class="lk">Mudanzas ▾</span>
+          <span class="lk">Precios</span>
+          <span class="lk">Empresa ▾</span>
+          <span class="sp"></span>
+          <span class="btn ghost">Calcular espacio</span>
+          <span class="btn">Cotizar</span>
+        </div>
+      </div>
+      <div class="blk cool">
+        <span class="bn">2</span>
+        <div class="bt">Mega-menu — open state, "Bodegaje"</div>
+        <div class="g3">
+          <div class="card"><span class="cs">Por tamaño</span><span class="cp">Pequeñas · Medianas · Grandes · Personalizados</span></div>
+          <div class="card"><span class="cs">Por necesidad</span><span class="cp">Hogar · Empresas · E-commerce · Archivo · Obra</span></div>
+          <div class="card pri"><span class="flag">Priority slot</span><span class="cs">Por sede</span><span class="cp">Calle 197 · Toberín · Spring · Paloquemao</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wf">
+    <div class="wfcap">Footer · every page</div>
+    <div class="frame">
+      <div class="blk alt">
+        <span class="bn">3</span>
+        <div class="g4">
+          <div class="card"><span class="cs">Bodegaje</span><div class="line l"></div><div class="line m"></div><div class="line s"></div></div>
+          <div class="card"><span class="cs">Sedes — 7 direcciones completas</span><div class="line l"></div><div class="line l"></div><div class="line m"></div></div>
+          <div class="card"><span class="cs">Mudanzas</span><div class="line m"></div><div class="line s"></div></div>
+          <div class="card"><span class="cs">Empresa · Legales · PQRS</span><div class="line l"></div><div class="line m"></div></div>
+        </div>
+      </div>
+      <div class="blk hot">
+        <span class="bn">4</span>
+        <div class="bt">NAP block — name, address, phone</div>
+        <div class="bc">Bodegajes y Mudanzas Storage S.A.S</div>
+        <div class="bd">Full postal address · one confirmed phone · one confirmed WhatsApp · opening hours · Organization structured data</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note"><span class="nn">1</span><p><b>Five nav items, not four.</b> The current site runs Home / Bodegajes / Mudanzas / Para Empresas / Contáctenos, which gives storage and moving equal billing and hides the sedes entirely. The new bar leads with Bodegaje, promotes Sedes to top level, and adds Precios — the term the market actually searches on.</p></div>
+    <div class="note key"><span class="nn">2</span><p><b>The mega-menu is where the three axes become visible.</b> One glance shows a visitor that they can choose by size, by need, or by location. Calle 197 sits first in the sede column on every page of the site.</p></div>
+    <div class="note"><span class="nn">3</span><p><b>The footer lists all seven physical addresses in full.</b> Not a link to a contact page — the actual addresses, as text. For a seven-site local business this is a meaningful and very cheap consistency signal.</p></div>
+    <div class="note key"><span class="nn">4</span><p><b>Name, address and phone must match the Google Business Profiles character for character.</b> Several different phone numbers currently appear across the two domains and the social profiles. Pick one main line and one WhatsApp line and use only those everywhere.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ T1 HOME ═══════════ -->
+<section id="t1">
+  <div class="shead"><span class="num">T1</span><h2>Home</h2><span class="tag">/ &nbsp;·&nbsp; 1 page</span></div>
+  <p class="lede">The homepage currently ranks <strong>number 3 for “storage”</strong> and <strong>number 5 for “storage bogotá”</strong> — from a page whose entire commercial message is locked inside PNG images. The job here is to keep that position and give Google something to actually read.</p>
+
+  <div class="wf">
+    <div class="wfcap">Home · desktop</div>
+    <div class="frame">
+      <div class="blk hot">
+        <span class="bn">1</span>
+        <div class="bt">Hero — real HTML, not an image</div>
+        <div class="h1x">Minibodegas y bodegaje en Bogotá</div>
+        <div class="bd">7 sedes · más de 500 bodegas · desde 1 m³ · sin permanencia mínima</div>
+        <div style="margin-top:14px;display:flex;gap:9px;flex-wrap:wrap">
+          <span class="btn">Calcular mi espacio</span><span class="btn ghost">Ver sedes</span>
+        </div>
+      </div>
+      <div class="blk cool">
+        <span class="bn">2</span>
+        <div class="bt">Calculator entry — above the fold</div>
+        <div class="g4">
+          <div class="card"><span class="ct">Algunas cajas</span><span class="cs">1–3 m³</span></div>
+          <div class="card"><span class="ct">Apartaestudio</span><span class="cs">4–8 m³</span></div>
+          <div class="card"><span class="ct">Apartamento</span><span class="cs">9–15 m³</span></div>
+          <div class="card"><span class="ct">Empresa</span><span class="cs">16 m³ +</span></div>
+        </div>
+      </div>
+      <div class="blk">
+        <span class="bn">3</span>
+        <div class="bt">Three silo entries</div>
+        <div class="g3">
+          <div class="card pri"><span class="flag">Money silo</span><span class="ct">Bodegaje y minibodegas</span><span class="cp">Guarda lo que no cabe. Espacios desde 1 m³.</span></div>
+          <div class="card"><span class="ct">Nuestras sedes</span><span class="cp">Encuentra la bodega más cercana a ti.</span></div>
+          <div class="card"><span class="ct">Mudanzas y trasteos</span><span class="cp">Nos encargamos del traslado completo.</span></div>
+        </div>
+      </div>
+      <div class="blk hot">
+        <span class="bn">4</span>
+        <div class="bt">Sede grid — Calle 197 first, always</div>
+        <div class="g5">
+          <div class="card pri"><span class="flag">Nueva sede</span><span class="ct">Calle 197</span><span class="cs">Autopista Norte</span></div>
+          <div class="card"><span class="ct">Toberín</span><span class="cs">Calle 163</span></div>
+          <div class="card"><span class="ct">Spring</span><span class="cs">Calle 135</span></div>
+          <div class="card"><span class="ct">Paloquemao</span><span class="cs">Centro</span></div>
+          <div class="card" style="border-style:solid;border-color:var(--ink-14)"><span class="cs">Ver las 7 sedes →</span></div>
+        </div>
+      </div>
+      <div class="blk">
+        <span class="bn">5</span>
+        <div class="bt">Segment strip</div>
+        <div class="g2">
+          <div class="card"><span class="ct">Para tu hogar</span><span class="cp">Mudanzas, remodelaciones, viajes, falta de espacio.</span></div>
+          <div class="card"><span class="ct">Para tu empresa</span><span class="cp">Inventario, archivo, mobiliario, espacios productivos.</span></div>
+        </div>
+      </div>
+      <div class="blk alt">
+        <span class="bn">6</span>
+        <div class="bt">Trust bar</div>
+        <div class="g5">
+          <div class="card"><span class="ct">2011</span><span class="cs">Año de fundación</span></div>
+          <div class="card"><span class="ct">7</span><span class="cs">Sedes en Bogotá</span></div>
+          <div class="card"><span class="ct">500+</span><span class="cs">Bodegas</span></div>
+          <div class="card"><span class="ct">24/7</span><span class="cs">CCTV y monitoreo</span></div>
+          <div class="card"><span class="ct">22</span><span class="cs">Profesionales</span></div>
+        </div>
+      </div>
+      <div class="blk">
+        <span class="bn">7</span>
+        <div class="bt">Google reviews — live embed</div>
+        <div class="g3">
+          <div class="card"><span class="cs">★★★★★</span><div class="line l"></div><div class="line m"></div></div>
+          <div class="card"><span class="cs">★★★★★</span><div class="line l"></div><div class="line s"></div></div>
+          <div class="card"><span class="cs">★★★★★</span><div class="line m"></div><div class="line l"></div></div>
+        </div>
+      </div>
+      <div class="blk"><span class="bn">8</span><div class="bt">Client logos — existing asset</div><div class="g5">
+        <div class="img" style="min-height:44px">LOGO</div><div class="img" style="min-height:44px">LOGO</div>
+        <div class="img" style="min-height:44px">LOGO</div><div class="img" style="min-height:44px">LOGO</div>
+        <div class="img" style="min-height:44px">LOGO</div></div></div>
+      <div class="blk cool"><span class="bn">9</span><div class="bt">FAQ — 3 questions, links to full FAQ</div>
+        <div class="bc">¿Cuánto cuesta una minibodega en Bogotá?</div>
+        <div class="bd">¿Qué tamaño necesito? · ¿Cómo accedo a mi bodega?</div></div>
+      <div class="blk hot"><span class="bn">10</span><div class="bt">Closing CTA band</div>
+        <div class="bc">¿Listo para liberar espacio?</div>
+        <div style="margin-top:11px"><span class="btn">Cotizar ahora</span></div></div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note key"><span class="nn">1</span><p><b>This is the single biggest fix on the site.</b> The current hero, the category blocks, the sede banner and the bodega cards are all PNG images. Search engines index text, not pixels — so the highest-value page on the domain has almost nothing readable on it. Everything in this hero must be live HTML.</p></div>
+    <div class="note"><span class="nn">2</span><p><b>The calculator goes above the fold.</b> All three benchmark competitors publish a space calculator; storagebogota.com does not. It answers the first question every customer has and it captures intent at the top of the page rather than the bottom.</p></div>
+    <div class="note"><span class="nn">3</span><p><b>Three doors, not a services list.</b> Each card is the entry to one silo. Bodegaje is visually dominant because it is the strategic priority.</p></div>
+    <div class="note key"><span class="nn">4</span><p><b>Calle 197 takes the first position permanently.</b> It is the newest site with the most capacity and the lowest occupancy. Structural priority on the homepage costs nothing and works every day.</p></div>
+    <div class="note"><span class="nn">6</span><p><b>The trust numbers are already true.</b> Founded 2011, seven sites, more than 500 units, 22 staff. They are currently nowhere on the homepage. Stating verifiable facts about the business is exactly what Google's quality guidelines reward.</p></div>
+    <div class="note"><span class="nn">7</span><p><b>Embed live Google reviews.</b> One competitor does this on service pages and it visibly strengthens them. It also creates a reason to keep asking customers for reviews — which feeds the local pack.</p></div>
+    <div class="note key"><span class="nn">10</span><p><b>Every CTA on this page goes to the quote form, not straight to WhatsApp.</b> See template T7 for why this one change matters more than anything else here.</p></div>
+  </div>
+
+  <div class="call">
+    <div class="ch">Careful — protect what already works</div>
+    <p>The homepage currently ranks at position 9 for “bodegaje bogotá” as well. Once the dedicated pillar at <span style="font-family:var(--mono);font-size:13px">/bodegaje-bogota/</span> is live, two pages on the same domain will be competing for that term.</p>
+    <p>Resolution: retarget the homepage title toward brand and “storage”, let the pillar own “bodegaje”, and watch both positions for sixty days after launch. If the pillar has not overtaken the homepage in that window, revisit rather than adding more pages on top.</p>
+  </div>
+</section>
+
+<!-- ═══════════ T2 PILLAR ═══════════ -->
+<section id="t2">
+  <div class="shead"><span class="num">T2</span><h2>Silo pillar</h2><span class="tag">/bodegaje-bogota/ &nbsp;·&nbsp; /mudanzas-bogota/</span></div>
+  <p class="lede">A pillar page does two jobs: it ranks for the broad category term, and it distributes authority down to every child page. It should feel like a well-organised index, not a sales letter.</p>
+
+  <div class="wf">
+    <div class="wfcap">Silo pillar · desktop</div>
+    <div class="frame">
+      <div class="blk" style="padding-bottom:8px"><span class="bt">Breadcrumb</span><span style="font-family:var(--mono);font-size:10.5px;color:var(--ink-60)">Inicio › Bodegaje en Bogotá</span></div>
+      <div class="blk hot">
+        <span class="bn">1</span><div class="bt">H1 + intent-matching intro</div>
+        <div class="h1x">Bodegaje y minibodegas en Bogotá</div>
+        <div class="bd">150–200 words answering, in plain language: what bodegaje is, who uses it, and what Storage offers. This paragraph is what the search result snippet is drawn from.</div>
+      </div>
+      <div class="blk">
+        <span class="bn">2</span><div class="bt">Axis 1 — choose by size</div>
+        <div class="g4">
+          <div class="card"><span class="ct">Pequeñas</span><span class="cs">1–5 m³</span><span class="cp">Cajas, archivo, objetos sueltos</span></div>
+          <div class="card"><span class="ct">Medianas</span><span class="cs">6–15 m³</span><span class="cp">Apartamento de 1–2 alcobas</span></div>
+          <div class="card"><span class="ct">Grandes</span><span class="cs">16–50 m³</span><span class="cp">Casa completa, inventario</span></div>
+          <div class="card pri"><span class="flag">Diferencial</span><span class="ct">Personalizados</span><span class="cs">50 m³ +</span></div>
+        </div>
+      </div>
+      <div class="blk"><span class="bn">3</span><div class="bt">Axis 2 — choose by need</div>
+        <div class="g2"><div class="card"><span class="ct">Para hogar</span><span class="cp">Mudanza, remodelación, viaje, herencia</span></div>
+        <div class="card"><span class="ct">Para empresas</span><span class="cp">Inventario, archivo, mobiliario, proyecto</span></div></div></div>
+      <div class="blk"><span class="bn">4</span><div class="bt">Axis 3 — choose by sede</div>
+        <div class="g5"><div class="card pri"><span class="ct">Calle 197</span></div><div class="card"><span class="ct">Toberín</span></div>
+        <div class="card"><span class="ct">Spring</span></div><div class="card"><span class="ct">Paloquemao</span></div>
+        <div class="card" style="border-style:solid;border-color:var(--ink-14)"><span class="cs">Ver todas →</span></div></div></div>
+      <div class="blk alt"><span class="bn">5</span><div class="bt">What is included</div>
+        <div class="g3"><div class="card"><span class="ct">Seguridad</span><span class="cp">CCTV 24/7, sensores de humo, registro de ingreso</span></div>
+        <div class="card"><span class="ct">Acceso</span><span class="cp">Candado propio, entrada libre en horario</span></div>
+        <div class="card"><span class="ct">Flexibilidad</span><span class="cp">Contratos por meses, cambio de tamaño</span></div></div></div>
+      <div class="blk"><span class="bn">6</span><div class="bt">How it works — 4 steps</div>
+        <div class="g4"><div class="card"><span class="cs">01</span><span class="ct">Calculas</span></div><div class="card"><span class="cs">02</span><span class="ct">Cotizas</span></div>
+        <div class="card"><span class="cs">03</span><span class="ct">Visitas</span></div><div class="card"><span class="cs">04</span><span class="ct">Te mudas</span></div></div></div>
+      <div class="blk cool"><span class="bn">7</span><div class="bt">Price band → /precios/</div>
+        <div class="bc">Rango de precios por tamaño</div>
+        <div class="bd">Honest ranges with a link to the full pricing page. Answers the question without turning the brand into the cheap option.</div></div>
+      <div class="blk"><span class="bn">8</span><div class="bt">FAQ accordion — FAQPage schema</div><div class="line l"></div><div class="line m"></div><div class="line l"></div></div>
+      <div class="blk hot"><span class="bn">9</span><div class="bt">CTA band</div><span class="btn">Cotizar</span> <span class="btn ghost">Calcular espacio</span></div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note key"><span class="nn">2–4</span><p><b>The three axes appear as three separate choosers.</b> This is the whole architecture expressed on one page. Every card is an internal link downward into the silo — which is how a pillar passes authority to its children.</p></div>
+    <div class="note"><span class="nn">5</span><p><b>Written as capability, never as warning.</b> The discovery workbook explicitly asks to avoid messaging that creates a sense of insecurity. Describe what the security does, not what could happen without it.</p></div>
+    <div class="note key"><span class="nn">7</span><p><b>Price ranges belong on the page.</b> All four People Also Ask questions on the “bodegaje bogotá” results page are price questions. The brand rule is not to compete on price — but refusing to discuss price at all sends the visitor back to Google to find someone who will.</p></div>
+    <div class="note"><span class="nn">9</span><p><b>Two CTAs, different temperatures.</b> “Cotizar” for the ready buyer, “Calcular espacio” for the visitor who does not yet know what they need. Most first-time storage customers are the second kind.</p></div>
+  </div>
+
+  <div class="call neutral">
+    <div class="ch">The mudanzas pillar — one deliberate exception to the linking rules</div>
+    <p>The same template serves <span style="font-family:var(--mono);font-size:13px">/mudanzas-bogota/</span>, with one extra block between steps 6 and 7: a bridge that reads roughly <em>“¿Tu mudanza necesita almacenamiento temporal?”</em> and links into the bodegaje silo.</p>
+    <p>That link runs one direction only. Mudanzas into bodegaje, never back. People who are moving are the highest-intent storage audience there is, and mudanzas terms carry roughly four times the search volume of storage terms in this market — so the moving silo becomes an acquisition channel for the business the client actually wants to grow.</p>
+  </div>
+</section>
+
+<!-- ═══════════ T3 SEGMENT ═══════════ -->
+<section id="t3">
+  <div class="shead"><span class="num">T3</span><h2>Segment page</h2><span class="tag">5 pages · silo 1A</span></div>
+  <p class="lede">Segment pages answer “is this for someone like me?”. They lead with the situation the visitor is in, not with the product.</p>
+
+  <div class="wf">
+    <div class="wfcap">Segment · example: /minibodegas-para-hogar/</div>
+    <div class="frame">
+      <div class="blk" style="padding-bottom:8px"><span style="font-family:var(--mono);font-size:10.5px;color:var(--ink-60)">Inicio › Bodegaje › Para hogar</span></div>
+      <div class="blk hot"><span class="bn">1</span><div class="bt">H1 + situation-led intro</div>
+        <div class="h1x">Minibodegas para hogar en Bogotá</div>
+        <div class="bd">Opens on the customer's circumstance, not on the company.</div></div>
+      <div class="blk"><span class="bn">2</span><div class="bt">Use cases — the reasons people actually come</div>
+        <div class="g5"><div class="card"><span class="ct">Mudanza</span></div><div class="card"><span class="ct">Remodelación</span></div>
+        <div class="card"><span class="ct">Viaje largo</span></div><div class="card"><span class="ct">Herencia</span></div>
+        <div class="card"><span class="ct">Falta de espacio</span></div></div></div>
+      <div class="blk cool"><span class="bn">3</span><div class="bt">Visual m³ guide — what actually fits</div>
+        <div class="g3"><div class="img">3 m³ · ilustración</div><div class="img">8 m³ · ilustración</div><div class="img">15 m³ · ilustración</div></div></div>
+      <div class="blk"><span class="bn">4</span><div class="bt">Size recommender → 1B</div>
+        <div class="g3"><div class="card"><span class="ct">Pequeña</span></div><div class="card"><span class="ct">Mediana</span></div><div class="card"><span class="ct">Grande</span></div></div></div>
+      <div class="blk alt"><span class="bn">5</span><div class="bt">Security block → /seguridad/</div><div class="line l"></div><div class="line m"></div></div>
+      <div class="blk"><span class="bn">6</span><div class="bt">Nearest sede finder → 1C</div><div class="img" style="min-height:100px">MAPA · 7 SEDES</div></div>
+      <div class="blk"><span class="bn">7</span><div class="bt">Packing tips → blog</div><div class="g3"><div class="card"><span class="cp">Cómo empacar muebles</span></div>
+        <div class="card"><span class="cp">Qué no se puede guardar</span></div><div class="card"><span class="cp">Organizar tu bodega</span></div></div></div>
+      <div class="blk cool"><span class="bn">8</span><div class="bt">FAQ · segment-specific</div><div class="line m"></div><div class="line l"></div></div>
+      <div class="blk hot"><span class="bn">9</span><div class="bt">CTA</div><span class="btn">Calcular mi espacio</span></div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note key"><span class="nn">3</span><p><b>The visual m³ guide is the block that converts.</b> Nobody knows what 8 m³ looks like. Showing the contents of a one-bedroom flat inside a drawn box removes the single largest source of hesitation in this category — and it is the reason the calculator matters so much.</p></div>
+    <div class="note"><span class="nn">4 · 6</span><p><b>Segment pages hand off to the other two axes.</b> Once a visitor has recognised themselves, the next questions are “what size” and “where”. Both are one click away.</p></div>
+    <div class="note"><span class="nn">7</span><p><b>Links to the blog, not from it.</b> Articles link upward into commercial pages. Commercial pages link out to articles only in a clearly secondary block like this one.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ T4 LOCATION HUB ═══════════ -->
+<section id="t4">
+  <div class="shead"><span class="num">T4</span><h2>Location hub</h2><span class="tag">/sedes/ · 1 page</span></div>
+  <p class="lede">Storage S.A.S has seven physical sites and, today, <strong>zero location pages</strong>. For a proximity-driven purchase this is the largest untapped asset on the domain.</p>
+
+  <div class="wf">
+    <div class="wfcap">Location hub · desktop</div>
+    <div class="frame">
+      <div class="blk hot"><span class="bn">1</span><div class="bt">H1 + map</div>
+        <div class="h1x">Nuestras sedes en Bogotá</div></div>
+      <div class="blk"><div class="img tall">MAPA INTERACTIVO · 7 PINES · CALLE 197 DESTACADA</div></div>
+      <div class="blk cool"><span class="bn">2</span><div class="bt">Featured sede</div>
+        <div class="g2" style="grid-template-columns:1fr 1.4fr">
+          <div class="img tall">FOTO · SEDE CALLE 197</div>
+          <div>
+            <span class="flag">Nueva sede · mayor disponibilidad</span>
+            <div class="bc" style="margin-top:7px">Autopista Norte · Calle 197</div>
+            <div class="bd">Autopista Norte # 197-10 · ~200 bodegas · acceso vehicular · CCTV 24/7</div>
+            <div class="bd" style="margin-top:7px">Atiende Sabana Norte: Chía, Cajicá, Cota, Sopó.</div>
+            <div style="margin-top:11px"><span class="btn">Ver sede</span> <span class="btn ghost">Cómo llegar</span></div>
+          </div>
+        </div></div>
+      <div class="blk"><span class="bn">3</span><div class="bt">Remaining sede cards</div>
+        <div class="g3">
+          <div class="card"><div class="img" style="min-height:58px">FOTO</div><span class="ct">Toberín</span><span class="cs">3 puntos · Calle 163 / Cra 19B</span><span class="cp">Usaquén, Cedritos, Santa Bárbara</span></div>
+          <div class="card"><div class="img" style="min-height:58px">FOTO</div><span class="ct">Spring · Calle 135</span><span class="cs">Calle 135 # 46-55</span><span class="cp">Suba, Colina, Niza, Pasadena</span></div>
+          <div class="card"><div class="img" style="min-height:58px">FOTO</div><span class="ct">Paloquemao</span><span class="cs">2 puntos · Centro</span><span class="cp">Centro, Puente Aranda, Ricaurte</span></div>
+        </div></div>
+      <div class="blk alt"><span class="bn">4</span><div class="bt">Coverage explainer</div>
+        <div class="bd">Prose describing which parts of Bogotá each site serves — written as genuinely useful orientation, not as a keyword list.</div></div>
+      <div class="blk hot"><span class="bn">5</span><div class="bt">CTA</div><span class="btn">Agendar visita</span></div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note key"><span class="nn">2</span><p><b>Calle 197 is featured, not listed.</b> It has the most capacity and roughly 40% occupancy. Its Sabana Norte catchment is unique in the network — no other site can make that claim, and that makes the page genuinely distinct rather than a template fill.</p></div>
+    <div class="note"><span class="nn">3</span><p><b>Four cards for seven sites — this is deliberate.</b> Toberín 1, 2 and 4 sit within a few blocks of each other, as do the two Paloquemao sites. Three near-identical pages targeting the same neighbourhood would be thin content. One page each, with every address listed. Claim a separate Google Business Profile for each physical address regardless — profiles and pages do not have to map one to one.</p></div>
+    <div class="note"><span class="nn">4</span><p><b>Coverage prose, not zone pages.</b> Building a separate page for every Bogotá neighbourhood is what Google's spam policies describe as doorway pages, and at least one competitor is running close to that line. Build a location page only where a real site serves that area with genuinely different content.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ T5 SEDE ═══════════ -->
+<section id="t5">
+  <div class="shead"><span class="num">T5</span><h2>Sede page</h2><span class="tag">4 pages · silo 1C</span></div>
+  <p class="lede">The page that wins local searches. If it cannot carry a real address, real photographs and real opening hours, it should not exist.</p>
+
+  <div class="wf">
+    <div class="wfcap">Sede · example: /sedes/autopista-norte-197/</div>
+    <div class="frame">
+      <div class="blk" style="padding-bottom:8px"><span style="font-family:var(--mono);font-size:10.5px;color:var(--ink-60)">Inicio › Sedes › Autopista Norte · Calle 197</span></div>
+      <div class="blk hot"><span class="bn">1</span><div class="bt">H1 + address + immediate actions</div>
+        <div class="h1x">Sede Autopista Norte · Calle 197</div>
+        <div class="bd">Autopista Norte # 197-10, Bogotá · Lun–Vie 8:00–17:30 · Sáb 8:00–13:30</div>
+        <div style="margin-top:12px;display:flex;gap:9px;flex-wrap:wrap">
+          <span class="btn">Agendar visita</span><span class="btn ghost">Cómo llegar</span><span class="btn ghost">Llamar</span></div></div>
+      <div class="blk"><span class="bn">2</span><div class="bt">Gallery — photographs of THIS site</div>
+        <div class="g4"><div class="img tall">FOTO 1</div><div class="img tall">FOTO 2</div><div class="img tall">FOTO 3</div><div class="img tall">FOTO 4</div></div></div>
+      <div class="blk cool"><span class="bn">3</span><div class="bt">Sizes available at this sede</div>
+        <div class="g4"><div class="card"><span class="ct">Pequeñas</span><span class="cs">Disponible</span></div>
+        <div class="card"><span class="ct">Medianas</span><span class="cs">Disponible</span></div>
+        <div class="card"><span class="ct">Grandes</span><span class="cs">Disponible</span></div>
+        <div class="card"><span class="ct">Personalizados</span><span class="cs">Consultar</span></div></div></div>
+      <div class="blk"><span class="bn">4</span><div class="bt">Access & security at this site</div>
+        <div class="g3"><div class="card"><span class="ct">Acceso vehicular</span></div><div class="card"><span class="ct">CCTV 24/7</span></div><div class="card"><span class="ct">Candado propio</span></div></div></div>
+      <div class="blk"><span class="bn">5</span><div class="bt">Map + Google Maps and Waze deep links</div><div class="img tall">MAPA EMBEBIDO</div></div>
+      <div class="blk hot"><span class="bn">6</span><div class="bt">Zones served — unique to this sede</div>
+        <div class="bc">Sabana Norte</div>
+        <div class="bd">Chía · Cajicá · Cota · Sopó · Tocancipá · Zipaquirá · Usaquén norte</div></div>
+      <div class="blk"><span class="bn">7</span><div class="bt">Reviews for this specific location</div><div class="g3">
+        <div class="card"><span class="cs">★★★★★</span><div class="line m"></div></div>
+        <div class="card"><span class="cs">★★★★★</span><div class="line l"></div></div>
+        <div class="card"><span class="cs">★★★★☆</span><div class="line s"></div></div></div></div>
+      <div class="blk hot"><span class="bn">8</span><div class="bt">CTA</div><span class="btn">Agendar visita a esta sede</span></div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note key"><span class="nn">2</span><p><b>Photographs of the actual site, not stock.</b> This is the block the client must supply and the block that decides whether the page converts. A location page with generic imagery reads as untrustworthy to someone deciding where to leave their possessions.</p></div>
+    <div class="note"><span class="nn">5</span><p><b>Include a Waze link alongside Google Maps.</b> One competitor does this per site. In Bogotá it is a small, genuinely useful touch.</p></div>
+    <div class="note key"><span class="nn">6</span><p><b>This block is what stops four sede pages being four copies of each other.</b> Each site names the specific areas it serves. Calle 197 owns Sabana Norte, Toberín owns Usaquén and Cedritos, Spring owns Suba and Colina, Paloquemao owns Centro. Distinct catchment, distinct content, no duplication.</p></div>
+    <div class="note"><span class="nn">7</span><p><b>Reviews are pulled per location.</b> This only works once the Google Business Profiles are claimed — which is why that task runs in parallel with the build rather than after it.</p></div>
+  </div>
+
+  <div class="call">
+    <div class="ch">Where the real opportunity sits</div>
+    <p>On the “bodegaje bogotá” results page, positions one, two and three are all local pack listings — and none of them belong to the big three competitors. They are small operators with 9, 2 and 18 Google reviews respectively.</p>
+    <p>The top of the most commercially relevant results page in this market is currently held by businesses with almost no review volume. Storage S.A.S has seven physical sites and no claimed profiles. Claiming them, populating them properly and building a steady review flow is the cheapest available route to that position — and it does not depend on the website at all.</p>
+  </div>
+</section>
+
+<!-- ═══════════ T8 SIZE ═══════════ -->
+<section id="t8">
+  <div class="shead"><span class="num">T8</span><h2>Size page</h2><span class="tag">4 pages · silo 1B · pending data</span></div>
+  <p class="lede">The strongest conversion axis of the three, because it matches how customers actually frame the problem. One benchmark competitor organises their entire storage offer this way.</p>
+
+  <div class="wf">
+    <div class="wfcap">Size · example: /bodegas-medianas/</div>
+    <div class="frame">
+      <div class="blk hot"><span class="bn">1</span><div class="bt">H1 + range</div>
+        <div class="h1x">Bodegas medianas</div>
+        <div class="bd">6 – 15 m³ · dimensiones exactas por sede</div></div>
+      <div class="blk cool"><span class="bn">2</span><div class="bt">What fits — illustrated</div>
+        <div class="g2"><div class="img tall">ILUSTRACIÓN · CONTENIDO DE UN APARTAMENTO</div>
+        <div><div class="bc">Cabe aproximadamente:</div><div class="bd">Sala completa · comedor de 6 puestos · 1–2 alcobas · nevera y lavadora · 15–20 cajas</div></div></div></div>
+      <div class="blk"><span class="bn">3</span><div class="bt">Price band</div>
+        <div class="bd">Rango mensual honesto, con los factores que lo afectan. Sin promesa de "el más barato".</div></div>
+      <div class="blk"><span class="bn">4</span><div class="bt">Availability by sede</div>
+        <div class="g4"><div class="card pri"><span class="ct">Calle 197</span><span class="cs">Alta disponibilidad</span></div>
+        <div class="card"><span class="ct">Toberín</span><span class="cs">Consultar</span></div>
+        <div class="card"><span class="ct">Spring</span><span class="cs">Consultar</span></div>
+        <div class="card"><span class="ct">Paloquemao</span><span class="cs">Consultar</span></div></div></div>
+      <div class="blk alt"><span class="bn">5</span><div class="bt">Compare with adjacent sizes</div>
+        <div class="g3"><div class="card"><span class="ct">← Pequeña</span></div><div class="card pri"><span class="ct">Mediana</span></div><div class="card"><span class="ct">Grande →</span></div></div></div>
+      <div class="blk hot"><span class="bn">6</span><div class="bt">CTA</div><span class="btn">Cotizar esta bodega</span> <span class="btn ghost">No estoy seguro · calcular</span></div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note key"><span class="nn">4</span><p><b>Availability is the lever that fills Calle 197.</b> When a size page shows which sites have that size free, demand routes itself toward the sites that need filling. The discovery workbook names exactly this as a commercial requirement — availability changes constantly and campaigns must adapt to it.</p></div>
+    <div class="note"><span class="nn">6</span><p><b>Two CTAs, because half of visitors are guessing.</b> “No estoy seguro” routed to the calculator recovers the visitor who would otherwise leave to compare.</p></div>
+  </div>
+
+  <div class="call">
+    <div class="ch">These four pages are blocked</div>
+    <p>The m³ bands shown above are placeholders. Real bands, unit counts per band and price ranges per band sit in the occupancy file that has not yet been supplied, and these pages cannot be written from assumptions — a size page with invented dimensions is worse than no size page at all.</p>
+    <p>Everything else in Phase 1 proceeds without them. This is item 2 on the open items list.</p>
+  </div>
+</section>
+
+<!-- ═══════════ T7 CONVERSION ═══════════ -->
+<section id="t7">
+  <div class="shead"><span class="num">T7</span><h2>Quote form &amp; space calculator</h2><span class="tag">/cotizar/ · /calculadora-de-espacio/</span></div>
+  <p class="lede">The highest-value change in this entire specification, and the one with the shortest path to measurable results.</p>
+
+  <div class="wf">
+    <div class="wfcap">Space calculator</div>
+    <div class="frame">
+      <div class="blk hot"><span class="bn">1</span><div class="bt">H1</div><div class="h1x">Calcula el espacio que necesitas</div></div>
+      <div class="blk"><span class="bn">2</span><div class="bt">Item selector, grouped by room</div>
+        <div class="g4"><div class="card"><span class="ct">Sala</span><span class="cs">– 0 +</span></div><div class="card"><span class="ct">Alcoba</span><span class="cs">– 0 +</span></div>
+        <div class="card"><span class="ct">Cocina</span><span class="cs">– 0 +</span></div><div class="card"><span class="ct">Cajas</span><span class="cs">– 0 +</span></div></div></div>
+      <div class="blk cool"><span class="bn">3</span><div class="bt">Running total + recommendation</div>
+        <div class="bc">Total estimado: 9,4 m³ → Bodega mediana</div>
+        <div class="bd">Disponible en: Calle 197, Toberín</div></div>
+      <div class="blk hot"><span class="bn">4</span><div class="bt">Hand-off to the qualifying form</div><span class="btn">Ver mi cotización</span></div>
+    </div>
+  </div>
+
+  <div class="wf">
+    <div class="wfcap">Quote form — replaces every raw WhatsApp link on the site</div>
+    <div class="frame" style="max-width:520px">
+      <div class="blk hot"><span class="bn">5</span><div class="bt">Four fields. No more.</div>
+        <div class="bc">Cotiza tu espacio</div>
+        <div style="margin-top:12px;display:grid;gap:9px">
+          <div class="card"><span class="cs">Sede de interés</span><span class="cp">Selector — Calle 197 primero</span></div>
+          <div class="card"><span class="cs">Tamaño aproximado</span><span class="cp">O "no estoy seguro" → calculadora</span></div>
+          <div class="card"><span class="cs">¿Cuándo lo necesitas?</span><span class="cp">Ya · este mes · más adelante</span></div>
+          <div class="card"><span class="cs">Nombre y celular</span><span class="cp">Mínimo indispensable</span></div>
+        </div>
+        <div style="margin-top:13px"><span class="btn">Enviar y continuar por WhatsApp</span></div>
+        <div class="bd" style="margin-top:9px;font-size:11.5px">Te respondemos en menos de X minutos en horario de atención.</div>
+      </div>
+      <div class="blk alt"><span class="bn">6</span><div class="bt">What happens on submit — invisible to the visitor</div>
+        <div class="bd">1 · Lead written to the CRM &nbsp;→&nbsp; 2 · Conversion event fired with campaign source &nbsp;→&nbsp; 3 · WhatsApp opens with the answers pre-filled for the advisor</div></div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note key"><span class="nn">5–6</span><p><b>Why this matters more than anything else here.</b> Today every call to action on both domains is a raw WhatsApp deep link. That has three consequences, and the discovery workbook names all three as problems in its own words.</p></div>
+    <div class="note"><span class="nn">i</span><p><b>Attribution dies at the click.</b> The client's stated most important measurement goal is knowing which campaign, ad and keyword produced each customer. A raw WhatsApp link destroys that information at the exact moment it is created.</p></div>
+    <div class="note"><span class="nn">ii</span><p><b>No qualification.</b> The workbook reports that most prospects are lost “en conversaciones” — precisely the stage a raw WhatsApp lead lands in, with an advisor who knows nothing about them yet.</p></div>
+    <div class="note"><span class="nn">iii</span><p><b>No speed advantage.</b> Response times are reported as sometimes exceeding twenty minutes. Four fields arriving with the lead let an advisor open with an answer instead of a question.</p></div>
+    <div class="note key"><span class="nn">4</span><p><b>The WhatsApp experience is kept, not removed.</b> This market expects WhatsApp and taking it away would cost conversions. The form sits in front of it, not instead of it — the visitor still ends up in WhatsApp, and the business gains attribution and context on the way.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ T6 INFO ═══════════ -->
+<section id="t6">
+  <div class="shead"><span class="num">T6</span><h2>Information page</h2><span class="tag">10 pages · silo 3 &amp; 4</span></div>
+  <p class="lede">Precios, Seguridad, Quiénes somos, FAQ, Contacto, Empaque, Seguros, Asesoría, Legales, PQRS. One flexible template.</p>
+
+  <div class="wf">
+    <div class="wfcap">Information · example: /precios/</div>
+    <div class="frame">
+      <div class="blk hot"><span class="bn">1</span><div class="bt">H1 + direct answer in the first paragraph</div>
+        <div class="h1x">Precios y tarifas</div>
+        <div class="bd">The question is answered immediately, not after four paragraphs of preamble.</div></div>
+      <div class="blk cool"><span class="bn">2</span><div class="bt">Price range table by size</div>
+        <table class="tbl" style="margin-top:4px">
+          <tr><th>Tamaño</th><th>Rango m³</th><th>Rango mensual</th><th>Ideal para</th></tr>
+          <tr><td>Pequeña</td><td>1 – 5 m³</td><td>desde $ —</td><td>Cajas, archivo</td></tr>
+          <tr><td>Mediana</td><td>6 – 15 m³</td><td>$ — a $ —</td><td>Apartamento 1–2 alcobas</td></tr>
+          <tr><td>Grande</td><td>16 – 50 m³</td><td>$ — a $ —</td><td>Casa completa, inventario</td></tr>
+        </table></div>
+      <div class="blk"><span class="bn">3</span><div class="bt">What affects the price</div>
+        <div class="g4"><div class="card"><span class="ct">Tamaño</span></div><div class="card"><span class="ct">Sede</span></div>
+        <div class="card"><span class="ct">Permanencia</span></div><div class="card"><span class="ct">Servicios extra</span></div></div></div>
+      <div class="blk alt"><span class="bn">4</span><div class="bt">Included vs extra</div>
+        <div class="g2"><div class="card"><span class="cs">Incluido sin costo</span><span class="cp">CCTV, candado propio, acceso en horario, asesoría</span></div>
+        <div class="card"><span class="cs">Con costo adicional</span><span class="cp">Empaque, transporte, póliza ampliada</span></div></div></div>
+      <div class="blk cool"><span class="bn">5</span><div class="bt">FAQ · FAQPage schema</div>
+        <div class="bc">¿Cuánto vale una bodega pequeña en Bogotá?</div>
+        <div class="bd">¿Cuánto cuesta guardar muebles? · ¿Hay permanencia mínima? · ¿Cómo se paga?</div></div>
+      <div class="blk hot"><span class="bn">6</span><div class="bt">CTA</div><span class="btn">Cotizar mi bodega</span></div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note key"><span class="nn">2</span><p><b>Publishing ranges is not competing on price.</b> The brand rule is clear: do not position as the cheapest. Ranges plus a clear statement of what is included satisfy the search intent while the framing stays on value — and they filter out the price-only shopper before they reach an advisor, which is exactly the lead quality the client asked for.</p></div>
+    <div class="note"><span class="nn">5</span><p><b>The FAQ questions come from the data, not from imagination.</b> Every question above was returned by Google itself on the “bodegaje bogotá” results page. They are listed in full in the companion workbook.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ T9 BLOG ═══════════ -->
+<section id="t9">
+  <div class="shead"><span class="num">T9</span><h2>Blog hub</h2><span class="tag">/blog/ · Phase 2</span></div>
+  <p class="lede">Top-of-funnel content that links upward into the commercial silo. One competitor's article on temporary storage ranks on page one for a core term — the layer earns its place.</p>
+
+  <div class="wf">
+    <div class="wfcap">Blog hub</div>
+    <div class="frame">
+      <div class="blk hot"><span class="bn">1</span><div class="bt">H1 + real categories</div>
+        <div class="h1x">Recursos y consejos</div>
+        <div style="margin-top:11px;display:flex;gap:7px;flex-wrap:wrap">
+          <span class="btn ghost">Tamaños</span><span class="btn ghost">Empaque</span>
+          <span class="btn ghost">Mudanzas</span><span class="btn ghost">Empresas</span><span class="btn ghost">Organización</span></div></div>
+      <div class="blk"><span class="bn">2</span><div class="bt">Featured article</div>
+        <div class="g2" style="grid-template-columns:1.2fr 1fr">
+          <div class="img tall">IMAGEN DESTACADA</div>
+          <div><span class="cs" style="font-family:var(--mono);font-size:9px;color:var(--ink-35)">TAMAÑOS</span>
+          <div class="bc" style="margin-top:5px">¿Cuánto espacio necesito? Guía de tamaños en m³</div>
+          <div class="bd">Links up to all four size pages and the calculator.</div></div></div></div>
+      <div class="blk"><span class="bn">3</span><div class="bt">Article grid</div>
+        <div class="g3"><div class="card"><div class="img" style="min-height:52px">IMG</div><span class="ct">Cómo empacar muebles</span></div>
+        <div class="card"><div class="img" style="min-height:52px">IMG</div><span class="ct">Almacenamiento en mudanza</span></div>
+        <div class="card"><div class="img" style="min-height:52px">IMG</div><span class="ct">Qué no se puede guardar</span></div></div></div>
+      <div class="blk hot"><span class="bn">4</span><div class="bt">CTA band</div><span class="btn">Calcular mi espacio</span></div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note"><span class="nn">1</span><p><b>Replace the “Uncategorized” default.</b> It is the only category on the site today and it appears in the footer of every page.</p></div>
+    <div class="note key"><span class="nn">2–3</span><p><b>Every article links upward into a commercial page.</b> That is the entire purpose of the blog inside a silo structure. An article that links nowhere is a leaf with no branch.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ MOBILE ═══════════ -->
+<section id="mobile">
+  <div class="shead"><span class="num">M</span><h2>Mobile behaviour</h2><span class="tag">Design mobile-first</span></div>
+  <p class="lede">This market reaches storage businesses through WhatsApp on a phone. The mobile layout is the primary layout, not a reduction of the desktop one.</p>
+
+  <div style="display:flex;gap:var(--s5);flex-wrap:wrap">
+    <div class="wf" style="flex:1;min-width:300px">
+      <div class="wfcap">Home · mobile</div>
+      <div class="frame mob">
+        <div class="blk" style="padding:9px 13px"><div class="navbar"><span class="logo" style="font-size:12px">STORAGE</span><span class="sp"></span><span class="lk">☰</span></div></div>
+        <div class="blk hot"><span class="bn">1</span>
+          <div class="h1x" style="font-size:19px">Minibodegas y bodegaje en Bogotá</div>
+          <div class="bd" style="font-size:12px">7 sedes · desde 1 m³</div>
+          <div style="margin-top:11px;display:grid;gap:7px"><span class="btn" style="text-align:center">Calcular mi espacio</span>
+          <span class="btn ghost" style="text-align:center">Ver sedes</span></div></div>
+        <div class="blk cool"><span class="bn">2</span><div class="bt">Sede más cercana</div>
+          <div class="bc" style="font-size:13px">¿Dónde estás?</div>
+          <div class="bd" style="font-size:12px">Selector rápido de zona</div></div>
+        <div class="blk"><span class="bn">3</span><div class="bt">Tamaños</div>
+          <div class="g2"><div class="card"><span class="ct" style="font-size:11px">Pequeña</span></div>
+          <div class="card"><span class="ct" style="font-size:11px">Mediana</span></div>
+          <div class="card"><span class="ct" style="font-size:11px">Grande</span></div>
+          <div class="card"><span class="ct" style="font-size:11px">A medida</span></div></div></div>
+        <div class="blk alt"><div class="bt">Confianza</div><div class="bd" style="font-size:12px">2011 · 7 sedes · 500+ bodegas · CCTV 24/7</div></div>
+        <div class="blk hot"><span class="bn">4</span><div class="bt">Sticky bar — fixed to viewport bottom</div>
+          <div style="display:flex;gap:7px"><span class="btn" style="flex:1;text-align:center">Cotizar</span>
+          <span class="btn blue" style="flex:1;text-align:center">Llamar</span></div></div>
+      </div>
+    </div>
+
+    <div style="flex:1.15;min-width:300px">
+      <div class="notes" style="margin-top:34px">
+        <div class="note key"><span class="nn">1</span><p><b>Hero text stays text.</b> The same fix as desktop, and it matters more here — the current site loads several large PNG sliders on mobile, which is slow on a Colombian mobile connection and delivers nothing readable to a search engine.</p></div>
+        <div class="note"><span class="nn">2</span><p><b>Proximity is the first mobile question.</b> Someone searching on a phone is usually asking where, not what. A zone selector at the top of mobile earns its place; on desktop it can sit lower.</p></div>
+        <div class="note"><span class="nn">3</span><p><b>Two columns, four sizes, one screen.</b> The size axis is the fastest path to a qualified lead, so it comes before the segment strip on mobile.</p></div>
+        <div class="note key"><span class="nn">4</span><p><b>The sticky bar goes to the quote form, not to WhatsApp.</b> This is the highest-traffic tap target on the whole site. If it bypasses the form, the attribution problem stays unsolved regardless of what the rest of the site does.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ RULES ═══════════ -->
+<section id="rules">
+  <div class="shead"><span class="num">R</span><h2>Linking rules</h2><span class="tag">Non-negotiable</span></div>
+
+  <table class="tbl">
+    <tr><th style="width:34px">#</th><th style="width:23%">Rule</th><th>Why</th></tr>
+    <tr><td>1</td><td>Vertical linking only</td><td>A pillar links down to its children. Children link back up to the pillar and sideways only within the same silo. Cross-silo connections happen through the header and footer, not through body copy. This is what makes a silo a silo rather than a sitemap.</td></tr>
+    <tr><td>2</td><td>One bridge, one direction</td><td>Mudanzas pages link into bodegaje through a single block. Never the reverse. People who are moving are the highest-intent storage audience there is — and mudanzas terms carry roughly four times the search volume of storage terms in this market.</td></tr>
+    <tr><td>3</td><td>Sede pages carry proof</td><td>Real address, embedded map, real photographs, opening hours, available sizes, LocalBusiness structured data. A page that cannot carry all of those should not be built.</td></tr>
+    <tr><td>4</td><td>No speculative zone pages</td><td>Build a location page only where a physical site serves that area with genuinely distinct content. Mass-produced near-identical location pages are what Google's spam policies describe as doorway pages.</td></tr>
+    <tr><td>5</td><td>Calle 197 gets structural priority</td><td>Header nav entry, homepage module, featured slot on the sedes hub, first position in every sede list. It is the newest site, has the most capacity and the lowest occupancy. Structural priority costs nothing and works every day.</td></tr>
+    <tr><td>6</td><td>Every page carries real HTML text</td><td>Images may illustrate. They may not carry the message. This is the single biggest fix on the current site and the reason a five-page domain ranking at position 3 for “storage” is still invisible for almost everything else.</td></tr>
+    <tr><td>7</td><td>Every CTA goes through the quote form</td><td>Not to a raw WhatsApp link. Attribution, qualification and advisor context all depend on this one rule holding site-wide.</td></tr>
+  </table>
+
+  <div class="call">
+    <div class="ch">One honest caveat before this goes to build</div>
+    <p>Nothing in this document is a ranking guarantee. Search results depend on competitor behaviour, Google algorithm changes and factors nobody controls. Search volume figures are third-party estimates that move month to month.</p>
+    <p>What this structure does is make the site <em>eligible</em> to compete for terms it currently cannot reach at all — because no page exists to serve them. A domain with five pages can rank for five pages' worth of intent. That is the constraint being removed here.</p>
+  </div>
+</section>
+
+<hr class="rule">
+<div class="foot">
+  <span>Fanatic Coders × Storage S.A.S · Wireframe &amp; Silo Structure v1.0</span>
+  <span>Companion file: Storage_SAS_Wireframe_Silo_Spec.xlsx</span>
+  <span>14 August 2026</span>
+</div>
+
+</main>
+</div>
+</body>
+</html>

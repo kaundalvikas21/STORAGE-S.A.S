@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__chrome-devtools__new_page",
+      "mcp__chrome-devtools__resize_page",
+      "Skill(impeccable:impeccable)",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__evaluate_script",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__list_console_messages",
+      "mcp__chrome-devtools__hover",
+      "mcp__chrome-devtools__take_snapshot",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "mcp__claude_ai_Firecrawl__firecrawl_search",
+      "mcp__claude_ai_Firecrawl__firecrawl_scrape",
+      "Bash(awk 'NR>=858 && NR<=975 {print NR\": \"$0}' prompt-3-nature-biophilic.html)"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "chrome-devtools",
+    "exa",
+    "Ref",
+    "sequential-thinking"
+  ]
+}
