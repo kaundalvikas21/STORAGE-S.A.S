@@ -27,7 +27,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState<string | null>(null);
   const reduce = useReducedMotion();
-  const closeTimer = useRef<number>();
+  const closeTimer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";

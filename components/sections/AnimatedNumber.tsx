@@ -15,8 +15,10 @@ export default function AnimatedNumber({ value, suffix = "", className = "" }: P
 
   useEffect(() => {
     if (reduce) return;
+    /* eslint-disable react-hooks/set-state-in-effect -- deliberate one-time post-hydration reset: SSR renders the final value, count-up must start from 0 */
     setN(0);
     setArmed(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [reduce]);
 
   useEffect(() => {

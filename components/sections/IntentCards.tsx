@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, type JSX } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { CALC_URL, intentCards } from "@/content/site";
 import { spring } from "@/lib/motion";
