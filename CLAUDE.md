@@ -24,13 +24,13 @@ Single-page marketing site for Storage S.A.S (minibodegas, Bogotá), Spanish (`e
 - CTAs go to `QUOTE_URL` / `CALC_URL`; WhatsApp is displayed as text only.
 - `faq` and `company`/`nav` also feed JSON-LD (`app/page.tsx` FAQPage, `app/layout.tsx` Organization/WebSite/ItemList), so edits propagate to schema automatically.
 
-**Design tokens flow MASTER.md → globals.css → tailwind.config.ts.** `design-system/MASTER.md` ("La Bóveda" variant) is the source of truth; `app/globals.css` mirrors it 1:1 as CSS variables; `tailwind.config.ts` maps every color/radius/shadow/font/duration to those variables. Add a token in all three, in that order. `design-system/storage-sas/` is the superseded ui-ux-pro-max baseline — don't use it. Brand hex codes are pending from client, hence everything is a variable.
+**Design tokens flow MASTER.md → globals.css → tailwind.config.ts.** `design-system/MASTER.md` (currently the «El Calculista» variant; other variants live on the `la-boveda` / `el-contenedor` / `el-sistema` branches) is the source of truth; `app/globals.css` mirrors it 1:1 as CSS variables; `tailwind.config.ts` maps every color/radius/shadow/font/duration to those variables. Add a token in all three, in that order. `design-system/storage-sas/` is the superseded ui-ux-pro-max baseline — don't use it. Brand hex codes are pending from client, hence everything is a variable.
 
-**Fonts:** Fraunces (`--font-display`, variable opsz) + Inter (`--font-body`) loaded via `next/font/google` in `app/layout.tsx`.
+**Fonts:** Bricolage Grotesque (`--font-display`, variable opsz) + Inter (`--font-body`) loaded via `next/font/google` in `app/layout.tsx`.
 
-**Motion:** `lib/motion.ts` defines the shared `spring`/`rise`/`stagger` variants. `components/Reveal.tsx` (`Reveal`, `RevealItem` named export — not `Reveal.Item`) is the scroll-reveal wrapper; it renders static markup under `prefers-reduced-motion`. Use it rather than hand-rolled `motion.*` in sections.
+**Motion:** `lib/motion.ts` defines the shared `snap`/`rise`/`stagger` variants. `components/Reveal.tsx` (`Reveal`, `RevealItem` named export — not `Reveal.Item`) is the scroll-reveal wrapper; it renders static markup under `prefers-reduced-motion`. Use it rather than hand-rolled `motion.*` in sections.
 
-**Server/client split:** sections are server components by default. Only `Header`, `Reveal`, `AnimatedNumber`, `IntentCards` are `"use client"`. Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
+**Server/client split:** sections are server components by default. Only `Header`, `Reveal`, `AnimatedNumber`, `IntentCards`, `HeroVisualizer`, `ShowcaseCycler`, `ScrollRow`, `Magnetic` are `"use client"` (one interactive moment each). Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
 
 **Page order is SEO-locked.** `app/page.tsx` DOM order follows wireframe T1; mobile reorders (zone selector under hero) use CSS `order-*` on the flex column, never JSX reordering.
 
@@ -60,9 +60,9 @@ Source of truth: `.claude/skills/design-taste-frontend/SKILL.md` (taste-skill, t
 - Fake data: generic names, egg avatars, round numbers (`99.99%`, `50%`), filler verbs (Eleva, Revoluciona, Sin fricción). Reviews and stats must look organic.
 - ui-ux-pro-max CRITICAL tier: removing focus rings, icon-only buttons without `aria-label`, tap targets under 44×44, hover-only affordances, emoji as icons, placeholder-only form labels, disabling zoom, horizontal page scroll, raw hex in components (use the Tailwind token names).
 
-**Declared exceptions (justified in `design-system/MASTER.md`, do not "fix" them):**
-- Fraunces is on taste-skill's banned-default serif list, and the beige + brass + ink palette is the banned premium-consumer default. Both are kept deliberately for the "La Bóveda" brief (vault / heritage trust, founded 2011). If the client's real brand hex codes arrive, the palette swap happens in `globals.css` variables only.
-- The Pre-Flight line "different serif / palette from your previous project" does not apply: this project's identity is fixed by the brief.
+**Declared exceptions (justified in `design-system/MASTER.md` §8, do not "fix" them):**
+- The current variant's knowing rule-breaks (hand-rolled SVG illustrations, single marquee, dark cells, lime second accent, hero visualizer as 5th element, auto-cycling showcase, text wordmark logos) are enumerated and defended in MASTER.md §8. Read it before "correcting" any of them.
+- If the client's real brand hex codes arrive, the palette swap happens in `globals.css` variables only.
 
 **Known open violations:** visible address strings in `content/site.ts` (`sedes[]`, `allAddresses[]`) contain `—` before `PENDIENTE CONFIRMAR`. They are client placeholders; when real addresses land, the dashes go with them. Do not add new ones.
 

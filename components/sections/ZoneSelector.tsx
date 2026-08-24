@@ -2,12 +2,12 @@ import Link from "next/link";
 import { MapPin } from "@phosphor-icons/react/dist/ssr";
 import { SEDES_URL, zones } from "@/content/site";
 
-/** On mobile this sits directly under the hero (CSS order), on desktop it folds into the flow after HowItWorks. */
+/** On mobile this sits directly under the hero (CSS order), on desktop it folds into the flow after IntentCards. */
 export default function ZoneSelector() {
   return (
     <section aria-labelledby="zona-title" className="order-1 md:order-3">
       <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 pb-12 md:pb-16">
-        <div className="rounded-lg border border-line bg-surface px-5 py-5 md:px-8 md:py-6 flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+        <div className="flex flex-col gap-4 rounded-lg border border-line bg-surface px-5 py-5 shadow-1 md:flex-row md:items-center md:gap-8 md:px-8 md:py-6">
           <div className="flex items-center gap-3 shrink-0">
             <MapPin size={22} weight="regular" aria-hidden="true" className="text-primary" />
             <h2 id="zona-title" className="text-xl font-semibold text-ink">¿Dónde estás?</h2>

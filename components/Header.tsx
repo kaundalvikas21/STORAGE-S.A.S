@@ -54,7 +54,7 @@ export default function Header() {
   const t = reduce ? { duration: 0 } : snap;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-bg">
+    <header className="sticky top-0 z-40 border-b border-line bg-surface">
       <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10">
         <p className="hidden md:flex items-center justify-end gap-x-3 border-b border-line py-1.5 text-[13px] text-muted">
           <span className="inline-flex items-center gap-1.5"><MapPin size={13} weight="regular" aria-hidden="true" />7 sedes en Bogotá</span>
@@ -101,10 +101,10 @@ export default function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-2">
-            <Link href={CALC_URL} className={`inline-flex min-h-[44px] items-center rounded-sm border border-line bg-bg px-4 text-[14px] font-medium text-ink hover:border-muted-2 hover:bg-surface transition-colors duration-fast ease-soft cursor-pointer ${focusRing}`}>
+            <Link href={CALC_URL} className={`inline-flex min-h-[44px] items-center rounded-md border border-line bg-surface px-4 text-[14px] font-medium text-ink hover:border-muted-2 transition-colors duration-fast ease-soft cursor-pointer ${focusRing}`}>
               Calcular mi espacio
             </Link>
-            <Link href={QUOTE_URL} className={`inline-flex min-h-[44px] items-center rounded-sm bg-primary px-4 text-[14px] font-medium text-on-primary hover:bg-primary-deep transition-colors duration-fast ease-soft cursor-pointer ${focusRing} focus-visible:ring-offset-2`}>
+            <Link href={QUOTE_URL} className={`inline-flex min-h-[44px] items-center rounded-md bg-primary px-4 text-[14px] font-medium text-on-primary hover:bg-primary-deep transition-colors duration-fast ease-soft cursor-pointer ${focusRing} focus-visible:ring-offset-2`}>
               Cotizar
             </Link>
           </div>
@@ -115,10 +115,10 @@ export default function Header() {
             aria-expanded={open}
             aria-controls="menu-movil"
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
-            className={`lg:hidden relative h-11 w-11 rounded-sm border border-line bg-bg cursor-pointer ${focusRing}`}
+            className={`lg:hidden relative h-11 w-11 rounded-md border border-line bg-surface cursor-pointer ${focusRing}`}
           >
-            <span className={`absolute left-1/2 top-1/2 h-[1.5px] w-5 -translate-x-1/2 bg-ink transition-transform duration-DEFAULT ease-soft ${open ? "rotate-45" : "-translate-y-[4px]"}`} />
-            <span className={`absolute left-1/2 top-1/2 h-[1.5px] w-5 -translate-x-1/2 bg-ink transition-transform duration-DEFAULT ease-soft ${open ? "-rotate-45" : "translate-y-[4px]"}`} />
+            <span className={`absolute left-1/2 top-1/2 h-[1.5px] w-5 -translate-x-1/2 bg-ink transition-transform duration ease-soft ${open ? "rotate-45" : "-translate-y-[4px]"}`} />
+            <span className={`absolute left-1/2 top-1/2 h-[1.5px] w-5 -translate-x-1/2 bg-ink transition-transform duration ease-soft ${open ? "-rotate-45" : "translate-y-[4px]"}`} />
           </button>
 
           <AnimatePresence>
@@ -127,7 +127,7 @@ export default function Header() {
                 key={menu}
                 role="region"
                 aria-label={`Submenú ${nav.find((n) => n.href === menu)?.label}`}
-                className="absolute left-0 right-0 top-full hidden lg:block rounded-b-xl border border-line bg-bg shadow-3"
+                className="absolute left-0 right-0 top-full hidden lg:block rounded-b-xl border border-line bg-surface shadow-3"
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 4 }}
@@ -142,7 +142,7 @@ export default function Header() {
                       <ul className={menus[menu].length === 1 ? "grid grid-cols-2 gap-x-8" : ""}>
                         {col.items.map((it) => (
                           <li key={it.href}>
-                            <Link href={it.href} onClick={() => setMenu(null)} className={`block rounded-[4px] px-2 py-1.5 text-[14px] text-ink-2 hover:bg-surface hover:text-ink transition-colors duration-fast ease-soft cursor-pointer ${focusRing}`}>
+                            <Link href={it.href} onClick={() => setMenu(null)} className={`block rounded-[4px] px-2 py-1.5 text-[14px] text-ink-2 hover:bg-bg hover:text-ink transition-colors duration-fast ease-soft cursor-pointer ${focusRing}`}>
                               {it.label}
                             </Link>
                           </li>
@@ -166,7 +166,7 @@ export default function Header() {
         {open && (
           <motion.div
             id="menu-movil"
-            className="fixed inset-0 z-30 bg-bg pt-24 px-6 pb-28 overflow-y-auto"
+            className="fixed inset-0 z-30 bg-surface pt-24 px-6 pb-28 overflow-y-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -175,7 +175,7 @@ export default function Header() {
             <nav aria-label="Menú móvil" className="mx-auto max-w-md flex flex-col">
               {[...nav, { label: "Calcular mi espacio", href: CALC_URL }, { label: "Cotizar", href: QUOTE_URL }].map((n, i) => (
                 <motion.div key={n.href} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={reduce ? { duration: 0 } : { ...snap, delay: 0.04 + i * 0.04 }}>
-                  <Link href={n.href} onClick={() => setOpen(false)} className={`block border-b border-line px-2 py-4 text-2xl font-semibold text-ink hover:bg-surface transition-colors duration-fast ease-soft cursor-pointer ${focusRing}`}>
+                  <Link href={n.href} onClick={() => setOpen(false)} className={`block border-b border-line px-2 py-4 text-2xl font-semibold text-ink hover:bg-bg transition-colors duration-fast ease-soft cursor-pointer ${focusRing}`}>
                     {n.label}
                   </Link>
                 </motion.div>

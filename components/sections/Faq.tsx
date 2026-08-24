@@ -1,38 +1,46 @@
 import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
-import Reveal, { RevealItem, RevealRule } from "@/components/Reveal";
-import { faq } from "@/content/site";
+import Reveal, { RevealItem } from "@/components/Reveal";
+import { faq, priceSummary } from "@/content/site";
 
-/** Borderless accordion — native <details>, hairline between items only. Content mirrored in FAQPage JSON-LD (app/page.tsx). */
+/** Bento pair: dark cell restates the honest price range; white cell holds the
+ *  native <details> accordion. Content mirrored in FAQPage JSON-LD (app/page.tsx). */
 export default function Faq() {
   return (
     <section aria-labelledby="faq-title" className="order-11">
-      <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 py-14 md:py-20 lg:py-24">
-        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-          <Reveal>
+      <div className="mx-auto max-w-site px-5 py-14 md:px-8 md:py-20 lg:px-10 lg:py-24">
+        <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr] lg:gap-5">
+          <Reveal className="dark-cell self-start rounded-lg p-7 shadow-3 md:p-8">
             <p className="eyebrow mb-3">Preguntas frecuentes</p>
-            <h2 id="faq-title" className="font-display text-3xl font-semibold text-ink max-w-[16ch]">Lo que todos preguntan antes de guardar</h2>
-            <RevealRule className="mt-5 max-w-[280px]" />
-            <p className="mt-4 text-[15px] text-muted max-w-[40ch]">Precios, tamaños y acceso. Si tu duda no está aquí, la respondemos en la página completa.</p>
-            <Link href="/preguntas-frecuentes/" className="group mt-6 inline-flex items-center gap-1.5 text-[14px] font-medium text-primary hover:text-primary-deep cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-[2px]">
+            <h2 id="faq-title" className="max-w-[16ch] font-display text-3xl font-semibold text-ink">Lo que todos preguntan antes de guardar</h2>
+            <p className="mt-5 text-[15px] text-muted">Sin rodeos: esto cuesta una minibodega al mes.</p>
+            <p className="tnum mt-3 text-lg font-semibold leading-relaxed text-accent">
+              {priceSummary.split(" · ").map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </p>
+            <p className="mt-3 max-w-[44ch] text-[13px] text-muted">Valores de referencia. Cada espacio se cotiza según sede y tamaño, sin costos ocultos.</p>
+            <Link href="/preguntas-frecuentes/" className="group mt-6 inline-flex min-h-[44px] items-center gap-1.5 rounded-[2px] text-[14px] font-medium text-primary hover:text-primary-deep cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               Ver todas las preguntas <ArrowRight size={15} aria-hidden="true" className="transition-transform duration-fast ease-soft group-hover:translate-x-1" />
             </Link>
           </Reveal>
 
-          <Reveal group>
+          <Reveal group className="rounded-lg border border-line bg-surface px-6 shadow-1 md:px-7">
             {faq.map((f, i) => (
               <RevealItem key={f.q}>
-                <details className="group border-b border-line" open={i === 0}>
-                  <summary className="flex items-center justify-between gap-4 py-6 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
+                <details className={`group ${i < faq.length - 1 ? "border-b border-line" : ""}`} open={i === 0}>
+                  <summary className="flex cursor-pointer items-center justify-between gap-4 py-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
                     <h3 className="text-lg font-semibold text-ink">{f.q}</h3>
-                    <span className="text-xl leading-none text-muted shrink-0" aria-hidden="true">
+                    <span className="shrink-0 text-xl leading-none text-muted" aria-hidden="true">
                       <span className="group-open:hidden">+</span>
                       <span className="hidden group-open:inline">−</span>
                     </span>
                   </summary>
                   <div className="pb-8">
-                    <p className="text-[15px] text-ink-2 leading-relaxed max-w-[65ch]">{f.a}</p>
-                    <Link href={f.link.href} className="group/link mt-3 inline-flex items-center gap-1.5 text-[14px] font-medium text-primary hover:text-primary-deep cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-[2px]">
+                    <p className="max-w-[65ch] text-[15px] leading-relaxed text-ink-2">{f.a}</p>
+                    <Link href={f.link.href} className="group/link mt-3 inline-flex items-center gap-1.5 rounded-[2px] text-[14px] font-medium text-primary hover:text-primary-deep cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                       {f.link.label} <ArrowRight size={14} aria-hidden="true" className="transition-transform duration-fast ease-soft group-hover/link:translate-x-1" />
                     </Link>
                   </div>

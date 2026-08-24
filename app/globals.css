@@ -2,48 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tokens — mirror of design-system/MASTER.md («El Sistema»). Brand hex pending: swap here only. */
+/* Tokens — mirror of design-system/MASTER.md («El Calculista»). Brand hex pending: swap here only. */
 :root {
-  --bg: #ffffff;
-  --bg-deep: #f7f7f5;
-  --surface: #f7f7f5;
-  --ink: #16181d;
-  --ink-2: #343941;
-  --muted: #5a6069;
-  --muted-2: #6e7480;
-  --line: #e6e6e2;
-  --primary: #2456e6;
-  --primary-deep: #1b41b8;
-  --primary-soft: #eef2fd;
+  --bg: #f5f6f8;
+  --bg-deep: #14161b;
+  --surface: #ffffff;
+  --ink: #14161b;
+  --ink-2: #333845;
+  --muted: #565d6b;
+  --muted-2: #5f6673;
+  --line: #e3e6ec;
+  --primary: #3d5afe;
+  --primary-deep: #2a3eb1;
+  --primary-soft: #eaedff;
   --on-primary: #ffffff;
-  --accent: #2456e6;
-  --accent-deep: #1b41b8;
-  --accent-soft: #eef2fd;
-  --on-accent: #ffffff;
-  --ring: #2456e6;
+  --accent: #c6f432;
+  --accent-deep: #a9d71e;
+  --accent-soft: #f2fbd8;
+  --on-accent: #14161b;
+  --ring: #3d5afe;
 
-  --r-sm: 6px;
-  --r-md: 8px;
-  --r-lg: 8px;
-  --r-xl: 12px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
 
-  --sh-1: 0 1px 2px rgba(22, 24, 29, 0.05);
-  --sh-2: 0 1px 3px rgba(22, 24, 29, 0.06);
-  --sh-3: 0 4px 12px rgba(22, 24, 29, 0.07);
+  --sh-1: 0 1px 2px rgba(20, 22, 27, 0.06);
+  --sh-2: 0 4px 16px rgba(20, 22, 27, 0.07);
+  --sh-3: 0 12px 32px rgba(20, 22, 27, 0.1);
   --sh-brass: var(--sh-1);
 
-  --ease: cubic-bezier(0, 0, 0.2, 1);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --d-fast: 150ms;
-  --d: 150ms;
-  --d-slow: 200ms;
+  --d: 300ms;
+  --d-slow: 450ms;
 
-  --t-display: clamp(2.5rem, 1.9rem + 2.9vw, 4rem);
+  --t-display: clamp(2.75rem, 1.75rem + 3.5vw, 4.25rem);
   --t-3xl: clamp(1.75rem, 1.4rem + 1.7vw, 2.5rem);
   --t-2xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
 
-  /* Instrument Sans carries everything; body and mono alias display. */
-  --font-body: var(--font-display);
-  --font-mono: var(--font-display);
+  /* Bricolage Grotesque (display) + Inter (body) via next/font; mono aliases body. */
+  --font-mono: var(--font-body);
+}
+
+/* Dark featured cell: a local variable scope, NOT a dark mode (MASTER.md §1/§8.3).
+   Token classes keep resolving — components stay zero-hex. Lime family untouched (13-14:1 on dark). */
+.dark-cell {
+  --bg: #14161b;
+  --surface: #1b1e26;
+  --ink: #f5f6f8;
+  --ink-2: #c3c9d6;
+  --muted: #9ba3b5;
+  --muted-2: #9ba3b5;
+  --line: rgba(255, 255, 255, 0.12);
+  --primary: #93a5ff;
+  --primary-deep: #b9c4ff;
+  --primary-soft: rgba(61, 90, 254, 0.22);
+  --on-primary: #14161b;
+  --ring: #93a5ff;
+  background: var(--bg);
+  color: var(--ink);
 }
 
 html {
@@ -56,6 +74,17 @@ body {
   color: var(--ink);
   font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Layered subtle noise (MASTER.md §5): fixed pointer-events-none overlay, no repaints on scroll. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 .font-display {
@@ -77,6 +106,66 @@ body {
   color: var(--muted);
 }
 
+/* Hero kinetic type: word-level rise on load. Text is in the DOM at SSR; only transform/opacity animate. */
+@keyframes hero-word {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+}
+.hero-word {
+  display: inline-block;
+  animation: hero-word var(--d) var(--ease) calc(var(--i) * 60ms) both;
+}
+
+/* Sede map pins: Calle 197 pulses ONCE (not looping) after the band settles. */
+@keyframes pin-pulse {
+  50% {
+    transform: scale(1.45);
+  }
+}
+.pin-pulse {
+  animation: pin-pulse 1.2s var(--ease) 0.6s 1;
+}
+
+/* Card hover/focus highlights its map pin — pure CSS, zero JS (interactive moment 3). */
+[data-pin] {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform var(--d) var(--ease);
+}
+.sede-band:has([data-sede="autopista-norte-197"]:is(:hover, :focus-visible, :focus-within)) [data-pin="autopista-norte-197"],
+.sede-band:has([data-sede="toberin"]:is(:hover, :focus-visible, :focus-within)) [data-pin="toberin"],
+.sede-band:has([data-sede="spring-calle-135"]:is(:hover, :focus-visible, :focus-within)) [data-pin="spring-calle-135"],
+.sede-band:has([data-sede="paloquemao"]:is(:hover, :focus-visible, :focus-within)) [data-pin="paloquemao"] {
+  transform: scale(1.35);
+}
+.sede-band:has([data-sede="autopista-norte-197"]:is(:hover, :focus-visible, :focus-within)) [data-pin="autopista-norte-197"] circle,
+.sede-band:has([data-sede="toberin"]:is(:hover, :focus-visible, :focus-within)) [data-pin="toberin"] circle,
+.sede-band:has([data-sede="spring-calle-135"]:is(:hover, :focus-visible, :focus-within)) [data-pin="spring-calle-135"] circle,
+.sede-band:has([data-sede="paloquemao"]:is(:hover, :focus-visible, :focus-within)) [data-pin="paloquemao"] circle {
+  fill: var(--primary);
+}
+
+/* Single permitted marquee (ClientLogos). CSS-only; pauses on hover/focus. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  overflow: hidden;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
 /* Native accordion marker reset */
 details > summary {
   list-style: none;
@@ -87,10 +176,24 @@ details > summary::-webkit-details-marker {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+  /* Marquee degrades to a static wrapped row; the aria-hidden duplicate disappears. */
+  .marquee-track {
+    animation: none;
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .marquee-track > [aria-hidden="true"] {
+    display: none;
   }
 }

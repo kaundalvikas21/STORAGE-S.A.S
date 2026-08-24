@@ -9,7 +9,7 @@ type Props = {
   className?: string;
   as?: "div" | "ul" | "li" | "article";
   delay?: number;
-  /** When true, children wrapped in <RevealItem> stagger 40ms apart. */
+  /** When true, children wrapped in <RevealItem> stagger 60ms apart. */
   group?: boolean;
   role?: string;
 };
@@ -17,7 +17,7 @@ type Props = {
 const instant = { duration: 0 };
 
 /**
- * Scroll reveal: opacity + 4px rise, once.
+ * Scroll reveal: opacity + 12px spring rise, once.
  * Reduced motion: the same element jumps straight to the visible state on mount (duration 0),
  * which also clears the SSR-rendered hidden style — never swap component types here.
  */

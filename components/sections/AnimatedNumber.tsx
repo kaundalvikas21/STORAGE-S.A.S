@@ -1,45 +1,29 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { animate, motion, useInView, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
 
 type Props = { value: number; suffix?: string; className?: string };
 
-/** Count-up on scroll. SSR renders the final value so the number exists before hydration; reduced motion keeps it static. */
+/** Count-up on scroll via motion values — framer writes the DOM node directly, no
+ *  per-frame React state. SSR renders the final value; reduced motion keeps it static. */
 export default function AnimatedNumber({ value, suffix = "", className = "" }: Props) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-15% 0px" });
   const reduce = useReducedMotion();
-  const [n, setN] = useState(value);
-  const [armed, setArmed] = useState(false);
+  const mv = useMotionValue(value);
+  const text = useTransform(mv, (v) => `${Math.round(v)}${suffix}`);
 
   useEffect(() => {
-    if (reduce) return;
-    /* eslint-disable react-hooks/set-state-in-effect -- deliberate one-time post-hydration reset: SSR renders the final value, count-up must start from 0 */
-    setN(0);
-    setArmed(true);
-    /* eslint-enable react-hooks/set-state-in-effect */
-  }, [reduce]);
-
-  useEffect(() => {
-    if (!armed || !inView || reduce) return;
-    const start = performance.now();
-    const dur = 800;
-    let raf = 0;
-    const tick = (t: number) => {
-      const p = Math.min(1, (t - start) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setN(Math.round(value * eased));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [armed, inView, reduce, value]);
+    if (reduce || !inView) return;
+    mv.set(0);
+    const controls = animate(mv, value, { duration: 0.8, ease: "easeOut" });
+    return () => controls.stop();
+  }, [inView, reduce, mv, value]);
 
   return (
-    <span ref={ref} className={`tnum ${className}`}>
-      {n}
-      {suffix}
-    </span>
+    <motion.span ref={ref} className={`tnum ${className}`}>
+      {text}
+    </motion.span>
   );
 }
