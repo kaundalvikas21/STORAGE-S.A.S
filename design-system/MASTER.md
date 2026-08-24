@@ -30,7 +30,7 @@ Dials: DESIGN_VARIANCE 7 · MOTION_INTENSITY 7 · VISUAL_DENSITY 6
 ## 2. Typography
 - Display: **Bricolage Grotesque** (variable, opsz 12-96) — `--font-display`. Headings 600-700, tracking -0.02em. Kinetic type ONLY in the hero (word-level rise on load); static everywhere else.
 - Body: **Inter** — `--font-body`. `--font-mono` aliases body (safety net, unused).
-- Scale: `--t-display clamp(2.75rem, 1.9rem + 4vw, 4.75rem)` (hero + closing) · `--t-3xl clamp(1.75rem,…,2.5rem)` · `--t-2xl clamp(1.25rem,…,1.5rem)`.
+- Scale: `--t-display clamp(2.75rem, 1.75rem + 3.5vw, 4.25rem)` (hero + closing; capped so the H1 holds 2 lines in the hero's left column) · `--t-3xl clamp(1.75rem,…,2.5rem)` · `--t-2xl clamp(1.25rem,…,1.5rem)`.
 - Every m³ figure, range and stat in tabular numerals (`.tnum`).
 - `.eyebrow`: 12px/500, tracking 0.08em, uppercase, `--muted`. Max 4 of 12 sections.
 

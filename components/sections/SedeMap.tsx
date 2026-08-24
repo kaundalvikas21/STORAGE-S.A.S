@@ -20,17 +20,23 @@ export default function SedeMap() {
         />
         {/* Autopista Norte: the axis the northern sedes hang from */}
         <path d="M112 270 C118 220 130 160 140 110 C145 85 148 62 150 40" fill="none" stroke="var(--line)" strokeWidth="2" strokeDasharray="1 6" strokeLinecap="round" />
+        {/* Outer <g> positions (SVG attribute), inner <g> carries the CSS scale/pulse —
+            a CSS transform would otherwise REPLACE the translate and send the pin to 0,0. */}
         {sedePins.slice(1).map((p) => (
-          <g key={p.label} data-pin={p.slug} transform={`translate(${p.x}, ${p.y})`}>
-            <circle r="6" fill="var(--muted-2)" opacity="0.9" />
-            <circle r="2.5" fill="var(--surface)" />
+          <g key={p.label} transform={`translate(${p.x}, ${p.y})`}>
+            <g data-pin={p.slug}>
+              <circle r="6" fill="var(--muted-2)" opacity="0.9" />
+              <circle r="2.5" fill="var(--surface)" />
+            </g>
           </g>
         ))}
         {/* Calle 197: larger pin, single pulse (not looping) */}
-        <g data-pin={featured.slug} transform={`translate(${featured.x}, ${featured.y})`} className="pin-pulse">
-          <circle r="12" fill="var(--primary)" opacity="0.18" />
-          <circle r="8" fill="var(--primary)" />
-          <circle r="3" fill="var(--on-primary)" />
+        <g transform={`translate(${featured.x}, ${featured.y})`}>
+          <g data-pin={featured.slug} className="pin-pulse">
+            <circle r="12" fill="var(--primary)" opacity="0.18" />
+            <circle r="8" fill="var(--primary)" />
+            <circle r="3" fill="var(--on-primary)" />
+          </g>
         </g>
       </svg>
       <span

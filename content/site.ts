@@ -117,7 +117,7 @@ export const zones = [
 export const intentCards = [
   { id: "cajas", title: "Algunas cajas", range: "1-3 m³", m3: 2, sizeLabel: "Bodega pequeña", hint: "Cajas, maletas, archivo", answer: "Bodega pequeña, disponible en Calle 197 y Toberín" },
   { id: "apartaestudio", title: "Apartaestudio", range: "4-8 m³", m3: 6, sizeLabel: "Bodega mediana", hint: "Cama, nevera, escritorio", answer: "Bodega mediana, disponible en Calle 197 y Toberín" },
-  { id: "apartamento", title: "Apartamento", range: "9-15 m³", m3: 12, sizeLabel: "Bodega grande", hint: "Sala, comedor, 2 alcobas", answer: "Bodega mediana o grande, disponible en Calle 197 y Spring" },
+  { id: "apartamento", title: "Apartamento", range: "9-15 m³", m3: 12, sizeLabel: "Bodega mediana", hint: "Sala, comedor, 2 alcobas", answer: "Bodega mediana o grande, disponible en Calle 197 y Spring" },
   { id: "empresa", title: "Empresa", range: "16 m³ +", m3: 20, sizeLabel: "Bodega grande", hint: "Inventario, mobiliario, archivo", answer: "Bodega grande o personalizada, disponible en Calle 197 y Paloquemao" },
 ] as const;
 

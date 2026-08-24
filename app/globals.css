@@ -37,7 +37,7 @@
   --d: 300ms;
   --d-slow: 450ms;
 
-  --t-display: clamp(2.75rem, 1.9rem + 4vw, 4.75rem);
+  --t-display: clamp(2.75rem, 1.75rem + 3.5vw, 4.25rem);
   --t-3xl: clamp(1.75rem, 1.4rem + 1.7vw, 2.5rem);
   --t-2xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
 

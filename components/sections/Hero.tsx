@@ -16,7 +16,7 @@ export default function Hero() {
     <section aria-labelledby="hero-title">
       <div className="mx-auto grid max-w-site gap-10 px-5 pb-14 pt-14 md:px-8 md:pb-16 md:pt-20 lg:grid-cols-[1fr_minmax(380px,460px)] lg:items-center lg:gap-14 lg:px-10 lg:pt-24">
         <div>
-          <h1 id="hero-title" className="max-w-[16ch] font-display text-display font-semibold text-ink">
+          <h1 id="hero-title" className="max-w-[19ch] font-display text-display font-semibold text-ink">
             {H1.split(" ").map((w, i) => (
               <Fragment key={i}>
                 <span className="hero-word" style={{ "--i": i } as CSSProperties}>
