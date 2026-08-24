@@ -1,0 +1,2 @@
+# Normalize to LF everywhere; stops CRLF churn between WSL git and Windows git.
+* text=auto eol=lf
