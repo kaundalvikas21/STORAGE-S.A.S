@@ -22,12 +22,12 @@ export default function SizeStrip() {
               <RevealItem as="li" key={s.href}>
                 <Link
                   href={s.href}
-                  className="group flex h-full cursor-pointer gap-5 rounded-lg border border-line bg-surface p-6 shadow-1 transition-all duration ease-soft hover:-translate-y-0.5 hover:shadow-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="group flex h-full cursor-pointer gap-5 rounded-lg border border-line bg-surface p-6 shadow-1 transition-all duration ease-soft hover:-translate-y-0.5 hover:shadow-2 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                   <Icon size={24} weight="regular" aria-hidden="true" className="mt-1 shrink-0 text-primary" />
                   <span className="flex flex-1 flex-col">
                     <span className="flex flex-wrap items-center gap-2">
-                      <h3 className="break-words text-lg font-semibold text-ink">{s.name}</h3>
+                      <h3 className="break-words text-lg font-semibold text-ink transition-colors duration-fast ease-soft group-hover:text-primary">{s.name}</h3>
                       {s.differential && <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-[12px] font-medium text-primary-deep">Diferencial</span>}
                     </span>
                     <span className="tnum mt-1 text-2xl font-semibold text-ink">{s.range}</span>

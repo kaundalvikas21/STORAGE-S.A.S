@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, Plus } from "@phosphor-icons/react/dist/ssr";
 import Reveal, { RevealItem } from "@/components/Reveal";
 import { faq, priceSummary } from "@/content/site";
 
@@ -23,25 +23,22 @@ export default function Faq() {
             </p>
             <p className="mt-3 max-w-[44ch] text-[13px] text-muted">Valores de referencia. Cada espacio se cotiza según sede y tamaño, sin costos ocultos.</p>
             <Link href="/preguntas-frecuentes/" className="group mt-6 inline-flex min-h-[44px] items-center gap-1.5 rounded-[2px] text-[14px] font-medium text-primary hover:text-primary-deep cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              Ver todas las preguntas <ArrowRight size={15} aria-hidden="true" className="transition-transform duration-fast ease-soft group-hover:translate-x-1" />
+              <span className="link-draw">Ver todas las preguntas</span> <ArrowRight size={15} aria-hidden="true" className="transition-transform duration-fast ease-soft group-hover:translate-x-1" />
             </Link>
           </Reveal>
 
           <Reveal group className="rounded-lg border border-line bg-surface px-6 shadow-1 md:px-7">
             {faq.map((f, i) => (
               <RevealItem key={f.q}>
-                <details className={`group ${i < faq.length - 1 ? "border-b border-line" : ""}`} open={i === 0}>
-                  <summary className="flex cursor-pointer items-center justify-between gap-4 py-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
+                <details className={`group faq-item ${i < faq.length - 1 ? "border-b border-line" : ""}`} open={i === 0}>
+                  <summary className="-mx-2 flex cursor-pointer items-center justify-between gap-4 rounded-md px-2 py-6 transition-colors duration-fast ease-soft hover:bg-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
                     <h3 className="text-lg font-semibold text-ink">{f.q}</h3>
-                    <span className="shrink-0 text-xl leading-none text-muted" aria-hidden="true">
-                      <span className="group-open:hidden">+</span>
-                      <span className="hidden group-open:inline">−</span>
-                    </span>
+                    <Plus size={18} weight="bold" aria-hidden="true" className="shrink-0 text-muted transition-transform duration ease-soft group-open:rotate-45" />
                   </summary>
                   <div className="pb-8">
                     <p className="max-w-[65ch] text-[15px] leading-relaxed text-ink-2">{f.a}</p>
                     <Link href={f.link.href} className="group/link mt-3 inline-flex items-center gap-1.5 rounded-[2px] text-[14px] font-medium text-primary hover:text-primary-deep cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                      {f.link.label} <ArrowRight size={14} aria-hidden="true" className="transition-transform duration-fast ease-soft group-hover/link:translate-x-1" />
+                      <span className="link-draw">{f.link.label}</span> <ArrowRight size={14} aria-hidden="true" className="transition-transform duration-fast ease-soft group-hover/link:translate-x-1" />
                     </Link>
                   </div>
                 </details>

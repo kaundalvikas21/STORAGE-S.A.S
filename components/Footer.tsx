@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { MapPin, Phone, ChatText, Clock } from "@phosphor-icons/react/dist/ssr";
+import Reveal, { RevealItem } from "@/components/Reveal";
 import { allAddresses, company, footerCols, sedes, QUOTE_URL } from "@/content/site";
 
 const linkCls =
-  "text-[13px] text-muted hover:text-ink transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "link-draw text-[13px] text-muted hover:text-ink transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 const colTitle = "text-[14px] font-semibold text-ink border-b border-line pb-2 mb-4";
 const napLabel = "text-muted mb-1 flex items-center gap-2 text-[12px] font-medium";
 
@@ -11,17 +12,17 @@ export default function Footer() {
   return (
     <footer className="border-t border-line bg-surface text-ink pb-24 md:pb-0">
       <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 py-14 md:py-20">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-          <div>
+        <Reveal group className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+          <RevealItem>
             <h2 className={colTitle}>Bodegaje</h2>
             <ul className="space-y-2.5">
               {footerCols.bodegaje.map((l) => (
                 <li key={l.href}><Link href={l.href} className={linkCls}>{l.label}</Link></li>
               ))}
             </ul>
-          </div>
+          </RevealItem>
 
-          <div>
+          <RevealItem>
             <h2 className={colTitle}>Sedes</h2>
             <ul className="space-y-3">
               {allAddresses.map((a) => (
@@ -31,31 +32,33 @@ export default function Footer() {
                 </li>
               ))}
               <li className="pt-1">
-                <Link href="/sedes/" className="text-[13px] font-medium text-primary hover:text-primary-deep transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Ver las 7 sedes →</Link>
+                <Link href="/sedes/" className="link-draw text-[13px] font-medium text-primary hover:text-primary-deep transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Ver las 7 sedes →</Link>
               </li>
             </ul>
-          </div>
+          </RevealItem>
 
-          <div>
+          <RevealItem>
             <h2 className={colTitle}>Mudanzas</h2>
             <ul className="space-y-2.5">
               {footerCols.mudanzas.map((l) => (
                 <li key={l.href}><Link href={l.href} className={linkCls}>{l.label}</Link></li>
               ))}
             </ul>
-          </div>
+          </RevealItem>
 
-          <div>
+          <RevealItem>
             <h2 className={colTitle}>Empresa · Legales · PQRS</h2>
             <ul className="space-y-2.5">
               {footerCols.empresa.map((l) => (
                 <li key={l.href}><Link href={l.href} className={linkCls}>{l.label}</Link></li>
               ))}
             </ul>
-          </div>
-        </div>
+          </RevealItem>
+        </Reveal>
 
-        <div className="mt-14 rounded-lg border border-line bg-bg p-6 md:p-8 grid gap-6 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
+        {/* NAP band: the wireframe's "hot" block. primary-soft, not accent-soft: lime is scoped to
+            availability/positive states only (MASTER.md §1/§7). */}
+        <div className="mt-14 rounded-lg border border-primary/20 bg-primary-soft p-6 md:p-8 grid gap-6 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
           <div>
             <p className="text-lg font-semibold text-ink">{company.legalName}</p>
             <p className="mt-1 text-[13px] text-muted">Minibodegas, bodegaje y mudanzas en Bogotá desde {company.founded}.</p>
@@ -71,7 +74,7 @@ export default function Footer() {
           <div className="text-[13px]">
             <p className={napLabel}><ChatText size={16} weight="regular" aria-hidden="true" />WhatsApp</p>
             <p className="tnum text-[14px] font-medium text-ink">{company.whatsappLabel}</p>
-            <Link href={QUOTE_URL} className="text-[13px] font-medium text-primary hover:text-primary-deep transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Escríbenos desde el formulario →</Link>
+            <Link href={QUOTE_URL} className="link-draw text-[13px] font-medium text-primary hover:text-primary-deep transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Escríbenos desde el formulario →</Link>
           </div>
           <div className="text-[13px]">
             <p className={napLabel}><Clock size={16} weight="regular" aria-hidden="true" />Horario</p>

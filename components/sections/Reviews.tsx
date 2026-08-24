@@ -1,5 +1,5 @@
 import { ArrowsHorizontal, GoogleLogo, Star } from "@phosphor-icons/react/dist/ssr";
-import Reveal, { RevealRule } from "@/components/Reveal";
+import Reveal, { RevealItem, RevealRule } from "@/components/Reveal";
 import ScrollRow from "@/components/ScrollRow";
 import { reviews as seed, type Review } from "@/content/site";
 
@@ -27,11 +27,11 @@ export default function Reviews({ reviews = seed }: { reviews?: Review[] }) {
           </p>
         </Reveal>
 
-        <Reveal className="mt-10">
+        <Reveal group className="mt-10">
           <ScrollRow label="Reseñas de clientes">
             {reviews.map((r) => (
-              <li key={`${r.author}-${r.date}`} className="min-w-[85%] snap-start sm:min-w-[380px]">
-                <article className="flex h-full flex-col rounded-lg border border-line bg-surface p-6 shadow-1 md:p-7">
+              <RevealItem as="li" key={`${r.author}-${r.date}`} className="min-w-[85%] snap-start sm:min-w-[380px]">
+                <article className="flex h-full flex-col rounded-lg border border-line bg-surface p-6 shadow-1 transition-all duration ease-soft hover:-translate-y-0.5 hover:shadow-2 md:p-7">
                   <p role="img" aria-label={`Calificación: ${r.rating} de 5`} className="flex gap-0.5">
                     {Array.from({ length: 5 }, (_, i) => (
                       <Star key={i} size={14} weight={i < r.rating ? "fill" : "regular"} aria-hidden="true" className="text-primary" />
@@ -48,7 +48,7 @@ export default function Reviews({ reviews = seed }: { reviews?: Review[] }) {
                     <span className="ml-auto text-[12px] text-muted">{r.sede}</span>
                   </footer>
                 </article>
-              </li>
+              </RevealItem>
             ))}
           </ScrollRow>
           <p className="mt-3 inline-flex items-center gap-2 text-[13px] text-muted md:hidden">

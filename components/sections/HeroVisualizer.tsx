@@ -30,7 +30,7 @@ export default function HeroVisualizer() {
         value={m3}
         onChange={(e) => setM3(e.target.valueAsNumber)}
         aria-valuetext={`Aproximadamente ${m3} metros cúbicos, ${p.sizeLabel}`}
-        className="accent-primary mt-2 h-11 w-full cursor-pointer"
+        className="accent-primary mt-2 h-11 w-full cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       />
       <p className="tnum mt-2 text-lg font-medium text-ink" aria-live="polite">
         ≈ {m3} m³ → {p.sizeLabel}

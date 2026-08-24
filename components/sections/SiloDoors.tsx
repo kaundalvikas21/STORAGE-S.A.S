@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { ArrowRight, MapTrifold, Truck, Vault } from "@phosphor-icons/react/dist/ssr";
+import Photo from "@/components/Photo";
 import Reveal, { RevealItem } from "@/components/Reveal";
 import ShowcaseCycler from "@/components/sections/ShowcaseCycler";
+import { siloMudanzas } from "@/content/images";
 import { silos } from "@/content/site";
 
 const cell =
-  "group flex h-full flex-col rounded-lg border border-line bg-surface p-7 shadow-1 cursor-pointer transition-all duration ease-soft hover:-translate-y-0.5 hover:shadow-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+  "group flex h-full flex-col rounded-lg border border-line bg-surface p-7 shadow-1 cursor-pointer transition-all duration ease-soft hover:-translate-y-0.5 hover:shadow-2 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+
+const title = "transition-colors duration-fast ease-soft group-hover:text-primary";
 
 const cta = "mt-auto inline-flex items-center gap-1.5 pt-6 text-[14px] font-medium text-primary group-hover:text-primary-deep";
 
@@ -25,12 +29,12 @@ export default function SiloDoors() {
 
         <Reveal group delay={0.1} className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-3 md:grid-rows-2 md:gap-5">
           <RevealItem className="sm:col-span-2 md:row-span-2">
-            <Link href={silos.bodegaje.href} className="dark-cell group flex h-full cursor-pointer flex-col rounded-lg p-7 shadow-3 transition-all duration ease-soft hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:p-9">
+            <Link href={silos.bodegaje.href} className="dark-cell group flex h-full cursor-pointer flex-col rounded-lg p-7 shadow-3 transition-all duration ease-soft hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:p-9">
               <div className="flex items-center justify-between">
                 <Vault size={26} weight="regular" aria-hidden="true" className="text-primary" />
                 <span className="rounded-full bg-accent px-2.5 py-1 text-[12px] font-medium text-on-accent">Recomendado</span>
               </div>
-              <h3 className="mt-5 font-display text-2xl font-semibold text-ink">{silos.bodegaje.title}</h3>
+              <h3 className={`mt-5 font-display text-2xl font-semibold text-ink ${title}`}>{silos.bodegaje.title}</h3>
               <p className="mt-2 max-w-[52ch] text-[15px] leading-relaxed text-ink-2">
                 {silos.bodegaje.lead} {silos.bodegaje.body}
               </p>
@@ -44,7 +48,7 @@ export default function SiloDoors() {
           <RevealItem>
             <Link href={silos.sedes.href} className={cell}>
               <MapTrifold size={24} weight="regular" aria-hidden="true" className="text-primary transition-transform duration ease-soft group-hover:-translate-y-1.5" />
-              <h3 className="mt-5 text-xl font-semibold text-ink">{silos.sedes.title}</h3>
+              <h3 className={`mt-5 text-xl font-semibold text-ink ${title}`}>{silos.sedes.title}</h3>
               <p className="mt-2 text-[15px] text-ink-2">{silos.sedes.lead} {silos.sedes.body}</p>
               <span className={cta}>
                 Ver sedes <ArrowRight size={15} aria-hidden="true" className={arrow} />
@@ -55,8 +59,9 @@ export default function SiloDoors() {
           <RevealItem>
             <Link href={silos.mudanzas.href} className={cell}>
               <Truck size={24} weight="regular" aria-hidden="true" className="text-primary transition-transform duration ease-soft group-hover:-translate-y-1.5" />
-              <h3 className="mt-5 text-xl font-semibold text-ink">{silos.mudanzas.title}</h3>
+              <h3 className={`mt-5 text-xl font-semibold text-ink ${title}`}>{silos.mudanzas.title}</h3>
               <p className="mt-2 text-[15px] text-ink-2">{silos.mudanzas.lead} {silos.mudanzas.body}</p>
+              <Photo img={siloMudanzas} sizes="(min-width: 768px) 33vw, 100vw" className="mt-5 aspect-[16/9] rounded-md border border-line" />
               <span className={cta}>
                 Ver mudanzas <ArrowRight size={15} aria-hidden="true" className={arrow} />
               </span>

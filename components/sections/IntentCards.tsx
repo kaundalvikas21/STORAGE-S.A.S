@@ -29,7 +29,7 @@ export default function IntentCards() {
                   type="button"
                   onClick={() => setM3(card.m3)}
                   aria-pressed={active}
-                  className={`group flex min-h-[44px] w-full cursor-pointer flex-col items-start gap-2 rounded-lg border p-5 text-left transition-all duration ease-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:p-6 ${
+                  className={`group flex min-h-[44px] w-full cursor-pointer flex-col items-start gap-2 rounded-lg border p-5 text-left transition-all duration ease-soft active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:p-6 ${
                     active
                       ? "border-primary bg-primary-soft shadow-2"
                       : "border-line bg-surface shadow-1 hover:-translate-y-0.5 hover:shadow-2"
@@ -48,7 +48,7 @@ export default function IntentCards() {
           href={`${CALC_URL}?perfil=${selected}`}
           className="group mt-5 inline-flex min-h-[44px] items-center gap-1.5 rounded-sm text-sm font-medium text-primary hover:text-primary-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
         >
-          Ir a la calculadora
+          <span className="link-draw">Ir a la calculadora</span>
           <ArrowRight size={16} aria-hidden className="transition-transform duration-fast ease-soft group-hover:translate-x-1" />
         </Link>
       </div>

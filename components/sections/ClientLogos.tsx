@@ -4,7 +4,7 @@ const Row = ({ hidden = false }: { hidden?: boolean }) => (
   <ul className="flex items-center gap-x-12 pr-12" role="list" aria-hidden={hidden || undefined}>
     {clients.map((c) => (
       <li key={c} className="whitespace-nowrap">
-        <span className="text-[15px] font-medium text-muted-2">{c}</span>
+        <span className="text-[15px] font-medium text-muted-2 opacity-60 transition-opacity duration-fast ease-soft hover:opacity-100">{c}</span>
       </li>
     ))}
   </ul>

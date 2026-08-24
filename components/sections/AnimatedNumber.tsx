@@ -17,7 +17,7 @@ export default function AnimatedNumber({ value, suffix = "", className = "" }: P
   useEffect(() => {
     if (reduce || !inView) return;
     mv.set(0);
-    const controls = animate(mv, value, { duration: 0.8, ease: "easeOut" });
+    const controls = animate(mv, value, { duration: 1.2, ease: "easeOut" });
     return () => controls.stop();
   }, [inView, reduce, mv, value]);
 

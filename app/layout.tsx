@@ -44,6 +44,12 @@ const jsonLd = [
     })),
     numberOfEmployees: { "@type": "QuantitativeValue", value: 22 },
     areaServed: { "@type": "City", name: "Bogotá" },
+    openingHoursSpecification: company.openingHoursSpec.map((s) => ({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: s.days,
+      opens: s.opens,
+      closes: s.closes,
+    })),
   },
   {
     "@context": "https://schema.org",

@@ -25,11 +25,11 @@ export default function Hero() {
               </Fragment>
             ))}
           </h1>
-          <p className="tnum mt-5 text-lg text-ink-2">7 sedes · más de 500 bodegas · desde 1 m³ · sin permanencia mínima</p>
-          <p className="mt-3 max-w-[52ch] text-base leading-relaxed text-muted">
+          <p className="tnum hero-fade mt-5 text-lg text-ink-2" style={{ "--hd": "400ms" } as CSSProperties}>7 sedes · más de 500 bodegas · desde 1 m³ · sin permanencia mínima</p>
+          <p className="hero-fade mt-3 max-w-[52ch] text-base leading-relaxed text-muted" style={{ "--hd": "480ms" } as CSSProperties}>
             Mini bodegas independientes con tu propio candado, por meses, para guardar trasteos, inventario o lo que no cabe en casa.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="hero-fade mt-8 flex flex-col gap-3 sm:flex-row" style={{ "--hd": "560ms" } as CSSProperties}>
             <Button href={CALC_URL}>Calcular mi espacio</Button>
             <Button href={SEDES_URL} variant="secondary">
               Ver sedes

@@ -51,6 +51,13 @@ const config: Config = {
       maxWidth: {
         site: "1280px",
       },
+      scale: {
+        zoom: "var(--photo-zoom)",
+        card: "var(--hover-scale)",
+      },
+      translate: {
+        lift: "var(--hover-lift)",
+      },
     },
   },
   plugins: [],

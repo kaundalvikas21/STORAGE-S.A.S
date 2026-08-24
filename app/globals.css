@@ -37,6 +37,11 @@
   --d: 300ms;
   --d-slow: 450ms;
 
+  /* Interaction tokens (MASTER.md §6). -translate-y-0.5 equals --hover-lift. */
+  --hover-lift: 2px;
+  --hover-scale: 1.02;
+  --photo-zoom: 1.05;
+
   --t-display: clamp(2.75rem, 1.75rem + 3.5vw, 4.25rem);
   --t-3xl: clamp(1.75rem, 1.4rem + 1.7vw, 2.5rem);
   --t-2xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
@@ -118,6 +123,55 @@ body::after {
   animation: hero-word var(--d) var(--ease) calc(var(--i) * 60ms) both;
 }
 
+/* Hero subline/CTA entrance: same keyframe, per-element delay via --hd. Text is in the DOM at SSR. */
+.hero-fade {
+  animation: hero-word var(--d) var(--ease) var(--hd, 0ms) both;
+}
+
+/* Text-link underline draw, left→right (MASTER.md §6 interaction tokens). Links only, never buttons/cards. */
+.link-draw {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--d-fast) var(--ease);
+}
+.link-draw:hover,
+.link-draw:focus-visible,
+.group:hover > .link-draw,
+.group:focus-visible > .link-draw {
+  background-size: 100% 1px;
+}
+
+/* Card action row (sede "Cómo llegar"): hidden only where hover exists; touch and keyboard always see it.
+   Opacity/transform only — the space stays reserved, zero CLS. */
+@media (hover: hover) {
+  .hover-row {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity var(--d) var(--ease), transform var(--d) var(--ease);
+  }
+  .group:is(:hover, :focus-visible, :focus-within) .hover-row {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* FAQ open/close height animation: Chromium-only progressive enhancement; others open instantly as before. */
+@supports (interpolate-size: allow-keywords) {
+  details.faq-item {
+    interpolate-size: allow-keywords;
+  }
+  details.faq-item::details-content {
+    height: 0;
+    overflow: clip;
+    transition: height var(--d) var(--ease), content-visibility var(--d) allow-discrete;
+  }
+  details.faq-item[open]::details-content {
+    height: auto;
+  }
+}
+
 /* Sede map pins: Calle 197 pulses ONCE (not looping) after the band settles. */
 @keyframes pin-pulse {
   50% {
@@ -161,6 +215,10 @@ body::after {
 .sede-band .leaflet-container {
   font-family: var(--font-body), system-ui, sans-serif;
   background: var(--bg);
+  /* Leaflet's internal panes run z-index 400-1000; isolate them so they can never
+     paint over the sticky header (z-40) while scrolling. */
+  z-index: 0;
+  isolation: isolate;
 }
 .sede-band .leaflet-popup-content-wrapper {
   border-radius: var(--r-md);
