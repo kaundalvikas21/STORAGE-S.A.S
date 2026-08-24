@@ -6,7 +6,7 @@ import { SEDES_URL, zones } from "@/content/site";
 export default function ZoneSelector() {
   return (
     <section aria-labelledby="zona-title" className="order-1 md:order-3">
-      <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 pb-12 md:pb-20">
+      <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 pt-14 md:pt-0 pb-12 md:pb-20">
         <div className="rounded-xl bg-bg-deep ring-1 ring-line p-1.5">
           <div className="rounded-xl-inner bg-surface shadow-inset px-5 py-5 md:px-8 md:py-6 flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
             <div className="flex items-center gap-3 shrink-0">

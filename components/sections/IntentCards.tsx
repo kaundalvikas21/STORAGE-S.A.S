@@ -43,7 +43,7 @@ export default function IntentCards() {
 
   return (
     <section aria-labelledby="intent-title" className="order-2">
-      <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 pb-16 md:pb-24">
+      <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 pt-4 md:pt-24 pb-16 md:pb-24">
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between mb-6">
           <div>
             <p className="eyebrow mb-3">Calculadora de espacio</p>
