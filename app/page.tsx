@@ -1,5 +1,5 @@
 import Hero from "@/components/sections/Hero";
-import IntentCards from "@/components/sections/IntentCards";
+import HowItWorks from "@/components/sections/HowItWorks";
 import ZoneSelector from "@/components/sections/ZoneSelector";
 import SiloDoors from "@/components/sections/SiloDoors";
 import SedeGrid from "@/components/sections/SedeGrid";
@@ -31,7 +31,7 @@ export default function HomePage() {
     <main className="flex flex-col">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <div className="order-0"><Hero /></div>
-      <IntentCards />
+      <HowItWorks />
       <ZoneSelector />
       <SiloDoors />
       <SedeGrid />

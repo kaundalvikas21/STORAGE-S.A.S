@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { noStagger, rise, riseInstant, spring, stagger } from "@/lib/motion";
+import { draw, noStagger, rise, riseInstant, snap, stagger } from "@/lib/motion";
 import type { ReactNode } from "react";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   className?: string;
   as?: "div" | "ul" | "li" | "article";
   delay?: number;
-  /** When true, children wrapped in <RevealItem> stagger 60ms apart. */
+  /** When true, children wrapped in <RevealItem> stagger 40ms apart. */
   group?: boolean;
   role?: string;
 };
@@ -17,7 +17,7 @@ type Props = {
 const instant = { duration: 0 };
 
 /**
- * Scroll reveal: opacity + 8px rise, once.
+ * Scroll reveal: opacity + 4px rise, once.
  * Reduced motion: the same element jumps straight to the visible state on mount (duration 0),
  * which also clears the SSR-rendered hidden style — never swap component types here.
  */
@@ -33,7 +33,7 @@ export default function Reveal({ children, className, as = "div", delay = 0, gro
       whileInView={reduce ? undefined : "show"}
       viewport={{ once: true, margin: "-10% 0px" }}
       variants={group ? (reduce ? noStagger : stagger(delay)) : reduce ? riseInstant : rise}
-      transition={reduce ? instant : group ? undefined : { ...spring, delay }}
+      transition={reduce ? instant : group ? undefined : { ...snap, delay }}
     >
       {children}
     </Tag>
@@ -47,5 +47,18 @@ export function RevealItem({ children, className, as = "div" }: Omit<Props, "del
     <Tag className={className} variants={reduce ? riseInstant : rise} transition={reduce ? instant : undefined}>
       {children}
     </Tag>
+  );
+}
+
+/** Signature move: hairline rule that draws in (scaleX 0→1). Place inside a <Reveal>. */
+export function RevealRule({ className = "" }: { className?: string }) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      aria-hidden="true"
+      className={`h-px origin-left bg-line ${className}`}
+      variants={reduce ? noStagger : draw}
+      transition={reduce ? instant : undefined}
+    />
   );
 }

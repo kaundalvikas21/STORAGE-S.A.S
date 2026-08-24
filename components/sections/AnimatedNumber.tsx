@@ -24,7 +24,7 @@ export default function AnimatedNumber({ value, suffix = "", className = "" }: P
   useEffect(() => {
     if (!armed || !inView || reduce) return;
     const start = performance.now();
-    const dur = 1100;
+    const dur = 800;
     let raf = 0;
     const tick = (t: number) => {
       const p = Math.min(1, (t - start) / dur);
