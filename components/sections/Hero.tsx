@@ -59,8 +59,10 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Trust strip: seats the band on the photo and carries the proof points below the stack. */}
-      <div className="relative border-t border-line bg-bg/85">
+      {/* Trust strip: glass over the photograph, not a band below it. An opaque background plus a
+          hairline read as the end of the hero, which is exactly what it is not - these proof points
+          belong to the hero, they just sit below the four-element text stack. */}
+      <div className="relative border-t border-ink/10 bg-bg/55 backdrop-blur-md">
         <ul className="mx-auto flex max-w-site flex-wrap items-center gap-x-8 gap-y-3 px-5 md:px-8 lg:px-10 py-4 md:py-5" role="list">
           {proof.map(({ icon: Icon, label }, i) => (
             <li

@@ -56,7 +56,7 @@ export default function Photo({
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-b from-bg via-bg/70 to-bg/40 md:bg-gradient-to-r md:from-bg md:via-bg/72 md:to-transparent"
           />
-          <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg/90 to-transparent" />
+          <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-bg/55 to-transparent" />
         </>
       )}
       {scrim === "dark" && (
