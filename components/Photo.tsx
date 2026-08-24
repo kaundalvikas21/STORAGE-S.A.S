@@ -7,8 +7,13 @@ type Props = {
   sizes: string;
   /** Frame styling: aspect ratio, radius, borders. The frame is always overflow-hidden. */
   className?: string;
-  /** Dark gradient + flat wash so HTML text laid over the photo stays AA-readable. */
-  scrim?: "dark" | "none";
+  /**
+   * "dark": bottom-weighted, for text sitting in the lower third of a card.
+   * "hero": LIGHT, left-weighted plus a bottom fade - the page background bleeds in from the
+   *          left so dark ink copy reads over it, and the photograph is left untouched on the
+   *          right. For a full-bleed band with its trust strip along the bottom edge.
+   */
+  scrim?: "dark" | "hero" | "none";
   /** Warm --accent-soft multiply wash: unifies mixed sources into one art-directed set (MASTER.md §7). */
   tint?: boolean;
   /** Zooms to --photo-zoom on the ancestor `.group` hover; the frame itself never grows. */
@@ -27,7 +32,7 @@ export default function Photo({
   priority = false,
 }: Props) {
   // Under a dark scrim the warm wash only muddies the photo, and the scrim already unifies it.
-  const tinted = tint && scrim !== "dark";
+  const tinted = tint && scrim === "none";
   return (
     <span className={`relative block overflow-hidden ${className}`}>
       <Image
@@ -41,6 +46,19 @@ export default function Photo({
         className={`object-cover ${zoom ? "transition-transform duration-slow ease-premium group-hover:scale-zoom" : ""}`}
       />
       {tinted && <span aria-hidden="true" className="absolute inset-0 bg-accent-soft/30 mix-blend-multiply" />}
+      {scrim === "hero" && (
+        <>
+          {/* Weighted left on desktop so the photograph still reads on the right. Below md the copy
+              spans the full width, so the wash goes heavy and the gradient turns vertical - a
+              left-to-right fade protects nothing when the text runs the whole way across. */}
+          <span aria-hidden="true" className="absolute inset-0 bg-bg/72 md:bg-bg/15" />
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-b from-bg via-bg/70 to-bg/40 md:bg-gradient-to-r md:from-bg md:via-bg/72 md:to-transparent"
+          />
+          <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg/90 to-transparent" />
+        </>
+      )}
       {scrim === "dark" && (
         <>
           {/* Text only ever sits in the bottom third, so the gradient carries the contrast there

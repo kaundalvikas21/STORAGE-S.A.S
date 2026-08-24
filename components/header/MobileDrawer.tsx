@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { CaretDown } from "@phosphor-icons/react/dist/ssr";
+import { Calculator, CaretDown, FileText } from "@phosphor-icons/react/dist/ssr";
 import { CALC_URL, QUOTE_URL, company, nav } from "@/content/site";
 import { menus } from "./menu-data";
 
@@ -77,9 +77,11 @@ export default function MobileDrawer({ onNavigate }: { onNavigate: () => void })
       <div className="shrink-0 border-t border-line bg-surface/95 px-6 py-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
         <div className="mx-auto max-w-md grid grid-cols-2 gap-2">
           <Link href={CALC_URL} onClick={onNavigate} className={`inline-flex items-center justify-center rounded-full px-4 py-3 text-[15px] font-semibold text-primary ring-[1.5px] ring-inset ring-primary transition-[background-color,transform] duration-fast ease-premium active:scale-press cursor-pointer ${focusRing}`}>
+            <Calculator size={18} weight="light" aria-hidden="true" className="mr-2" />
             Calcular espacio
           </Link>
           <Link href={QUOTE_URL} onClick={onNavigate} className={`inline-flex items-center justify-center rounded-full bg-accent px-4 py-3 text-[15px] font-semibold text-on-accent transition-[background-color,transform] duration-fast ease-premium hover:bg-accent-deep active:scale-press cursor-pointer ${focusRing}`}>
+            <FileText size={18} weight="light" aria-hidden="true" className="mr-2" />
             Cotizar
           </Link>
         </div>

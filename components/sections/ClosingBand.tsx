@@ -1,4 +1,4 @@
-import { Clock, MapPin, Phone } from "@phosphor-icons/react/dist/ssr";
+import { Calculator, Clock, FileText, MapPin, Phone } from "@phosphor-icons/react/dist/ssr";
 import Button from "@/components/Button";
 import Photo from "@/components/Photo";
 import Reveal, { RevealItem } from "@/components/Reveal";
@@ -26,8 +26,8 @@ export default function ClosingBand() {
               <p className="mt-5 text-lg text-on-primary/90 max-w-[46ch]">Cuéntanos qué necesitas guardar y en qué zona. Te enviamos la sede y el tamaño que mejor se ajustan, el mismo día.</p>
             </RevealItem>
             <RevealItem className="mt-8 flex flex-col sm:flex-row gap-3">
-              <Button href={QUOTE_URL}>Cotizar ahora</Button>
-              <Button href={CALC_URL} variant="ghost">Calcular mi espacio</Button>
+              <Button href={QUOTE_URL} icon={FileText}>Cotizar ahora</Button>
+              <Button href={CALC_URL} variant="ghost" icon={Calculator}>Calcular mi espacio</Button>
             </RevealItem>
           </Reveal>
 

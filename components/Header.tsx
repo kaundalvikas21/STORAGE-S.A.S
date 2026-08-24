@@ -33,9 +33,11 @@ export default function Header() {
   };
 
   const { scrollY } = useScroll();
+  // Runs on every scroll frame, so it must stay cheap. Both updaters return the identical value
+  // when nothing changed, which React bails out of without re-rendering the header.
   useMotionValueEvent(scrollY, "change", (y) => {
     setScrolled(y > 24);
-    if (y !== (scrollY.getPrevious() ?? 0)) closeMenu();
+    setMenu((open) => (open === null ? open : null));
   });
 
   useEffect(() => {
@@ -88,12 +90,15 @@ export default function Header() {
         </div>
       </div>
 
-      <header className="sticky top-0 z-50 pt-3 px-3 md:pt-4 md:px-5 pointer-events-none">
-        <div className="mx-auto max-w-site">
+      {/* h-0: the sticky pill takes no flow height, so the hero photo runs full-bleed underneath
+          it and the nav floats over the image. The hero pays for the clearance with its own
+          top padding; every later section simply scrolls under the blurred pill. */}
+      <header className="sticky top-0 z-50 h-0 pointer-events-none">
+        <div className="mx-auto max-w-site px-3 pt-3 md:px-5 md:pt-4">
           <div
             ref={navRef}
             onMouseLeave={hide}
-            className={`pointer-events-auto relative flex items-center justify-between gap-4 rounded-full bg-surface/90 backdrop-blur-md ring-1 ring-line pl-3 pr-2 py-2 transition-shadow duration-fast ease-premium ${scrolled ? "shadow-2" : "shadow-1"}`}
+            className={`pointer-events-auto relative flex items-center justify-between gap-4 rounded-full bg-surface/95 backdrop-blur-sm ring-1 ring-line pl-3 pr-2 py-2 transition-shadow duration-fast ease-premium ${scrolled ? "shadow-2" : "shadow-1"}`}
           >
             <Link href="/" className={`group inline-flex items-center gap-2.5 rounded-full pl-1 pr-2 py-1.5 ${focusRing}`} aria-label={`${company.brand} — inicio`}>
               <span className="flex h-9 w-9 items-center justify-center rounded-md bg-primary-soft text-primary transition-colors duration-fast ease-premium group-hover:bg-primary group-hover:text-on-primary">
@@ -141,11 +146,11 @@ export default function Header() {
             </nav>
 
             <div className="hidden md:flex items-center gap-2">
-              <Link href={CALC_URL} className={`group inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-[14px] font-semibold text-primary ring-[1.5px] ring-inset ring-primary hover:bg-primary-soft hover:ring-primary-deep transition-[background-color,box-shadow,transform] duration-fast ease-premium active:scale-press cursor-pointer ${focusRing}`}>
+              <Link href={CALC_URL} className={`group inline-flex min-h-11 items-center gap-2 rounded-full px-4 py-2.5 text-[14px] font-semibold text-primary ring-[1.5px] ring-inset ring-primary hover:bg-primary-soft hover:ring-primary-deep transition-[background-color,box-shadow,transform] duration-fast ease-premium active:scale-press cursor-pointer ${focusRing}`}>
                 <Calculator size={17} weight="light" aria-hidden="true" className="transition-transform duration-fast ease-premium group-hover:-translate-y-px" />
                 Calcular espacio
               </Link>
-              <Link href={QUOTE_URL} className={`group inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2.5 text-[14px] font-semibold text-on-accent shadow-1 hover:bg-accent-deep hover:shadow-brass hover:-translate-y-lift transition-[background-color,box-shadow,transform] duration-fast ease-premium active:translate-y-0 active:scale-press cursor-pointer ${focusRing}`}>
+              <Link href={QUOTE_URL} className={`group inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-4 py-2.5 text-[14px] font-semibold text-on-accent shadow-1 hover:bg-accent-deep hover:shadow-brass hover:-translate-y-lift transition-[background-color,box-shadow,transform] duration-fast ease-premium active:translate-y-0 active:scale-press cursor-pointer ${focusRing}`}>
                 <FileText size={17} weight="light" aria-hidden="true" className="transition-transform duration-fast ease-premium group-hover:-translate-y-px" />
                 Cotizar
               </Link>

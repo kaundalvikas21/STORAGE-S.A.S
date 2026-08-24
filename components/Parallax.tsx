@@ -16,7 +16,7 @@ export default function Parallax({ children, className = "" }: { children: React
   const y = useTransform(scrollY, [0, 700], ["0%", "6%"], { clamp: true });
 
   return (
-    <motion.div className={className} style={reduce ? undefined : { y }}>
+    <motion.div className={`parallax-layer ${className}`} style={reduce ? undefined : { y }}>
       {children}
     </motion.div>
   );

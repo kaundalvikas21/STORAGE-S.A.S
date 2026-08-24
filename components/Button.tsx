@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import type { ReactNode } from "react";
 
 type Props = {
@@ -7,7 +8,9 @@ type Props = {
   children: ReactNode;
   variant?: "primary" | "secondary" | "ghost";
   size?: "md" | "lg";
-  icon?: boolean;
+  /** Pass a Phosphor icon that means what the button does; `false` drops the badge entirely.
+   *  Defaults to ArrowUpRight, which only ever means "go to this page". */
+  icon?: PhosphorIcon | false;
   className?: string;
 };
 
@@ -25,18 +28,21 @@ const variants = {
 
 const sizes = { md: "px-5 py-2.5 text-[15px]", lg: "pl-6 pr-2 py-2 text-[15px]" };
 
-export default function Button({ href, children, variant = "primary", size = "lg", icon = true, className = "" }: Props) {
+export default function Button({ href, children, variant = "primary", size = "lg", icon = ArrowUpRight, className = "" }: Props) {
   const iconWrap =
     variant === "primary" ? "bg-ink/10" : variant === "ghost" ? "bg-on-primary/15" : "bg-primary/10";
+  const Icon = icon || null;
+  // Only the plain arrow slides forward; a meaningful glyph lifts instead, so it does not read as "next".
+  const nudge = icon === ArrowUpRight ? "group-hover:translate-x-1 group-hover:-translate-y-px" : "group-hover:-translate-y-0.5";
   return (
-    <Link href={href} className={`${base} ${variants[variant]} ${icon ? sizes[size] : "px-6 py-3 text-[15px]"} ${className}`}>
+    <Link href={href} className={`${base} ${variants[variant]} ${Icon ? sizes[size] : "px-6 py-3 text-[15px]"} ${className}`}>
       <span>{children}</span>
-      {icon && (
+      {Icon && (
         <span
           aria-hidden="true"
-          className={`flex h-8 w-8 items-center justify-center rounded-full ${iconWrap} transition-transform duration-DEFAULT ease-premium group-hover:-translate-y-px group-hover:translate-x-1 group-hover:scale-swell`}
+          className={`flex h-8 w-8 items-center justify-center rounded-full ${iconWrap} transition-transform duration-DEFAULT ease-premium ${nudge} group-hover:scale-swell`}
         >
-          <ArrowUpRight size={16} weight="bold" />
+          <Icon size={16} weight="bold" />
         </span>
       )}
     </Link>

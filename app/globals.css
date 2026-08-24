@@ -191,6 +191,17 @@ details[open] .details-caret {
   animation: photo-settle 1200ms var(--ease-premium) both;
 }
 
+/* The parallax layer is transformed every scroll frame. Promoting it to its own compositor layer
+   keeps that on the GPU instead of repainting the full-bleed photo and its scrims each time. */
+.parallax-layer {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .parallax-layer { will-change: auto; }
+}
+
 /* Logo row: CSS-only drift, pauses on hover */
 @keyframes drift {
   from { transform: translateX(0); }

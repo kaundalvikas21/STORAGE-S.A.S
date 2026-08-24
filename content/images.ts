@@ -15,16 +15,20 @@ export const BLUR =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10'%3E%3Crect width='16' height='10' fill='%23F3EFE9'/%3E%3C/svg%3E";
 
 export const photos = {
+  /**
+   * PENDIENTE: reemplazar por la foto real de sede del cliente.
+   * Swap point - drop the file in public/img/ and set `src: "/img/<archivo>"`; nothing else changes.
+   */
   heroMain: {
-    src: u("1618438502398-195e47778d6c", 1400),
-    alt: "Pasillo iluminado de un edificio de minibodegas con puertas metálicas a lado y lado",
-    credit: "Raphael · unsplash.com/photos/empty-hallway-with-lights-turned-on-in-the-middle",
+    src: u("1649313444539-a8900c5cdc54", 1800),
+    alt: "Hilera de minibodegas con puertas metálicas verdes y acceso vehicular amplio",
+    credit: "Adam Winger · unsplash.com/photos/8Bsh8NnVCEo",
   },
 
   sedeCalle197: {
-    src: u("1649313444539-a8900c5cdc54"),
-    alt: "Hilera de minibodegas con puertas metálicas y acceso vehicular amplio",
-    credit: "Adam Winger · unsplash.com/photos/8Bsh8NnVCEo",
+    src: u("1770720086655-22f3d1205dc2"),
+    alt: "Pasillo luminoso de minibodegas con puertas de persiana y señalización clara",
+    credit: "Storage World Self Storage · unsplash.com/photos/_xTJQe5ycZc",
   },
   sedeToberin: {
     src: u("1694601618351-dbbbb2b8934f"),
@@ -43,9 +47,9 @@ export const photos = {
   },
 
   siloBodegaje: {
-    src: u("1770720086655-22f3d1205dc2", 1400),
-    alt: "Pasillo de minibodegas con puertas de persiana e iluminación uniforme",
-    credit: "Storage World Self Storage · unsplash.com/photos/_xTJQe5ycZc",
+    src: u("1618438502398-195e47778d6c", 1400),
+    alt: "Pasillo de minibodegas con puertas metálicas a lado y lado y luz cenital",
+    credit: "Raphael · unsplash.com/photos/empty-hallway-with-lights-turned-on-in-the-middle",
   },
   siloMudanzas: {
     src: u("1710749093416-1e9cdde8d080"),
