@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Instrument_Sans } from "next/font/google";
+import { Bricolage_Grotesque, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileStickyBar from "@/components/MobileStickyBar";
 import { CALC_URL, QUOTE_URL, SITE_URL, allAddresses, company, nav } from "@/content/site";
 
-const display = Instrument_Sans({ subsets: ["latin"], display: "swap", variable: "--font-display" });
+const display = Bricolage_Grotesque({ subsets: ["latin"], display: "swap", variable: "--font-display" });
+const body = Inter({ subsets: ["latin"], display: "swap", variable: "--font-body" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -67,7 +68,7 @@ const jsonLd = [
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es-CO" className={display.variable}>
+    <html lang="es-CO" className={`${display.variable} ${body.variable}`}>
       <body className="font-body">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <Header />

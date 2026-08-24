@@ -1,63 +1,73 @@
 # DESIGN.md — Storage S.A.S · storagebogota.com
-Variant: «El Sistema» · Editorial Minimal (Linear/Notion register, Prompt 3)
-Dials: DESIGN_VARIANCE 3 · MOTION_INTENSITY 3 · VISUAL_DENSITY 5
+Variant: «El Calculista» · Kinetic Interactive (bento, tool-first, Prompt 4)
+Dials: DESIGN_VARIANCE 7 · MOTION_INTENSITY 7 · VISUAL_DENSITY 6
 
-> Generated first with `ui-ux-pro-max` (`design-system/storage-sas/MASTER.md`: Flat Design, blue/orange, Inter + Playfair). That output is **overridden** here per the «El Sistema» brief. This file is the single source of truth; `app/globals.css` mirrors it 1:1. Brand hex codes are pending from the client — every value is a CSS variable so the swap is one edit. Supersedes «El Contenedor» (kept on branch `el-contenedor`) and «La Bóveda» (`main`).
+> Generated first with `ui-ux-pro-max` (`design-system/storage-sas/MASTER.md`: Flat Design, blue/orange, Inter + Playfair). That output is **overridden** here per the «El Calculista» brief. This file is the single source of truth; `app/globals.css` mirrors it 1:1. Brand hex codes are pending from the client — every value is a CSS variable so the swap is one edit. Supersedes «El Sistema» (kept on branch `el-sistema`); «El Contenedor» on `el-contenedor`, «La Bóveda» on `la-boveda`.
 
 ## 1. Colors (CSS variables, `:root`)
 | Token | Value | Use |
 |---|---|---|
-| `--bg` | `#FFFFFF` | page background |
-| `--bg-deep` | `#F7F7F5` | alternate fills, hover fills (same tone as surface — one neutral family) |
-| `--surface` | `#F7F7F5` | cards, closing band, footer, segmented-control track |
-| `--ink` | `#16181D` | headings, primary text (17.8:1 on white; not pure #000) |
-| `--ink-2` | `#343941` | body text (11.6:1) |
-| `--muted` | `#5A6069` | secondary text (6.3:1) |
-| `--muted-2` | `#6E7480` | captions only, ≥15px (4.69:1) |
-| `--line` | `#E6E6E2` | hairline borders — the structural device, instead of shadows |
-| `--primary` | `#2456E6` | the single accent: CTAs, links, active states, stat numbers (5.92:1 on white, 5.52:1 on surface) |
-| `--primary-deep` | `#1B41B8` | hover (8.4:1) |
-| `--primary-soft` | `#EEF2FD` | tints: badges, active segment wash |
-| `--on-primary` | `#FFFFFF` | white on blue (5.92:1) |
-| `--accent` | `#2456E6` | aliases `--primary` — single-accent rule, see §8 |
-| `--accent-deep` | `#1B41B8` | aliases `--primary-deep` |
-| `--accent-soft` | `#EEF2FD` | aliases `--primary-soft` |
-| `--on-accent` | `#FFFFFF` | aliases `--on-primary` |
-| `--ring` | `#2456E6` | focus-visible ring |
+| `--bg` | `#F5F6F8` | page canvas (cool gray between bento cells) |
+| `--bg-deep` | `#14161B` | the dark featured-cell fill (one per band) |
+| `--surface` | `#FFFFFF` | bento cells, cards |
+| `--ink` | `#14161B` | headings (16.7:1 on bg) |
+| `--ink-2` | `#333845` | body text (10.8:1 on bg) |
+| `--muted` | `#565D6B` | secondary text (6.1:1) |
+| `--muted-2` | `#5F6673` | captions (5.3:1 — passes AA everywhere) |
+| `--line` | `#E3E6EC` | cell hairlines |
+| `--primary` | `#3D5AFE` | electric indigo: CTAs, links, slider, active states (5.13:1 on white, 4.75:1 on bg) |
+| `--primary-deep` | `#2A3EB1` | hover/pressed only (8.67:1) |
+| `--primary-soft` | `#EAEDFF` | indigo tints: selected cells, iso-unit volume prism, Empresa cell |
+| `--on-primary` | `#FFFFFF` | white on indigo (5.13:1) |
+| `--accent` | `#C6F432` | lift lime — availability/positive FILLS only. Never text on light (1.28:1 on white) |
+| `--accent-deep` | `#A9D71E` | lime chip border/hover |
+| `--accent-soft` | `#F2FBD8` | lime tint (dark text on it: 16.9:1) |
+| `--on-accent` | `#14161B` | dark text on lime (14.1:1) |
+| `--ring` | `#3D5AFE` | focus-visible ring |
+
+**Dark cells** (`.dark-cell` in globals.css): a local CSS-variable scope, not a dark mode. Inside it the same tokens resolve to: bg `#14161B`, surface `#1B1E26`, ink `#F5F6F8` (16.7:1), ink-2 `#C3C9D6`, muted `#9BA3B5` (7.2:1), line `rgba(255,255,255,.12)`, primary `#93A5FF` (7.8:1), on-primary `#14161B`, ring `#93A5FF`. Lime is NOT overridden — `--accent` on dark = 13-14:1, so lime numerals/chips work unchanged. Components stay zero-hex.
 
 ## 2. Typography
-- Display + body: **Instrument Sans** (variable) — `--font-display`; `--font-body` and `--font-mono` alias it (mono died with El Contenedor; the alias is a safety net). Headings 600, tracking -0.02em, tight leading; sentence case, no `text-transform`.
-- Scale 64/40/24/18/15: `--t-display clamp(2.5rem,…,4rem)` · `--t-3xl clamp(1.75rem,…,2.5rem)` · `--t-2xl clamp(1.25rem,…,1.5rem)`; body `text-lg` (18px) / `text-[15px]`. Type does 90% of the visual work.
-- Every m³ figure and stat uses tabular numerals (`.tnum`).
-- `.eyebrow`: Instrument Sans 12px/500, tracking 0.08em, uppercase, `--muted`. Max 4 sections (SedeGrid, Reviews, FAQ in use = 3).
+- Display: **Bricolage Grotesque** (variable, opsz 12-96) — `--font-display`. Headings 600-700, tracking -0.02em. Kinetic type ONLY in the hero (word-level rise on load); static everywhere else.
+- Body: **Inter** — `--font-body`. `--font-mono` aliases body (safety net, unused).
+- Scale: `--t-display clamp(2.75rem, 1.9rem + 4vw, 4.75rem)` (hero + closing) · `--t-3xl clamp(1.75rem,…,2.5rem)` · `--t-2xl clamp(1.25rem,…,1.5rem)`.
+- Every m³ figure, range and stat in tabular numerals (`.tnum`).
+- `.eyebrow`: 12px/500, tracking 0.08em, uppercase, `--muted`. Max 4 of 12 sections.
 
 ## 3. Spacing
-8-pt system. Section padding `py-14` mobile → `py-20` md → `py-24` lg (HowItWorks is a slim `py-14/16` row). Container max 1280px, gutters 20/32/40px. Card padding 24–40px. Grids use real `gap-*` with hairline-bordered cells — never `gap-px` over ink.
+8-pt system. Section padding `py-14` mobile → `py-20` md → `py-24` lg. Container max 1280px, gutters 20/32/40px. Bento bands: `gap-4 md:gap-5` between cells, cell padding 24-40px.
 
 ## 4. Radius
-`--r-sm 6px` (buttons, chips, segmented control) · `--r-md 8px` · `--r-lg 8px` (cards) · `--r-xl 12px` (mega-menu panel). One radius system, applied everywhere.
+`--r-sm 8px` (chips, pills, slider) · `--r-md 12px` (buttons, inputs, inner elements) · `--r-lg 16px` (bento cells) · `--r-xl 24px` (hero visualizer cell, mega-menu). One system: cells 16, buttons 12, chips 8.
 
-## 5. Shadow (hairlines first, ≤ sm)
-- Borders do the separation; shadows are near-invisible depth cues: `--sh-1: 0 1px 2px rgba(22,24,29,0.05)` · `--sh-2: 0 1px 3px rgba(22,24,29,0.06)` · `--sh-3: 0 4px 12px rgba(22,24,29,0.07)` (mega-menu only) · `--sh-brass: var(--sh-1)` (legacy name kept so `tailwind.config.ts` is untouched; unused).
-- No hard offsets, no press effect. `:active` on buttons: `scale-[0.98]`.
+## 5. Shadow (dimensional, not glassy)
+- `--sh-1: 0 1px 2px rgba(20,22,27,0.06)` resting cells · `--sh-2: 0 4px 16px rgba(20,22,27,0.07)` cell hover lift (pairs with `-translate-y-0.5`) · `--sh-3: 0 12px 32px rgba(20,22,27,0.10)` mega-menu, dark cells · `--sh-brass: var(--sh-1)` (legacy alias, unused).
+- `:active` on buttons: `scale-[0.98]`. Layered subtle noise: `body::after` fixed grain overlay at 4% (feTurbulence data URI, `pointer-events-none`).
 
-## 6. Motion (barely there)
-- Easing `--ease: cubic-bezier(0,0,.2,1)`. Durations `--d-fast 150ms` · `--d 150ms` · `--d-slow 200ms`.
-- Reveals: opacity + 4px rise, stagger 40ms, once. Motion clarifies, never decorates.
-- Exactly two signature moments: (1) the hero segmented control's 150ms answer fade; (2) the HowItWorks connecting hairline drawing on scroll (`scaleX 0→1`, 300ms ease-out).
-- `prefers-reduced-motion: reduce` → everything 0ms, count-ups show final value, answer swaps instantly.
+## 6. Motion (springy but disciplined)
+- Easing `--ease: cubic-bezier(0.22, 1, 0.36, 1)` (spring-out). Durations `--d-fast 150ms` · `--d 300ms` · `--d-slow 450ms`.
+- Reveals: opacity + 12px rise, 300ms spring (`bounce 0.2`), stagger 60ms, once (`whileInView`, -10% margin).
+- Exactly three hero-level interactive moments: (1) hero word-stagger + live m³ visualizer (slider fills an isometric unit); (2) intent cards morph the visualizer via shared store; (3) sede map pins highlight from card hover/focus (pure CSS `:has()`), Calle 197 pin pulses once.
+- Restrained elsewhere: cell hover lift, marquee (single, pausable), snap-scroll reviews, magnetic Cotizar (≤8px, motion values only), count-ups once.
+- `prefers-reduced-motion: reduce` → everything instant: H1 static, visualizer swaps without transition, showcase frozen, marquee becomes a static wrapped row, count-ups show final value, magnetic inert.
 
 ## 7. Component rules
-- **Buttons**: `--r-sm`, ≥48px tall, sentence case, max 3 words, `font-medium`. Primary = blue bg + white text; Secondary = white bg + `--line` border, ink text; Ghost = borderless neutral (hover `--surface`). Arrow icon slides 4px on hover. `cursor-pointer`, visible focus ring.
-- **Cards**: `--r-lg`, `1px --line` border, `--surface` or white fill, no shadow. Hover: border darkens to `--muted-2` + arrow slide. SiloDoors' Bodegaje card alone carries a 2px `--primary` top border + «Recomendado».
-- **Numbers**: every stat, range and price in `.tnum`; stat numbers in `--primary`.
-- **Imagery**: real photos ONLY in the sede grid (`next/image`, Spanish alt, no filters); nothing above the fold — the hero and silo cards are typographic.
-- **Icons**: Phosphor 16–24px, `weight="regular"` (stars `weight="fill"` in `--primary`). One family, no hand-rolled SVG.
-- **Banned**: gradients, glass/backdrop-blur, shadows deeper than `--sh-3`, second accent colors, italic flourishes, marquees, decorative animation, dark inverted sections.
+- **Buttons**: `--r-md`, ≥48px tall, sentence case, max 3 words, `font-medium`. Primary = indigo bg + white text; Secondary = white bg + `--line` border; Ghost = borderless neutral. `cursor-pointer`, visible focus ring.
+- **Cells/cards**: `--r-lg`, `--surface` fill, `1px --line` border, `--sh-1`; hover `--sh-2` + `-translate-y-0.5`. One dark featured cell max per band. Background diversity per band: white + dark + indigo-soft/photo.
+- **Lime**: availability and positive states only ("Alta disponibilidad" chips, dark-cell stat numerals). Never body text, never on light without `--on-accent` treatment, never decorative.
+- **Numbers**: `.tnum` always; `--primary` on light, `--accent` on dark cells.
+- **Imagery**: `next/image` with Spanish alt in sede cards and the Bodegaje showcase; illustrations (iso unit, map) are inline SVG consuming tokens.
+- **Icons**: Phosphor 16-24px `weight="regular"` (stars `fill`). One family; no hand-rolled SVG icons.
+- **Banned**: glass/backdrop-blur, gradient text, neon glows, three.js, scroll-jacking, autoplay video, second marquee, cursor gimmicks.
 
 ## 8. Declared exceptions (do not "fix")
-- Em/en dash ban upheld: `·` and `→` are the only separators in new copy; the `—` before `PENDIENTE CONFIRMAR` in placeholder addresses (`content/site.ts`) leaves with the real addresses.
-- The hero contains a 5th element beyond the 4-text-element cap: the size-checker segmented control. Brief-mandated ("the hero ANSWERS, not just announces"); it replaces the IntentCards section, it is an interactive control, not copy.
-- HowItWorks uses numbered verbs `01 Calculas · 02 Cotizas · 03 Te mudas` — brief-mandated 3-step row. These are content verbs, not the banned generic `Paso 1/2/3` labels.
-- Single-accent rule: the `accent*` token family aliases `primary*` so the token names (and `tailwind.config.ts`) survive a future brand swap; do not "diversify" it.
-- SiloDoors renders 3 cards in a row, but the first (Bodegaje, the money silo) is structurally differentiated: accent top border + «Recomendado» tag. Not three identical cards.
+1. **Hand-rolled SVG illustrations** (isometric unit in `IsoUnit`, Bogotá map in `SedeMap`, noise data-URI): brief-mandated illustrations. The Phosphor-only rule covers *icons* and still stands.
+2. **Marquee** (`ClientLogos`): the single permitted marquee. CSS-only, pauses on hover/focus, static wrapped row under reduced motion.
+3. **Dark inverted cells** (`.dark-cell`: SiloDoors featured, TrustBar, FAQ left): core to this variant's bento rhythm. A local variable scope, not a theme flip — the page theme stays light, locked.
+4. **Second accent** (lime `--accent`): deliberately breaks the single-accent aliasing of El Sistema. Scope-limited to availability/positive states; contrast rules in §1.
+5. **Hero 5th element**: the m³ visualizer (an interactive tool, not copy) — same precedent as El Sistema's segmented control. Its "Calcular con precisión →" is a contextual deep link into the calculator with state pre-filled, not a third CTA; the hero's CTA pair stays `Calcular mi espacio` + `Ver sedes`.
+6. **Auto-cycling showcase** (Bodegaje featured cell): pausable via button + hover/focus, static under reduced motion. Not autoplay video.
+7. **Client logos as text wordmarks** inside the marquee: placeholder until real vector marks arrive.
+8. Em/en dash ban upheld in new copy (`·` and `→` only); the `—` before `PENDIENTE CONFIRMAR` in placeholder addresses leaves with the real addresses.
+9. **Closing ghost CTA**: brief asked for "No estoy seguro · calcular" (5 words). Adapted to microcopy "¿No estás seguro?" + ghost `Calcular mi espacio` to respect the 3-word CTA cap and single Calcular wording.
+10. `AnimatedNumber` uses framer motion values (`useMotionValue` + `animate`), not a rAF loop touching React state.
