@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileStickyBar from "@/components/MobileStickyBar";
 import { CALC_URL, QUOTE_URL, SITE_URL, allAddresses, company, nav } from "@/content/site";
 
-const display = Fraunces({
-  subsets: ["latin"],
-  axes: ["opsz"],
-  weight: "variable",
-  display: "swap",
-  variable: "--font-display",
-});
-const body = Inter({ subsets: ["latin"], display: "swap", variable: "--font-body" });
+const display = Space_Grotesk({ subsets: ["latin"], display: "swap", variable: "--font-display" });
+const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "700"], display: "swap", variable: "--font-mono" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -74,7 +68,7 @@ const jsonLd = [
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es-CO" className={`${display.variable} ${body.variable}`}>
+    <html lang="es-CO" className={`${display.variable} ${mono.variable}`}>
       <body className="font-body">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <Header />

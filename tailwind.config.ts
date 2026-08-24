@@ -20,8 +20,8 @@ const config: Config = {
         md: "var(--r-md)",
         lg: "var(--r-lg)",
         xl: "var(--r-xl)",
-        "xl-inner": "calc(var(--r-xl) - 6px)",
-        "lg-inner": "calc(var(--r-lg) - 6px)",
+        "xl-inner": "var(--r-md)",
+        "lg-inner": "var(--r-md)",
       },
       boxShadow: {
         1: "var(--sh-1)",
@@ -31,11 +31,12 @@ const config: Config = {
         inset: "inset 0 1px 0 rgba(255,255,255,0.6)",
       },
       fontFamily: {
-        display: ["var(--font-display)", "Georgia", "serif"],
+        display: ["var(--font-display)", "system-ui", "sans-serif"],
         body: ["var(--font-body)", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
       fontSize: {
-        display: ["var(--t-display)", { lineHeight: "1.05" }],
+        display: ["var(--t-display)", { lineHeight: "0.95", letterSpacing: "-0.03em" }],
         "3xl": ["var(--t-3xl)", { lineHeight: "1.1" }],
         "2xl": ["var(--t-2xl)", { lineHeight: "1.15" }],
       },
@@ -48,7 +49,7 @@ const config: Config = {
         slow: "var(--d-slow)",
       },
       maxWidth: {
-        site: "1200px",
+        site: "1280px",
       },
     },
   },

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, House, Buildings } from "@phosphor-icons/react/dist/ssr";
+import { House, Buildings } from "@phosphor-icons/react/dist/ssr";
 import Reveal, { RevealItem } from "@/components/Reveal";
 import { segments } from "@/content/site";
 
@@ -8,32 +8,20 @@ const icons = [House, Buildings];
 export default function SegmentStrip() {
   return (
     <section aria-labelledby="segments-title" className="order-7">
-      <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 py-20 md:py-28 lg:py-36">
+      <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 py-14 md:py-20 lg:py-24">
         <Reveal>
-          <p className="eyebrow mb-3">Para quién</p>
-          <h2 id="segments-title" className="font-display text-3xl font-semibold text-ink max-w-[18ch]">Espacio para tu hogar o tu empresa</h2>
+          <h2 id="segments-title" className="font-display text-3xl font-bold uppercase text-ink max-w-[18ch]">Espacio para tu hogar o tu empresa</h2>
         </Reveal>
-        <Reveal group as="ul" className="mt-10 grid gap-4 md:grid-cols-2" role="list">
+        <Reveal group as="ul" className="mt-8 grid md:grid-cols-2 gap-px border-[1.5px] border-ink bg-ink" role="list">
           {segments.map((s, i) => {
             const Icon = icons[i];
             return (
-              <RevealItem as="li" key={s.href}>
-                <Link href={s.href} className="group block h-full rounded-xl bg-bg-deep ring-1 ring-line p-1.5 cursor-pointer transition-[transform,box-shadow] duration-DEFAULT ease-soft hover:-translate-y-0.5 hover:shadow-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                  <div className="h-full rounded-xl-inner bg-surface shadow-inset p-6 md:p-8 flex gap-5">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
-                      <Icon size={26} weight="light" aria-hidden="true" />
-                    </span>
-                    <div className="flex flex-col">
-                      <h3 className="font-display text-2xl font-semibold text-ink">{s.title}</h3>
-                      <p className="mt-2 text-[15px] text-ink-2 leading-relaxed">{s.body}</p>
-                      <span className="mt-auto pt-5 inline-flex items-center gap-2 text-[15px] font-semibold text-primary">
-                        Conocer más
-                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 transition-transform duration-DEFAULT ease-soft group-hover:translate-x-0.5 group-hover:-translate-y-px">
-                          <ArrowUpRight size={16} weight="bold" aria-hidden="true" />
-                        </span>
-                      </span>
-                    </div>
-                  </div>
+              <RevealItem as="li" key={s.href} className="bg-surface">
+                <Link href={s.href} className="group flex h-full flex-col p-6 md:p-9 hover:bg-bg-deep transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
+                  <Icon size={28} weight="regular" aria-hidden="true" className="text-primary-deep" />
+                  <h3 className="mt-4 font-display text-2xl md:text-3xl font-bold uppercase text-ink">{s.title}</h3>
+                  <p className="mt-3 text-[15px] text-ink-2 leading-relaxed max-w-[46ch]">{s.body}</p>
+                  <span className="mt-auto pt-6 font-mono text-[13px] font-medium uppercase tracking-[0.08em] text-ink group-hover:text-primary-deep">Conocer más →</span>
                 </Link>
               </RevealItem>
             );

@@ -2,44 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tokens — mirror of design-system/MASTER.md. Brand hex pending: swap here only. */
+/* Tokens — mirror of design-system/MASTER.md («El Contenedor»). Brand hex pending: swap here only. */
 :root {
-  --bg: #faf8f5;
-  --bg-deep: #f3efe9;
-  --surface: #ffffff;
-  --ink: #1a1f24;
-  --ink-2: #3d454d;
-  --muted: #5f6973;
-  --muted-2: #8a939c;
-  --line: rgba(26, 31, 36, 0.08);
-  --primary: #1e4d3b;
-  --primary-deep: #153829;
-  --primary-soft: #e4eee8;
-  --on-primary: #faf8f5;
-  --accent: #c8963e;
-  --accent-deep: #a87b2c;
-  --accent-soft: #f5ebd8;
-  --on-accent: #1a1f24;
-  --ring: #c8963e;
+  --bg: #f2f0ea;
+  --bg-deep: #e9e6de;
+  --surface: #faf9f4;
+  --ink: #111111;
+  --ink-2: #2b3033;
+  --muted: #4a5459;
+  --muted-2: #7d868b;
+  --line: rgba(17, 17, 17, 0.15);
+  --primary: #e8541d;
+  --primary-deep: #c43f10;
+  --primary-soft: #fbe3d8;
+  --on-primary: #111111;
+  --accent: #4a5459;
+  --accent-deep: #333b3f;
+  --accent-soft: #dde1e2;
+  --on-accent: #f2f0ea;
+  --ring: #e8541d;
 
-  --r-sm: 12px;
-  --r-md: 16px;
-  --r-lg: 24px;
-  --r-xl: 32px;
+  --r-sm: 0px;
+  --r-md: 2px;
+  --r-lg: 2px;
+  --r-xl: 2px;
 
-  --sh-1: 0 1px 2px rgba(26, 31, 36, 0.04), 0 4px 12px rgba(26, 31, 36, 0.05);
-  --sh-2: 0 2px 4px rgba(26, 31, 36, 0.04), 0 12px 32px rgba(26, 31, 36, 0.08);
-  --sh-3: 0 4px 8px rgba(26, 31, 36, 0.05), 0 24px 56px rgba(26, 31, 36, 0.12);
-  --sh-brass: 0 8px 24px rgba(200, 150, 62, 0.28);
+  --sh-1: 2px 2px 0 var(--ink);
+  --sh-2: 4px 4px 0 var(--ink);
+  --sh-3: 6px 6px 0 var(--ink);
+  --sh-brass: 4px 4px 0 var(--primary);
 
-  --ease: cubic-bezier(0.32, 0.72, 0, 1);
-  --d-fast: 220ms;
-  --d: 320ms;
-  --d-slow: 420ms;
+  --ease: cubic-bezier(0, 0, 0.2, 1);
+  --d-fast: 150ms;
+  --d: 180ms;
+  --d-slow: 240ms;
 
-  --t-display: clamp(2.5rem, 1.5rem + 4.2vw, 4.5rem);
-  --t-3xl: clamp(2.25rem, 1.6rem + 2.6vw, 3.25rem);
-  --t-2xl: clamp(1.75rem, 1.3rem + 1.6vw, 2.25rem);
+  --t-display: clamp(2.75rem, 1.4rem + 6.8vw, 6.875rem);
+  --t-3xl: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+  --t-2xl: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
+
+  /* Space Grotesk carries body copy too; IBM Plex Mono is metadata-only. */
+  --font-body: var(--font-display);
 }
 
 html {
@@ -55,27 +58,46 @@ body {
 }
 
 .font-display {
-  font-family: var(--font-display), Georgia, serif;
-  font-optical-sizing: auto;
-  letter-spacing: -0.015em;
+  font-family: var(--font-display), system-ui, sans-serif;
+  letter-spacing: -0.02em;
 }
 
 .tnum {
   font-variant-numeric: tabular-nums;
 }
 
+/* Functional mono label — max 4 sections (MASTER.md §2). */
 .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  border-radius: 9999px;
-  padding: 0.25rem 0.75rem;
+  display: inline-block;
+  font-family: var(--font-mono), monospace;
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--primary);
-  background: var(--primary-soft);
+  color: var(--muted);
+}
+
+/* Static blueprint grid, hero background. */
+.blueprint-grid {
+  background-image:
+    linear-gradient(rgba(17, 17, 17, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 17, 17, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Outlined display text on ink bands (closing CTA). */
+.text-outline {
+  -webkit-text-stroke: 2px var(--bg);
+  color: transparent;
+}
+
+/* 1-frame mechanical press: hard offset shadow collapses, no transition. */
+.press {
+  box-shadow: var(--sh-2);
+}
+.press:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
 }
 
 /* Native accordion marker reset */
@@ -86,19 +108,16 @@ details > summary {
 details > summary::-webkit-details-marker {
   display: none;
 }
-details[open] .faq-chevron {
-  transform: rotate(180deg);
-}
 
-/* Logo row: CSS-only drift, pauses on hover */
+/* Marquee: closing band only. Pauses on hover; removed under reduced motion. */
 @keyframes drift {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
-.logo-track {
-  animation: drift 38s linear infinite;
+.marquee-track {
+  animation: drift 22s linear infinite;
 }
-.logo-track:hover {
+.marquee-track:hover {
   animation-play-state: paused;
 }
 
@@ -109,5 +128,5 @@ details[open] .faq-chevron {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-  .logo-track { animation: none; }
+  .marquee-track { animation: none; }
 }
