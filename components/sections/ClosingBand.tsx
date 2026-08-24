@@ -31,8 +31,10 @@ export default function ClosingBand() {
             </RevealItem>
           </Reveal>
 
-          <Reveal delay={0.2} className="rounded-xl bg-on-primary/[0.07] ring-1 ring-on-primary/15 backdrop-blur-sm p-1.5">
-            <div className="rounded-xl-inner bg-on-primary/[0.04] p-6 md:p-8">
+          {/* 50% glass. The fill is --primary-deep, not white: the card carries light text, so a
+              white fill at this alpha would wash it out instead of seating it. */}
+          <Reveal delay={0.2} className="rounded-xl bg-primary-deep/50 ring-1 ring-on-primary/20 backdrop-blur-md p-1.5">
+            <div className="rounded-xl-inner bg-on-primary/[0.05] p-6 md:p-8">
               <ul className="grid grid-cols-3 gap-4 pb-6 border-b border-on-primary/15" role="list">
                 {figures.map((f) => (
                   <li key={f.label}>
@@ -67,7 +69,7 @@ export default function ClosingBand() {
                     <dd>
                       <a
                         href={`tel:${company.phone.replace(/\s/g, "")}`}
-                        className="link-underline tap-pad inline-block font-medium tnum text-accent hover:text-accent-soft transition-colors duration-fast ease-premium rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-primary-deep"
+                        className="link-underline tap-pad inline-block font-medium tnum text-accent-soft hover:text-on-primary transition-colors duration-fast ease-premium rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-primary-deep"
                       >
                         PBX {company.phoneLabel}
                       </a>
