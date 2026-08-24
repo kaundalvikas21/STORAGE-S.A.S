@@ -23,8 +23,8 @@ export default function SiloDoors() {
           </h2>
         </Reveal>
 
-        <Reveal group delay={0.1} className="mt-10 grid gap-4 md:grid-cols-3 md:grid-rows-2 md:gap-5">
-          <RevealItem className="md:col-span-2 md:row-span-2">
+        <Reveal group delay={0.1} className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-3 md:grid-rows-2 md:gap-5">
+          <RevealItem className="sm:col-span-2 md:row-span-2">
             <Link href={silos.bodegaje.href} className="dark-cell group flex h-full cursor-pointer flex-col rounded-lg p-7 shadow-3 transition-all duration ease-soft hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:p-9">
               <div className="flex items-center justify-between">
                 <Vault size={26} weight="regular" aria-hidden="true" className="text-primary" />
