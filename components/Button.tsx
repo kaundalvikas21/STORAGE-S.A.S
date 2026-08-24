@@ -12,12 +12,12 @@ type Props = {
 };
 
 const base =
-  "group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm font-medium cursor-pointer select-none transition-colors duration-fast ease-soft active:scale-[0.98] " +
+  "group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-md font-medium cursor-pointer select-none transition-colors duration-fast ease-soft active:scale-[0.98] " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
 
 const variants = {
-  primary: "bg-primary text-on-primary hover:bg-primary-deep",
-  secondary: "border border-line bg-bg text-ink hover:border-muted-2 hover:bg-surface",
+  primary: "bg-primary text-on-primary shadow-1 hover:bg-primary-deep",
+  secondary: "border border-line bg-surface text-ink shadow-1 hover:border-muted-2",
   ghost: "text-ink hover:bg-surface",
 };
 
