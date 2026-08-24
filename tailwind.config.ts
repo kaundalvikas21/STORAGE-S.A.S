@@ -41,6 +41,16 @@ const config: Config = {
       },
       transitionTimingFunction: {
         soft: "var(--ease)",
+        premium: "var(--ease-premium)",
+      },
+      // Interaction tokens (MASTER.md §6.1): -translate-y-lift, scale-swell, scale-press, scale-zoom.
+      translate: {
+        lift: "var(--hover-lift)",
+      },
+      scale: {
+        swell: "var(--hover-scale)",
+        press: "var(--press-scale)",
+        zoom: "var(--photo-zoom)",
       },
       transitionDuration: {
         fast: "var(--d-fast)",

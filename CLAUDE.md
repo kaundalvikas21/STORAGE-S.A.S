@@ -11,7 +11,9 @@ npm run build   # next build — the only type-check; run before declaring work 
 npm run lint    # next lint (eslint-config-next)
 ```
 
-No test suite. Not a git repo.
+No test suite. `npm run build` is the only type-check.
+
+This IS a git repo, and this branch is `la-boveda` — one of four design variants (`main`/`el-calculista`, `el-contenedor`, `el-sistema`). Do not merge across variants. `.gitattributes` pins `eol=lf`; without it OneDrive reintroduces CRLF churn on every file.
 
 ## What this is
 
@@ -28,13 +30,24 @@ Single-page marketing site for Storage S.A.S (minibodegas, Bogotá), Spanish (`e
 
 **Fonts:** Fraunces (`--font-display`, variable opsz) + Inter (`--font-body`) loaded via `next/font/google` in `app/layout.tsx`.
 
-**Motion:** `lib/motion.ts` defines the shared `spring`/`rise`/`stagger` variants. `components/Reveal.tsx` (`Reveal`, `RevealItem` named export — not `Reveal.Item`) is the scroll-reveal wrapper; it renders static markup under `prefers-reduced-motion`. Use it rather than hand-rolled `motion.*` in sections.
+**Photography goes through one manifest.** `content/images.ts` holds all 13 slots (`photos.heroMain`, `sedePhotos[slug]`, `sizePhotos[href]`) with `src`/`alt`/`credit`; it is the single swap point for the client's real sede photos. Nothing else names an image URL. Every slot renders through `components/Photo.tsx`, which owns the whole treatment: `next/image` `fill`, a required per-slot `sizes`, `blurDataURL`, the warm `accent-soft` multiply wash, the two-layer dark scrim, and `group-hover:scale-zoom` inside an `overflow-hidden` frame. Add a photo by adding a slot, never by dropping an `<Image>` into a section. Unsplash is allowed by `next.config.mjs` `images.remotePatterns`.
 
-**Server/client split:** sections are server components by default. Only `Header`, `Reveal`, `AnimatedNumber`, `IntentCards` are `"use client"`. Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
+**Motion:** `lib/motion.ts` defines the shared `spring`/`rise`/`stagger` variants (70ms stagger, 100ms delayChildren). `components/Reveal.tsx` (`Reveal`, `RevealItem` named export — not `Reveal.Item`) is the scroll-reveal wrapper; it renders static markup under `prefers-reduced-motion`. Use it rather than hand-rolled `motion.*` in sections.
+- **framer's `initial` serialises `opacity:0` into the SSR HTML.** Every revealed node carries `data-reveal`, and a `<noscript>` rule in `app/layout.tsx` forces them visible. If you add a `motion.*` element with an `initial` hidden state outside `Reveal`, give it `data-reveal` too or it disappears with JS off.
+- The hero choreography is **CSS**, not framer (`.word-rise` / `.load-rise` / `.photo-settle` in `globals.css`), for the same reason: the H1 is the LCP element and must never ship at `opacity:0`. `components/Parallax.tsx` is the only `useScroll`/`useTransform` on the page, capped at 6%.
+- Scroll state uses framer's `useScroll` + `useMotionValueEvent`; `window.addEventListener("scroll")` stays banned.
+
+**Interaction tokens** (`--hover-lift`, `--hover-scale`, `--press-scale`, `--photo-zoom`, plus `--ease-premium`/`--transition-fast`/`--transition-base` as aliases of `--ease`/`--d-fast`/`--d`) flow MASTER.md §6.1 → `globals.css` → Tailwind (`-translate-y-lift`, `scale-swell/press/zoom`, `ease-premium`). MASTER.md §6.1 also carries the interaction matrix every interactive element must match. Shared CSS primitives live in `globals.css`: `.link-underline` (draw), `.tap-pad` (44px hit area without moving the layout), `.reveal-action` (hover-reveal that stays visible on touch).
+
+**Header is three files.** `components/Header.tsx` orchestrates; `components/header/MegaMenu.tsx` and `MobileDrawer.tsx` render the panels; `components/header/menu-data.ts` derives every menu from `content/site.ts`. Two constraints that are easy to break: the drawer is a **sibling** of `<header>`, not a child, because the header shell animates with a transform (a transformed ancestor becomes the containing block for `position: fixed`); and z-order is header 50 > drawer 40 > `MobileStickyBar` 30.
+
+**JSON-LD:** `lib/company.ts` builds Organization/WebSite/ItemList from the same `content/site.ts` constants the footer NAP renders, so the visible NAP and the schema cannot drift. `app/page.tsx` still emits FAQPage from `faq`.
+
+**Server/client split:** sections are server components by default. Only `Header` (+ `header/MegaMenu`, `header/MobileDrawer`), `Reveal`, `AnimatedNumber`, `IntentCards`, `Parallax` are `"use client"`. `Photo` and `Hero` are server components. Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
 
 **Page order is SEO-locked.** `app/page.tsx` DOM order follows wireframe T1; mobile reorders (zone selector under hero) use CSS `order-*` on the flex column, never JSX reordering.
 
-Images are placeholder SVGs in `public/img/`.
+`public/img/` is empty: all photography is remote (see the manifest above).
 
 ## The Anti-Slop Ban System
 
@@ -60,15 +73,13 @@ Source of truth: `.claude/skills/design-taste-frontend/SKILL.md` (taste-skill, t
 - Fake data: generic names, egg avatars, round numbers (`99.99%`, `50%`), filler verbs (Eleva, Revoluciona, Sin fricción). Reviews and stats must look organic.
 - ui-ux-pro-max CRITICAL tier: removing focus rings, icon-only buttons without `aria-label`, tap targets under 44×44, hover-only affordances, emoji as icons, placeholder-only form labels, disabling zoom, horizontal page scroll, raw hex in components (use the Tailwind token names).
 
-**Declared exceptions (justified in `design-system/MASTER.md`, do not "fix" them):**
-- Fraunces is on taste-skill's banned-default serif list, and the beige + brass + ink palette is the banned premium-consumer default. Both are kept deliberately for the "La Bóveda" brief (vault / heritage trust, founded 2011). If the client's real brand hex codes arrive, the palette swap happens in `globals.css` variables only.
-- The Pre-Flight line "different serif / palette from your previous project" does not apply: this project's identity is fixed by the brief.
+**Declared exceptions (enumerated in `design-system/MASTER.md` §8, do not "fix" them):** Fraunces + the beige/brass/ink palette; the `--ease-premium`/`--transition-*` aliases; WhatsApp as text and never a link; the hand-rolled line-art SVGs in `IntentCards`; `SizeStrip` giving photos to only three of its four cards. Read §8 before "correcting" any of them. If the client's real brand hex codes arrive, the palette swap happens in `globals.css` variables only.
 
 **Known open violations:** visible address strings in `content/site.ts` (`sedes[]`, `allAddresses[]`) contain `—` before `PENDIENTE CONFIRMAR`. They are client placeholders; when real addresses land, the dashes go with them. Do not add new ones.
 
 ## File Line-Count Limits
 
-Enforced via ESLint `max-lines` (`.eslintrc.json` overrides) on every `npm run lint`. Blank lines and comments don't count. No Husky hook yet: this folder is not a git repo; wire lint-staged when it becomes one.
+Enforced via ESLint `max-lines` (`eslint.config.mjs` overrides) on every `npm run lint`. Blank lines and comments don't count.
 Tailwind inline classes add ~30–50 lines vs CSS modules, so limits are adjusted accordingly.
 
 | File type | Limit | Location pattern |

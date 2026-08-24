@@ -37,6 +37,16 @@
   --d: 320ms;
   --d-slow: 420ms;
 
+  /* Interaction tokens (MASTER.md §6.1). The last three are aliases: La Boveda already
+     owns these curves/speeds, so aliasing keeps one value per concept, not two. */
+  --hover-lift: 2px;
+  --hover-scale: 1.02;
+  --press-scale: 0.98;
+  --photo-zoom: 1.05;
+  --ease-premium: var(--ease);
+  --transition-fast: var(--d-fast);
+  --transition-base: var(--d);
+
   --t-display: clamp(2.5rem, 1.5rem + 4.2vw, 4.5rem);
   --t-3xl: clamp(2.25rem, 1.6rem + 2.6vw, 3.25rem);
   --t-2xl: clamp(1.75rem, 1.3rem + 1.6vw, 2.25rem);
@@ -86,8 +96,99 @@ details > summary {
 details > summary::-webkit-details-marker {
   display: none;
 }
+/* Two glyphs, two rotations: the FAQ uses a Plus (45deg = x), the drawer a CaretDown (180deg). */
 details[open] .faq-chevron {
+  transform: rotate(45deg);
+}
+details[open] .details-caret {
   transform: rotate(180deg);
+}
+
+/* Open/close height animation. interpolate-size + ::details-content is the only way to
+   animate a native <details>; browsers without it just snap open, which is fine. */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+  details::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition: block-size var(--transition-base) var(--ease-premium), content-visibility var(--transition-base) allow-discrete;
+  }
+  details[open]::details-content {
+    block-size: auto;
+  }
+}
+
+/* Text link: underline draws left to right. Needs a positioned, non-inline box. */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--underline-bottom, -2px);
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-fast) var(--ease-premium);
+}
+.link-underline:hover::after,
+.link-underline:focus-visible::after,
+.link-underline[aria-current]::after {
+  transform: scaleX(1);
+}
+
+/* Grows a text link's hit area to ~44px without moving it: padding out, margin back.
+   The underline is re-anchored to the text edge so it does not float below the box. */
+.tap-pad {
+  padding-block: 0.75rem;
+  margin-block: -0.6rem;
+  --underline-bottom: 0.7rem;
+}
+
+/* Hover-reveal action row. Enhancement only: on touch it is always visible. */
+@media (hover: hover) {
+  .reveal-action {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity var(--transition-base) var(--ease-premium), transform var(--transition-base) var(--ease-premium);
+  }
+  .group:hover .reveal-action,
+  .group:focus-visible .reveal-action {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Hero load choreography. CSS, not JS: with scripting off the animations still run, so the
+   H1 is never left at opacity 0 (framer-motion's `initial` would serialize that into the SSR HTML). */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(0.35em); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes lift-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes photo-settle {
+  from { transform: scale(1.04); }
+  to { transform: none; }
+}
+.word-rise {
+  display: inline-block;
+  animation: rise-in 620ms var(--ease-premium) both;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+.load-rise {
+  animation: lift-in 620ms var(--ease-premium) both;
+  animation-delay: var(--delay, 0ms);
+}
+.photo-settle {
+  animation: photo-settle 1200ms var(--ease-premium) both;
 }
 
 /* Logo row: CSS-only drift, pauses on hover */
@@ -98,7 +199,8 @@ details[open] .faq-chevron {
 .logo-track {
   animation: drift 38s linear infinite;
 }
-.logo-track:hover {
+.logo-track:hover,
+.logo-track:focus-within {
   animation-play-state: paused;
 }
 
@@ -108,6 +210,7 @@ details[open] .faq-chevron {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
   }
   .logo-track { animation: none; }
 }

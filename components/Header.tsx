@@ -1,190 +1,191 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, CaretDown, Clock, MapPin, Phone, ChatText } from "@phosphor-icons/react/dist/ssr";
-import { CALC_URL, QUOTE_URL, SEDES_URL, company, footerCols, nav, needs, sedes, sizes } from "@/content/site";
-import { spring } from "@/lib/motion";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
+import { CaretDown, ChatText, Clock, MapPin, Phone } from "@phosphor-icons/react/dist/ssr";
+import MegaMenu from "@/components/header/MegaMenu";
+import MobileDrawer from "@/components/header/MobileDrawer";
+import { menus } from "@/components/header/menu-data";
+import { CALC_URL, QUOTE_URL, company, nav } from "@/content/site";
 
-type Col = { title: string; items: { label: string; href: string }[]; more?: { label: string; href: string } };
-
-/* Dropdown contents — all derived from content/site.ts (Calle 197 first by array order). */
-const menus: Record<string, Col[]> = {
-  "/bodegaje-bogota/": [
-    { title: "Por tamaño", items: sizes.map((s) => ({ label: s.name, href: s.href })) },
-    { title: "Por necesidad", items: needs },
-    { title: "Por sede", items: sedes.map((s) => ({ label: s.name, href: `/sedes/${s.slug}/` })), more: { label: "Ver las 7 sedes", href: SEDES_URL } },
-  ],
-  [SEDES_URL]: [{ title: "Sedes en Bogotá", items: sedes.map((s) => ({ label: `${s.name} · ${s.zone}`, href: `/sedes/${s.slug}/` })), more: { label: "Ver las 7 sedes", href: SEDES_URL } }],
-  "/mudanzas-bogota/": [{ title: "Mudanzas", items: footerCols.mudanzas }],
-  "/quienes-somos/": [{ title: "Empresa", items: footerCols.empresa }],
-};
-
-const focusRing = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+const focusRing =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
+  const [drawer, setDrawer] = useState(false);
   const [menu, setMenu] = useState<string | null>(null);
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [barH, setBarH] = useState(0);
   const reduce = useReducedMotion();
+  const pathname = usePathname();
+  const barRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | undefined>(undefined);
+  // Escape restores focus to the trigger, whose onFocus would otherwise re-open the menu.
+  const suppressFocusOpen = useRef(false);
 
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      setOpen(false);
-      setMenu(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
+  const closeMenu = useCallback(() => setMenu(null), []);
   const show = (href: string) => {
     window.clearTimeout(closeTimer.current);
     setMenu(href);
   };
   const hide = () => {
-    closeTimer.current = window.setTimeout(() => setMenu(null), 120);
+    closeTimer.current = window.setTimeout(closeMenu, 120);
   };
 
-  const t = reduce ? { duration: 0 } : spring;
+  // Measured after mount, never during render: the bar's height is how far the shell lifts.
+  useEffect(() => setBarH(barRef.current?.offsetHeight ?? 0), []);
+
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (y) => {
+    const prev = scrollY.getPrevious() ?? 0;
+    setScrolled(y > 24);
+    if (Math.abs(y - prev) < 6) return; // hysteresis: stops the bar flapping on trackpad jitter
+    setHidden(y > barH + 24 && y > prev);
+    if (y !== prev) closeMenu();
+  });
+
+  useEffect(() => {
+    document.body.style.overflow = drawer ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [drawer]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setDrawer(false);
+      if (menu) {
+        suppressFocusOpen.current = true;
+        document.getElementById(`nav-${menu}`)?.focus();
+        window.setTimeout(() => (suppressFocusOpen.current = false), 0);
+      }
+      closeMenu();
+    };
+    const onDown = (e: PointerEvent) => {
+      if (!navRef.current?.contains(e.target as Node)) closeMenu();
+    };
+    window.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onDown);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onDown);
+    };
+  }, [menu, closeMenu]);
 
   return (
-    <header className="sticky top-0 z-40 pt-3 px-3 md:pt-4 md:px-5 pointer-events-none">
-      <div className="mx-auto max-w-site">
-        <p className="pointer-events-auto hidden md:flex items-center justify-end gap-x-3 pb-2 pr-4 text-[12px] text-muted">
-          <span className="inline-flex items-center gap-1.5"><MapPin size={14} weight="light" aria-hidden="true" />7 sedes en Bogotá</span>
-          <span aria-hidden="true">·</span>
-          <span className="inline-flex items-center gap-1.5 tnum"><Clock size={14} weight="light" aria-hidden="true" />{company.hours}</span>
-          <span aria-hidden="true">·</span>
-          <a href={`tel:${company.phone.replace(/\s/g, "")}`} className={`inline-flex items-center gap-1.5 tnum hover:text-primary rounded ${focusRing}`}>
-            <Phone size={14} weight="light" aria-hidden="true" />PBX {company.phoneLabel}
-          </a>
-          <span aria-hidden="true">·</span>
-          <span className="inline-flex items-center gap-1.5 tnum"><ChatText size={14} weight="light" aria-hidden="true" />WhatsApp {company.whatsappLabel}</span>
-        </p>
-
-        <div className="pointer-events-auto relative mx-auto flex items-center justify-between gap-4 rounded-full bg-surface/85 backdrop-blur-md ring-1 ring-line shadow-1 pl-5 pr-2 py-2" onMouseLeave={hide}>
-          <Link href="/" className={`font-display text-lg font-semibold text-primary cursor-pointer rounded-full px-1 ${focusRing}`} aria-label={`${company.brand} — inicio`}>
-            Storage <span className="text-accent">S.A.S</span>
-          </Link>
-
-          <nav aria-label="Principal" className="hidden lg:flex items-center gap-1">
-            {nav.map((n) => {
-              const cols = menus[n.href];
-              const isOpen = menu === n.href;
-              return (
-                <div key={n.href} className="relative" onMouseEnter={() => cols && show(n.href)}>
-                  <Link
-                    href={n.href}
-                    aria-expanded={cols ? isOpen : undefined}
-                    aria-haspopup={cols ? "true" : undefined}
-                    onFocus={() => cols && show(n.href)}
-                    onClick={(e) => {
-                      if (cols && !isOpen) {
-                        e.preventDefault();
-                        show(n.href);
-                      }
-                    }}
-                    className={`inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium text-ink-2 hover:text-primary hover:bg-primary-soft transition-colors duration-fast ease-soft cursor-pointer ${focusRing} ${isOpen ? "bg-primary-soft text-primary" : ""}`}
-                  >
-                    {n.label}
-                    {cols && <CaretDown size={12} weight="bold" aria-hidden="true" className={`transition-transform duration-fast ease-soft ${isOpen ? "rotate-180" : ""}`} />}
-                  </Link>
-                </div>
-              );
-            })}
-          </nav>
-
-          <div className="hidden md:flex items-center gap-2">
-            <Link href={CALC_URL} className={`rounded-full px-4 py-2.5 text-[14px] font-semibold text-primary ring-[1.5px] ring-inset ring-primary hover:bg-primary-soft transition-colors duration-fast ease-soft cursor-pointer ${focusRing}`}>
-              Calcular espacio
-            </Link>
-            <Link href={QUOTE_URL} className={`rounded-full bg-accent px-4 py-2.5 text-[14px] font-semibold text-on-accent hover:bg-accent-deep transition-colors duration-fast ease-soft cursor-pointer ${focusRing} focus-visible:ring-offset-2`}>
-              Cotizar
-            </Link>
+    <>
+      <header className="sticky top-0 z-50 pointer-events-none">
+        {/* The shell lifts by exactly the utility bar's height, so the header box never resizes (no CLS). */}
+        <motion.div
+          className="mx-auto max-w-site px-3 pt-3 md:px-5 md:pt-4"
+          animate={{ y: hidden ? -barH : 0 }}
+          transition={reduce ? { duration: 0 } : { duration: 0.15, ease: [0.32, 0.72, 0, 1] }}
+        >
+          <div ref={barRef} className="pointer-events-auto hidden lg:flex items-center justify-between gap-4 pb-2 px-4 text-[12px] text-muted">
+            <p className="flex items-center gap-x-3">
+              <span className="inline-flex items-center gap-1.5"><MapPin size={14} weight="light" aria-hidden="true" />7 sedes en Bogotá</span>
+              <span aria-hidden="true">·</span>
+              <span className="inline-flex items-center gap-1.5 tnum"><Clock size={14} weight="light" aria-hidden="true" />{company.hours}</span>
+            </p>
+            <p className="flex items-center gap-x-3">
+              <a href={`tel:${company.phone.replace(/\s/g, "")}`} className={`link-underline inline-flex items-center gap-1.5 tnum hover:text-primary rounded-sm ${focusRing}`}>
+                <Phone size={14} weight="light" aria-hidden="true" />PBX {company.phoneLabel}
+              </a>
+              <span aria-hidden="true">·</span>
+              {/* Text, never a wa.me link: every CTA routes through /cotizar/ so the qualifying form is not bypassed. */}
+              <span className="inline-flex items-center gap-1.5 tnum"><ChatText size={14} weight="light" aria-hidden="true" />WhatsApp {company.whatsappLabel}</span>
+            </p>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-controls="menu-movil"
-            aria-label={open ? "Cerrar menú" : "Abrir menú"}
-            className={`lg:hidden relative h-10 w-10 rounded-full bg-primary-soft cursor-pointer ${focusRing}`}
+          <div
+            ref={navRef}
+            onMouseLeave={hide}
+            className={`pointer-events-auto relative flex items-center justify-between gap-4 rounded-full bg-surface/85 backdrop-blur-md ring-1 ring-line pl-5 pr-2 py-2 transition-shadow duration-fast ease-premium ${scrolled ? "shadow-2 ring-line" : "shadow-1"}`}
           >
-            <span className={`absolute left-1/2 top-1/2 h-[1.5px] w-5 -translate-x-1/2 bg-primary transition-transform duration-DEFAULT ease-soft ${open ? "rotate-45" : "-translate-y-[4px]"}`} />
-            <span className={`absolute left-1/2 top-1/2 h-[1.5px] w-5 -translate-x-1/2 bg-primary transition-transform duration-DEFAULT ease-soft ${open ? "-rotate-45" : "translate-y-[4px]"}`} />
-          </button>
+            <Link href="/" className={`inline-block font-display text-lg font-semibold text-primary cursor-pointer rounded-full px-1 py-2 ${focusRing}`} aria-label={`${company.brand} — inicio`}>
+              Storage <span className="text-accent">S.A.S</span>
+            </Link>
 
-          <AnimatePresence>
-            {menu && menus[menu] && (
-              <motion.div
-                key={menu}
-                role="region"
-                aria-label={`Submenú ${nav.find((n) => n.href === menu)?.label}`}
-                className="absolute left-0 right-0 top-full mt-3 hidden lg:block rounded-xl bg-bg-deep ring-1 ring-line p-1.5 shadow-3"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 4 }}
-                transition={t}
-                onMouseEnter={() => show(menu)}
-                onMouseLeave={hide}
-              >
-                <div className={`rounded-xl-inner bg-surface shadow-inset p-6 grid gap-8 ${menus[menu].length === 3 ? "grid-cols-3" : "grid-cols-1"}`}>
-                  {menus[menu].map((col) => (
-                    <div key={col.title}>
-                      <p className="eyebrow mb-3">{col.title}</p>
-                      <ul className={menus[menu].length === 1 ? "grid grid-cols-2 gap-x-8" : ""}>
-                        {col.items.map((it) => (
-                          <li key={it.href}>
-                            <Link href={it.href} onClick={() => setMenu(null)} className={`block rounded-md px-2 py-1.5 text-[14px] text-ink-2 hover:text-primary hover:bg-primary-soft transition-colors duration-fast ease-soft cursor-pointer ${focusRing}`}>
-                              {it.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                      {col.more && (
-                        <Link href={col.more.href} onClick={() => setMenu(null)} className={`mt-3 inline-flex items-center gap-1.5 px-2 text-[14px] font-semibold text-primary cursor-pointer rounded ${focusRing}`}>
-                          {col.more.label} <ArrowRight size={14} weight="bold" aria-hidden="true" />
-                        </Link>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            id="menu-movil"
-            className="pointer-events-auto fixed inset-0 z-30 bg-bg/95 backdrop-blur-xl pt-24 px-6 pb-28 overflow-y-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reduce ? 0 : 0.22 }}
-          >
-            <nav aria-label="Menú móvil" className="mx-auto max-w-md flex flex-col gap-1">
-              {[...nav, { label: "Calcular mi espacio", href: CALC_URL }, { label: "Cotizar", href: QUOTE_URL }].map((n, i) => (
-                <motion.div key={n.href} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={reduce ? { duration: 0 } : { ...spring, delay: 0.05 + i * 0.05 }}>
-                  <Link href={n.href} onClick={() => setOpen(false)} className={`block rounded-2xl px-4 py-4 font-display text-2xl font-semibold text-ink hover:bg-surface hover:text-primary transition-colors duration-fast ease-soft cursor-pointer ${focusRing}`}>
-                    {n.label}
-                  </Link>
-                </motion.div>
-              ))}
-              <p className="mt-8 text-sm text-muted px-4 tnum">7 sedes en Bogotá · {company.hours}</p>
+            <nav aria-label="Principal" className="hidden lg:flex items-center gap-1">
+              {nav.map((n) => {
+                const cols = menus[n.href];
+                const isOpen = menu === n.href;
+                const current = pathname === n.href;
+                return (
+                  <div key={n.href} onMouseEnter={() => cols && show(n.href)}>
+                    <Link
+                      id={`nav-${n.href}`}
+                      href={n.href}
+                      aria-expanded={cols ? isOpen : undefined}
+                      aria-haspopup={cols ? "true" : undefined}
+                      aria-current={current ? "page" : undefined}
+                      onFocus={() => cols && !suppressFocusOpen.current && show(n.href)}
+                      onKeyDown={(e) => {
+                        if (!cols || e.key !== "ArrowDown") return;
+                        e.preventDefault();
+                        show(n.href);
+                        requestAnimationFrame(() => navRef.current?.querySelector<HTMLAnchorElement>('[role="region"] a[href]')?.focus());
+                      }}
+                      onClick={(e) => {
+                        if (cols && !isOpen) {
+                          e.preventDefault();
+                          show(n.href);
+                        }
+                      }}
+                      className={`link-underline inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors duration-fast ease-premium cursor-pointer ${focusRing} ${isOpen || current ? "text-primary" : "text-ink-2 hover:text-primary"}`}
+                    >
+                      {n.label}
+                      {cols && <CaretDown size={12} weight="bold" aria-hidden="true" className={`transition-transform duration-fast ease-premium ${isOpen ? "rotate-180" : ""}`} />}
+                    </Link>
+                  </div>
+                );
+              })}
             </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+
+            <div className="hidden md:flex items-center gap-2">
+              <Link href={CALC_URL} className={`rounded-full px-4 py-2.5 text-[14px] font-semibold text-primary ring-[1.5px] ring-inset ring-primary hover:bg-primary-soft hover:ring-primary-deep transition-[background-color,box-shadow,transform] duration-fast ease-premium active:scale-press cursor-pointer ${focusRing}`}>
+                Calcular espacio
+              </Link>
+              <Link href={QUOTE_URL} className={`rounded-full bg-accent px-4 py-2.5 text-[14px] font-semibold text-on-accent shadow-1 hover:bg-accent-deep hover:shadow-brass hover:-translate-y-lift transition-[background-color,box-shadow,transform] duration-fast ease-premium active:translate-y-0 active:scale-press cursor-pointer ${focusRing}`}>
+                Cotizar
+              </Link>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setDrawer((v) => !v)}
+              aria-expanded={drawer}
+              aria-controls="menu-movil"
+              aria-label={drawer ? "Cerrar menú" : "Abrir menú"}
+              className={`lg:hidden relative h-11 w-11 rounded-full bg-primary-soft cursor-pointer transition-transform duration-fast ease-premium active:scale-press ${focusRing}`}
+            >
+              <span className={`absolute left-1/2 top-1/2 h-[1.5px] w-5 -translate-x-1/2 bg-primary transition-transform duration-DEFAULT ease-premium ${drawer ? "rotate-45" : "-translate-y-[4px]"}`} />
+              <span className={`absolute left-1/2 top-1/2 h-[1.5px] w-5 -translate-x-1/2 bg-primary transition-transform duration-DEFAULT ease-premium ${drawer ? "-rotate-45" : "translate-y-[4px]"}`} />
+            </button>
+
+            <AnimatePresence>
+              {menu && menus[menu] && (
+                <MegaMenu
+                  key={menu}
+                  cols={menus[menu]}
+                  label={nav.find((n) => n.href === menu)?.label ?? ""}
+                  onClose={closeMenu}
+                  onHoverIn={() => show(menu)}
+                  onHoverOut={hide}
+                />
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      </header>
+
+      {/* Sibling, not a child: the shell above animates with a transform. */}
+      <AnimatePresence>{drawer && <MobileDrawer onNavigate={() => setDrawer(false)} />}</AnimatePresence>
+    </>
   );
 }

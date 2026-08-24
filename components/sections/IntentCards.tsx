@@ -58,9 +58,11 @@ export default function IntentCards() {
             return (
               <motion.li
                 key={c.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={reduce ? { duration: 0 } : { ...spring, delay: 0.08 + i * 0.06 }}
+                data-reveal=""
+                initial={reduce ? false : { opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-10% 0px" }}
+                transition={reduce ? { duration: 0 } : { ...spring, delay: 0.1 + i * 0.07 }}
                 whileTap={reduce ? undefined : { scale: 0.98 }}
               >
                 <Link
@@ -69,8 +71,8 @@ export default function IntentCards() {
                   onFocus={() => setSelected(c.id)}
                   onMouseEnter={() => setSelected(c.id)}
                   aria-current={active ? "true" : undefined}
-                  className={`group block h-full rounded-xl p-1.5 cursor-pointer transition-[box-shadow,transform] duration-DEFAULT ease-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
-                    active ? "bg-accent-soft ring-2 ring-accent shadow-2 -translate-y-0.5" : "bg-bg-deep ring-1 ring-line hover:shadow-2"
+                  className={`group block h-full rounded-xl p-1.5 cursor-pointer transition-[box-shadow,transform] duration-DEFAULT ease-premium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
+                    active ? "bg-accent-soft ring-2 ring-accent shadow-2 -translate-y-lift" : "bg-bg-deep ring-1 ring-line hover:shadow-2"
                   }`}
                 >
                   <motion.div

@@ -18,13 +18,13 @@ export default function ZoneSelector() {
             <ul className="flex flex-wrap gap-2" role="list">
               {zones.map((z) => (
                 <li key={z.href}>
-                  <Link href={z.href} className="inline-flex items-center rounded-full bg-primary-soft px-4 py-2 text-[14px] font-medium text-primary hover:bg-primary hover:text-on-primary transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                  <Link href={z.href} className="inline-flex min-h-11 items-center rounded-full bg-primary-soft px-4 py-2 text-[14px] font-medium text-primary hover:bg-primary hover:text-on-primary transition-[color,background-color,box-shadow,transform] duration-fast ease-premium active:scale-press cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
                     {z.label}
                   </Link>
                 </li>
               ))}
               <li>
-                <Link href={SEDES_URL} className="inline-flex items-center rounded-full px-4 py-2 text-[14px] font-medium text-ink-2 ring-1 ring-inset ring-line hover:text-primary hover:ring-primary transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                <Link href={SEDES_URL} className="inline-flex min-h-11 items-center rounded-full px-4 py-2 text-[14px] font-medium text-ink-2 ring-1 ring-inset ring-line hover:text-primary hover:ring-primary transition-[color,background-color,box-shadow,transform] duration-fast ease-premium active:scale-press cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
                   Ver mapa de sedes
                 </Link>
               </li>

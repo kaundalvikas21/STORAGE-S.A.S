@@ -13,9 +13,10 @@ export const riseInstant: Variants = {
   show: { opacity: 1, y: 0 },
 };
 
-export const stagger = (delayChildren = 0): Variants => ({
+/** Shared grid choreography: children 70ms apart, 100ms after the parent lands. */
+export const stagger = (extraDelay = 0): Variants => ({
   hidden: {},
-  show: { transition: { staggerChildren: 0.06, delayChildren } },
+  show: { transition: { staggerChildren: 0.07, delayChildren: 0.1 + extraDelay } },
 });
 
 export const noStagger: Variants = { hidden: {}, show: {} };

@@ -20,12 +20,15 @@ const instant = { duration: 0 };
  * Scroll reveal: opacity + 8px rise, once.
  * Reduced motion: the same element jumps straight to the visible state on mount (duration 0),
  * which also clears the SSR-rendered hidden style — never swap component types here.
+ * `data-reveal` is the hook the <noscript> rule in app/layout.tsx uses to force everything
+ * visible when scripting is off; framer serializes `initial` as an inline opacity:0.
  */
 export default function Reveal({ children, className, as = "div", delay = 0, group = false, role }: Props) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
   return (
     <Tag
+      data-reveal=""
       className={className}
       role={role}
       initial="hidden"
@@ -44,7 +47,7 @@ export function RevealItem({ children, className, as = "div" }: Omit<Props, "del
   const reduce = useReducedMotion();
   const Tag = motion[as];
   return (
-    <Tag className={className} variants={reduce ? riseInstant : rise} transition={reduce ? instant : undefined}>
+    <Tag data-reveal="" className={className} variants={reduce ? riseInstant : rise} transition={reduce ? instant : undefined}>
       {children}
     </Tag>
   );

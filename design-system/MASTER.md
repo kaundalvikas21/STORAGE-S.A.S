@@ -46,8 +46,31 @@ Dials: DESIGN_VARIANCE 4 · MOTION_INTENSITY 4 · VISUAL_DENSITY 3
 
 ## 6. Motion
 - Easing: `--ease: cubic-bezier(.32,.72,0,1)`. Springs (Framer): `stiffness 260, damping 28, mass .9`.
-- Durations: `--d-fast 220ms` · `--d 320ms` · `--d-slow 420ms`. Reveal: opacity 0→1 + translateY 8px→0, stagger 60ms, once.
-- Hover: CTAs translateY(-2px) + shadow bloom; photos scale 1.03 in a fixed frame; nothing bounces hard.
+- Durations: `--d-fast 220ms` · `--d 320ms` · `--d-slow 420ms`. Reveal: opacity 0→1 + translateY 8px→0, stagger 70ms after a 100ms delayChildren, `once: true` everywhere. Hero choreography runs on load (word rise 40ms apart, subline +150ms, CTAs +250ms, photo scale 1.04→1 over 1.2s); the hero photo is the only parallax on the page, capped at 6%.
+- Hover: CTAs translateY(-2px) + shadow bloom; photos scale 1.05 in a fixed frame; nothing bounces hard.
+
+### 6.1 Interaction tokens
+Every hover/press/focus value is a variable — no magic numbers in JSX.
+| Token | Value | Use |
+|---|---|---|
+| `--hover-lift` | `2px` | CTA / card `translateY(-var)` on hover |
+| `--hover-scale` | `1.02` | card inner core swell on hover |
+| `--press-scale` | `0.98` | `:active` on every tappable element (touch parity) |
+| `--photo-zoom` | `1.05` | photo scale inside an `overflow-hidden` frame that never grows |
+| `--ease-premium` | `var(--ease)` | alias — La Bóveda's curve is already the premium ease-out |
+| `--transition-fast` | `var(--d-fast)` | alias — hover colour / underline draw |
+| `--transition-base` | `var(--d)` | alias — lift, shadow bloom, icon nudge |
+
+**Matrix** (every interactive element matches its row):
+- Primary button: lift + `--sh-brass` bloom + `accent-deep`; `:active` press; focus ring 2px `--ring` offset 2.
+- Ghost/secondary: tint fades in, ring darkens.
+- Linked card: lift + shadow 1→2, photo zooms inside its frame, arrow nudges x+2px; the whole card is the `<Link>`.
+- Text link: underline draws left→right (`.link-underline`, `--transition-fast`).
+- Nav item: underline-draw + colour shift; `aria-current` keeps a persistent accent marker.
+- FAQ row: background tint on hover; open rotates the `+` 45°, content height animates (`interpolate-size`).
+- Sede card: reveals the "Cómo llegar" action row on hover; always visible on touch (`@media (hover: none)`).
+- Logo row: opacity 60 → 100; track pauses on hover **and** `:focus-within`.
+- Inputs: ring + label colour shift. *No form exists on this page yet (quote/calculator are external URLs) — the rule is recorded for when one lands.*
 - `prefers-reduced-motion: reduce` → all transitions/animations 0ms, reveals render static, count-ups show final value.
 - Only `transform` / `opacity` animate. `backdrop-blur` only on fixed elements (nav pill, hero glass badge is static inside a card — fine).
 
@@ -58,5 +81,13 @@ Dials: DESIGN_VARIANCE 4 · MOTION_INTENSITY 4 · VISUAL_DENSITY 3
 - **Badges** carry an icon + text (meaning never by color alone).
 - **Eyebrow** precedes every H2.
 - **Imagery**: warm, human; `next/image`, Spanish descriptive alt, `sizes` set; never carries copy.
+  Every slot lives in `content/images.ts` and renders through `<Photo>` — one warm `--accent-soft` multiply wash unifies mixed sources into one art-directed set. Images always sit **under** text in the hierarchy; HTML text carries the message.
 - **Icons**: Phosphor `weight="light"`, 1.25–1.5rem.
 - **Banned**: dark mode, neon, glassmorphism panels over content, purple/pink gradients, thin gray text on white, `linear`/`ease-in-out`, hex in JSX.
+
+## 8. Declared rule-breaks
+1. **Fraunces + beige/brass/ink** are on taste-skill's banned-default lists. Kept deliberately: the brief is vault / heritage trust, founded 2011. A real brand palette swaps in `globals.css` variables only.
+2. **`--ease-premium` / `--transition-fast` / `--transition-base` are aliases**, not new values. The spec names them; La Bóveda already had `--ease` / `--d-fast` / `--d` for the same concepts. Aliasing keeps one speed per concept instead of two competing ones.
+3. **WhatsApp is text, never a link.** The spec asks for click-to-contact; the CRO rule outranks it — every CTA routes to `/cotizar/` so the qualifying form is never bypassed.
+4. **Hand-rolled line-art SVGs in `IntentCards`.** Phosphor has no "apartaestudio vs apartamento volume" glyph; the four illustrations encode growing scale, which is the section's whole point.
+5. **`SizeStrip` shows four cards, only three carry photos.** "Personalizados" is the dark differential cell — photo-less by design, so the row never reads as four identical cards.

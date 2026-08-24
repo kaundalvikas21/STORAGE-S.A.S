@@ -23,14 +23,13 @@ export const company = {
   email: "info@storagebogota.com", // PENDIENTE CONFIRMAR
 };
 
+// Photography for these sedes lives in content/images.ts (`sedePhotos`, keyed by slug).
 export type Sede = {
   slug: string;
   name: string;
   zone: string;
   coverage: string;
   address: string;
-  image: string;
-  alt: string;
   badge?: string;
 };
 
@@ -42,8 +41,6 @@ export const sedes: Sede[] = [
     zone: "Autopista Norte",
     coverage: "Sabana Norte, Usaquén norte",
     address: "Autopista Norte con Calle 197, Bogotá — PENDIENTE CONFIRMAR nomenclatura exacta",
-    image: "/img/sede-calle-197.svg",
-    alt: "Fachada de la nueva sede Storage en la Autopista Norte con Calle 197, con acceso vehicular amplio",
     badge: "Nueva sede · mayor disponibilidad",
   },
   {
@@ -52,8 +49,6 @@ export const sedes: Sede[] = [
     zone: "Calle 163",
     coverage: "Usaquén, Cedritos, Santa Bárbara",
     address: "Calle 163 con Carrera 19B, Toberín, Bogotá — 3 puntos, PENDIENTE CONFIRMAR nomenclaturas",
-    image: "/img/sede-toberin.svg",
-    alt: "Pasillo de minibodegas en la sede Toberín con iluminación cálida y puertas numeradas",
   },
   {
     slug: "spring-calle-135",
@@ -61,8 +56,6 @@ export const sedes: Sede[] = [
     zone: "Calle 135",
     coverage: "Suba, Colina, Niza, Pasadena",
     address: "Calle 135 # 46-55, Bogotá",
-    image: "/img/sede-spring.svg",
-    alt: "Entrada de la sede Spring en la Calle 135 con zona de cargue cubierta",
   },
   {
     slug: "paloquemao",
@@ -70,8 +63,6 @@ export const sedes: Sede[] = [
     zone: "Centro",
     coverage: "Centro, Puente Aranda, Los Mártires, Ricaurte",
     address: "Paloquemao, Bogotá — 2 puntos (Paloquemao 32 y 17), PENDIENTE CONFIRMAR nomenclaturas",
-    image: "/img/sede-paloquemao.svg",
-    alt: "Bodegas con acceso para carga en la sede Paloquemao, en el centro de Bogotá",
   },
 ];
 

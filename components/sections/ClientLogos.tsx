@@ -1,6 +1,7 @@
 import { clients } from "@/content/site";
 
-/** Wordmark placeholders until vector logos arrive; swap each <span> for <Image> with the same alt. */
+/** Wordmark placeholders until vector logos arrive; swap each <span> for <Image> with the same alt
+ *  and add `grayscale hover:grayscale-0` then (a filter is a no-op on text). Track pauses on hover and focus-within. */
 export default function ClientLogos() {
   const row = [...clients, ...clients];
   return (
@@ -11,7 +12,7 @@ export default function ClientLogos() {
           <ul className="logo-track flex w-max items-center gap-12 md:gap-20" role="list" aria-label="Clientes">
             {row.map((c, i) => (
               <li key={`${c}-${i}`} aria-hidden={i >= clients.length ? "true" : undefined} className="shrink-0">
-                <span className="font-display text-xl md:text-2xl font-semibold text-ink opacity-60 grayscale transition-opacity duration-DEFAULT ease-soft hover:opacity-100 whitespace-nowrap">
+                <span className="font-display text-xl md:text-2xl font-semibold text-ink opacity-60 transition-opacity duration-DEFAULT ease-premium hover:opacity-100 whitespace-nowrap">
                   {c}
                 </span>
               </li>

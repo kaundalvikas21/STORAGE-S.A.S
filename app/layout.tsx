@@ -4,7 +4,8 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileStickyBar from "@/components/MobileStickyBar";
-import { CALC_URL, QUOTE_URL, SITE_URL, allAddresses, company, nav } from "@/content/site";
+import { SITE_URL, company } from "@/content/site";
+import { siteJsonLd } from "@/lib/company";
 
 const display = Fraunces({
   subsets: ["latin"],
@@ -30,53 +31,19 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": `${SITE_URL}/#organization`,
-    name: company.legalName,
-    alternateName: company.brand,
-    url: SITE_URL,
-    foundingDate: String(company.founded),
-    telephone: company.phone,
-    email: company.email,
-    address: allAddresses.map((a) => ({
-      "@type": "PostalAddress",
-      name: a.label,
-      streetAddress: a.address,
-      addressLocality: "Bogotá",
-      addressCountry: "CO",
-    })),
-    numberOfEmployees: { "@type": "QuantitativeValue", value: 22 },
-    areaServed: { "@type": "City", name: "Bogotá" },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": `${SITE_URL}/#website`,
-    url: SITE_URL,
-    name: company.brand,
-    inLanguage: "es-CO",
-    publisher: { "@id": `${SITE_URL}/#organization` },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: [...nav, { label: "Calcular mi espacio", href: CALC_URL }, { label: "Cotizar", href: QUOTE_URL }].map((n, i) => ({
-      "@type": "SiteNavigationElement",
-      position: i + 1,
-      name: n.label,
-      url: `${SITE_URL}${n.href}`,
-    })),
-  },
-];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es-CO" className={`${display.variable} ${body.variable}`}>
+      <head>
+        {/* Scroll reveals ship an inline opacity:0 from framer-motion. Without JS nothing would
+            ever clear it, so the page must fall back to fully visible. */}
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+      </head>
       <body className="font-body">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }} />
         <Header />
         {children}
         <Footer />
