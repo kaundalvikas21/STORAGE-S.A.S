@@ -7,19 +7,19 @@ export default function MobileStickyBar() {
   return (
     <nav
       aria-label="Acciones rápidas"
-      className="fixed inset-x-0 bottom-0 z-30 md:hidden border-t-[1.5px] border-ink bg-bg pb-[env(safe-area-inset-bottom)]"
+      className="fixed inset-x-0 bottom-0 z-30 md:hidden border-t border-line bg-bg pb-[env(safe-area-inset-bottom)]"
     >
       <div className="grid grid-cols-2 gap-2 p-2">
         <Link
           href={QUOTE_URL}
-          className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm border-[1.5px] border-ink bg-primary px-4 py-3 text-[15px] font-semibold uppercase tracking-[0.04em] text-on-primary cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm bg-primary px-4 py-3 text-[15px] font-medium text-on-primary cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <ChatText size={20} weight="regular" aria-hidden="true" />
           Cotizar
         </Link>
         <a
           href={`tel:${company.phone.replace(/\s/g, "")}`}
-          className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm border-[1.5px] border-ink bg-surface px-4 py-3 text-[15px] font-semibold uppercase tracking-[0.04em] text-ink cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm border border-line bg-bg px-4 py-3 text-[15px] font-medium text-ink cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <Phone size={20} weight="regular" aria-hidden="true" />
           Llamar

@@ -17,7 +17,7 @@ type Props = {
 const instant = { duration: 0 };
 
 /**
- * Scroll reveal: opacity + 10px hard rise, once.
+ * Scroll reveal: opacity + 4px rise, once.
  * Reduced motion: the same element jumps straight to the visible state on mount (duration 0),
  * which also clears the SSR-rendered hidden style — never swap component types here.
  */
@@ -56,7 +56,7 @@ export function RevealRule({ className = "" }: { className?: string }) {
   return (
     <motion.div
       aria-hidden="true"
-      className={`h-px origin-left bg-ink/30 ${className}`}
+      className={`h-px origin-left bg-line ${className}`}
       variants={reduce ? noStagger : draw}
       transition={reduce ? instant : undefined}
     />

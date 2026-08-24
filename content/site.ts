@@ -15,7 +15,7 @@ export const company = {
   phoneLabel: "(601) 000 0000",
   whatsapp: "+57 300 000 0000", // PENDIENTE CONFIRMAR — única línea WhatsApp (solo se muestra como texto; los CTA van a /cotizar/)
   whatsappLabel: "300 000 0000",
-  hours: "Lun–Vie 8:00–17:30 · Sáb 8:00–13:30",
+  hours: "Lun-Vie 8:00-17:30 · Sáb 8:00-13:30",
   openingHoursSpec: [
     { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "17:30" },
     { days: ["Saturday"], opens: "08:00", closes: "13:30" },
@@ -44,7 +44,7 @@ export const sedes: Sede[] = [
     address: "Autopista Norte con Calle 197, Bogotá — PENDIENTE CONFIRMAR nomenclatura exacta",
     image: "/img/sede-calle-197.svg",
     alt: "Fachada de la nueva sede Storage en la Autopista Norte con Calle 197, con acceso vehicular amplio",
-    badge: "Nueva sede · mayor disponibilidad",
+    badge: "Nueva sede",
   },
   {
     slug: "toberin",
@@ -93,18 +93,19 @@ export const zones = [
   { label: "Centro", href: "/sedes/paloquemao/" },
 ];
 
+// `answer` feeds the hero size-checker. Calle 197 always named first (commercial rule).
 export const intentCards = [
-  { id: "cajas", title: "Algunas cajas", range: "1–3 m³", hint: "Cajas, maletas, archivo" },
-  { id: "apartaestudio", title: "Apartaestudio", range: "4–8 m³", hint: "Cama, nevera, escritorio" },
-  { id: "apartamento", title: "Apartamento", range: "9–15 m³", hint: "Sala, comedor, 2 alcobas" },
-  { id: "empresa", title: "Empresa", range: "16 m³ +", hint: "Inventario, mobiliario, archivo" },
+  { id: "cajas", title: "Algunas cajas", range: "1-3 m³", hint: "Cajas, maletas, archivo", answer: "Bodega pequeña, disponible en Calle 197 y Toberín" },
+  { id: "apartaestudio", title: "Apartaestudio", range: "4-8 m³", hint: "Cama, nevera, escritorio", answer: "Bodega mediana, disponible en Calle 197 y Toberín" },
+  { id: "apartamento", title: "Apartamento", range: "9-15 m³", hint: "Sala, comedor, 2 alcobas", answer: "Bodega mediana o grande, disponible en Calle 197 y Spring" },
+  { id: "empresa", title: "Empresa", range: "16 m³ +", hint: "Inventario, mobiliario, archivo", answer: "Bodega grande o personalizada, disponible en Calle 197 y Paloquemao" },
 ] as const;
 
 export const sizes = [
-  { name: "Pequeñas", range: "1–5 m³", fits: "Cajas, archivo, objetos sueltos", href: "/bodegas-pequenas/" },
-  { name: "Medianas", range: "6–15 m³", fits: "Apartamento de 1–2 alcobas", href: "/bodegas-medianas/" },
-  { name: "Grandes", range: "16–50 m³", fits: "Casa completa, inventario", href: "/bodegas-grandes/" },
-  { name: "Personalizados", range: "50 m³ +", fits: "Espacios a la medida de tu operación", href: "/espacios-personalizados/", differential: true },
+  { name: "Pequeñas", range: "1-5 m³", fits: "Cajas, archivo, objetos sueltos", hint: "Disponible en todas las sedes", href: "/bodegas-pequenas/" },
+  { name: "Medianas", range: "6-15 m³", fits: "Apartamento de 1-2 alcobas", hint: "Disponible en todas las sedes", href: "/bodegas-medianas/" },
+  { name: "Grandes", range: "16-50 m³", fits: "Casa completa, inventario", hint: "Mayor disponibilidad en Calle 197", href: "/bodegas-grandes/" },
+  { name: "Personalizados", range: "50 m³ +", fits: "Espacios a la medida de tu operación", hint: "Se cotizan con visita técnica", href: "/espacios-personalizados/", differential: true },
 ];
 
 export const segments = [
@@ -178,20 +179,27 @@ export const clients = [
   "Distribuciones Bogotá",
 ];
 
+// `link` is UI-only (deep link at the end of each answer); FAQPage JSON-LD reads q/a alone.
 export const faq = [
   {
     q: "¿Cuánto cuesta una minibodega en Bogotá?",
-    a: "Depende del tamaño y de la sede. Como referencia, una bodega pequeña (1–5 m³) suele estar entre $150.000 y $350.000 COP al mes; una mediana (6–15 m³) entre $350.000 y $750.000; y una grande (16–50 m³) desde $750.000. Cada espacio se cotiza según sede y tamaño, sin costos ocultos y sin permanencia mínima. Pide tu cotización y te enviamos el valor exacto el mismo día.",
+    a: "Depende del tamaño y de la sede. Como referencia, una bodega pequeña (1-5 m³) suele estar entre $150.000 y $350.000 COP al mes; una mediana (6-15 m³) entre $350.000 y $750.000; y una grande (16-50 m³) desde $750.000. Cada espacio se cotiza según sede y tamaño, sin costos ocultos y sin permanencia mínima. Pide tu cotización y te enviamos el valor exacto el mismo día.",
+    link: { label: "Ver precios y tarifas", href: "/precios/" },
   },
   {
     q: "¿Qué tamaño necesito?",
-    a: "Algunas cajas y maletas caben en 1–3 m³. El contenido de un apartaestudio ocupa entre 4 y 8 m³, y el de un apartamento de dos alcobas entre 9 y 15 m³. Para inventario o mobiliario de empresa hablamos de 16 m³ en adelante. Usa la calculadora de espacio: en dos minutos te dice el tamaño recomendado y en qué sedes está disponible.",
+    a: "Algunas cajas y maletas caben en 1-3 m³. El contenido de un apartaestudio ocupa entre 4 y 8 m³, y el de un apartamento de dos alcobas entre 9 y 15 m³. Para inventario o mobiliario de empresa hablamos de 16 m³ en adelante. Usa la calculadora de espacio: en dos minutos te dice el tamaño recomendado y en qué sedes está disponible.",
+    link: { label: "Ir a la calculadora", href: CALC_URL },
   },
   {
     q: "¿Cómo accedo a mi bodega?",
-    a: "Cada bodega es independiente y se cierra con tu propio candado. Entras libremente en el horario de atención de tu sede (Lun–Vie 8:00–17:30 · Sáb 8:00–13:30), con registro individual de ingreso y monitoreo por CCTV 24/7 que acompaña cada visita. Puedes cambiar de tamaño cuando lo necesites.",
+    a: "Cada bodega es independiente y se cierra con tu propio candado. Entras libremente en el horario de atención de tu sede (Lun-Vie 8:00-17:30 · Sáb 8:00-13:30), con registro individual de ingreso y monitoreo por CCTV 24/7 que acompaña cada visita. Puedes cambiar de tamaño cuando lo necesites.",
+    link: { label: "Cómo cuidamos tu bodega", href: "/seguridad/" },
   },
 ];
+
+// PENDIENTE CONFIRMAR minutos reales de respuesta.
+export const reassurance = "Te respondemos en menos de 15 minutos en horario de atención.";
 
 export const nav = [
   { label: "Bodegaje", href: "/bodegaje-bogota/" },

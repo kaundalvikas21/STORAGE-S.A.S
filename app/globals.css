@@ -2,47 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tokens — mirror of design-system/MASTER.md («El Contenedor»). Brand hex pending: swap here only. */
+/* Tokens — mirror of design-system/MASTER.md («El Sistema»). Brand hex pending: swap here only. */
 :root {
-  --bg: #f2f0ea;
-  --bg-deep: #e9e6de;
-  --surface: #faf9f4;
-  --ink: #111111;
-  --ink-2: #2b3033;
-  --muted: #4a5459;
-  --muted-2: #7d868b;
-  --line: rgba(17, 17, 17, 0.15);
-  --primary: #e8541d;
-  --primary-deep: #c43f10;
-  --primary-soft: #fbe3d8;
-  --on-primary: #111111;
-  --accent: #4a5459;
-  --accent-deep: #333b3f;
-  --accent-soft: #dde1e2;
-  --on-accent: #f2f0ea;
-  --ring: #e8541d;
+  --bg: #ffffff;
+  --bg-deep: #f7f7f5;
+  --surface: #f7f7f5;
+  --ink: #16181d;
+  --ink-2: #343941;
+  --muted: #5a6069;
+  --muted-2: #6e7480;
+  --line: #e6e6e2;
+  --primary: #2456e6;
+  --primary-deep: #1b41b8;
+  --primary-soft: #eef2fd;
+  --on-primary: #ffffff;
+  --accent: #2456e6;
+  --accent-deep: #1b41b8;
+  --accent-soft: #eef2fd;
+  --on-accent: #ffffff;
+  --ring: #2456e6;
 
-  --r-sm: 0px;
-  --r-md: 2px;
-  --r-lg: 2px;
-  --r-xl: 2px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 8px;
+  --r-xl: 12px;
 
-  --sh-1: 2px 2px 0 var(--ink);
-  --sh-2: 4px 4px 0 var(--ink);
-  --sh-3: 6px 6px 0 var(--ink);
-  --sh-brass: 4px 4px 0 var(--primary);
+  --sh-1: 0 1px 2px rgba(22, 24, 29, 0.05);
+  --sh-2: 0 1px 3px rgba(22, 24, 29, 0.06);
+  --sh-3: 0 4px 12px rgba(22, 24, 29, 0.07);
+  --sh-brass: var(--sh-1);
 
   --ease: cubic-bezier(0, 0, 0.2, 1);
   --d-fast: 150ms;
-  --d: 180ms;
-  --d-slow: 240ms;
+  --d: 150ms;
+  --d-slow: 200ms;
 
-  --t-display: clamp(2.75rem, 1.4rem + 6.8vw, 6.875rem);
-  --t-3xl: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
-  --t-2xl: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
+  --t-display: clamp(2.5rem, 1.9rem + 2.9vw, 4rem);
+  --t-3xl: clamp(1.75rem, 1.4rem + 1.7vw, 2.5rem);
+  --t-2xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
 
-  /* Space Grotesk carries body copy too; IBM Plex Mono is metadata-only. */
+  /* Instrument Sans carries everything; body and mono alias display. */
   --font-body: var(--font-display);
+  --font-mono: var(--font-display);
 }
 
 html {
@@ -66,38 +67,14 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* Functional mono label — max 4 sections (MASTER.md §2). */
+/* Smallcaps-style label — max 4 sections (MASTER.md §2). */
 .eyebrow {
   display: inline-block;
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
-}
-
-/* Static blueprint grid, hero background. */
-.blueprint-grid {
-  background-image:
-    linear-gradient(rgba(17, 17, 17, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(17, 17, 17, 0.06) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-
-/* Outlined display text on ink bands (closing CTA). */
-.text-outline {
-  -webkit-text-stroke: 2px var(--bg);
-  color: transparent;
-}
-
-/* 1-frame mechanical press: hard offset shadow collapses, no transition. */
-.press {
-  box-shadow: var(--sh-2);
-}
-.press:active {
-  transform: translate(4px, 4px);
-  box-shadow: none;
 }
 
 /* Native accordion marker reset */
@@ -109,18 +86,6 @@ details > summary::-webkit-details-marker {
   display: none;
 }
 
-/* Marquee: closing band only. Pauses on hover; removed under reduced motion. */
-@keyframes drift {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.marquee-track {
-  animation: drift 22s linear infinite;
-}
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -128,5 +93,4 @@ details > summary::-webkit-details-marker {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-  .marquee-track { animation: none; }
 }

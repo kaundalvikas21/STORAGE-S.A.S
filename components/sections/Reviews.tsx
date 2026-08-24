@@ -1,6 +1,13 @@
-import { GoogleLogo } from "@phosphor-icons/react/dist/ssr";
+import { GoogleLogo, Star } from "@phosphor-icons/react/dist/ssr";
 import Reveal, { RevealItem, RevealRule } from "@/components/Reveal";
 import { reviews as seed, type Review } from "@/content/site";
+
+const initials = (name: string) =>
+  name
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2);
 
 /** Pass `reviews` from a server fetch (Google Places / reviews API) to replace the seed data. */
 export default function Reviews({ reviews = seed }: { reviews?: Review[] }) {
@@ -10,10 +17,10 @@ export default function Reviews({ reviews = seed }: { reviews?: Review[] }) {
         <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="eyebrow mb-3">Reseñas en Google</p>
-            <h2 id="reviews-title" className="font-display text-3xl font-bold uppercase text-ink max-w-[18ch]">Lo que dicen quienes ya guardan con nosotros</h2>
+            <h2 id="reviews-title" className="font-display text-3xl font-semibold text-ink max-w-[20ch]">Lo que dicen quienes ya guardan con nosotros</h2>
             <RevealRule className="mt-5 max-w-[320px]" />
           </div>
-          <p className="inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.08em] text-muted">
+          <p className="inline-flex items-center gap-2 text-[13px] text-muted">
             <GoogleLogo size={18} weight="regular" aria-hidden="true" /> Reseñas verificadas de Google
           </p>
         </Reveal>
@@ -21,16 +28,21 @@ export default function Reviews({ reviews = seed }: { reviews?: Review[] }) {
         <Reveal group as="ul" className="mt-10 grid gap-5 md:grid-cols-3" role="list">
           {reviews.map((r) => (
             <RevealItem as="li" key={`${r.author}-${r.date}`}>
-              <article className="h-full border-[1.5px] border-ink bg-surface shadow-2 p-6 md:p-7 flex flex-col">
-                <p role="img" aria-label={`Calificación: ${r.rating} de 5`} className="font-mono text-[15px] tracking-[0.25em] text-ink">
-                  <span aria-hidden="true">{"■".repeat(r.rating)}{"□".repeat(5 - r.rating)}</span>
+              <article className="flex h-full flex-col rounded-lg border border-line bg-bg p-6 md:p-7">
+                <p role="img" aria-label={`Calificación: ${r.rating} de 5`} className="flex gap-0.5">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <Star key={i} size={14} weight={i < r.rating ? "fill" : "regular"} aria-hidden="true" className="text-primary" />
+                  ))}
                 </p>
                 <blockquote className="mt-4 text-[15px] text-ink-2 leading-relaxed">
                   <p>“{r.text}”</p>
                 </blockquote>
-                <footer className="mt-auto pt-5 flex items-center justify-between gap-3 border-t border-line">
-                  <span className="pt-3 text-[13px] font-semibold text-ink">{r.author}</span>
-                  <span className="pt-3 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{r.sede}</span>
+                <footer className="mt-auto flex items-center gap-3 border-t border-line pt-4 mt-5">
+                  <span aria-hidden="true" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-[12px] font-semibold text-muted">
+                    {initials(r.author)}
+                  </span>
+                  <span className="text-[13px] font-semibold text-ink">{r.author}</span>
+                  <span className="ml-auto text-[12px] text-muted">{r.sede}</span>
                 </footer>
               </article>
             </RevealItem>
