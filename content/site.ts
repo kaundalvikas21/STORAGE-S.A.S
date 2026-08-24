@@ -32,6 +32,7 @@ export type Sede = {
   image: string;
   alt: string;
   badge?: string;
+  sizesHint: string;
 };
 
 // COMMERCIAL RULE: Calle 197 is always first. Never sort, never randomize this array.
@@ -45,6 +46,7 @@ export const sedes: Sede[] = [
     image: "/img/sede-calle-197.svg",
     alt: "Fachada de la nueva sede Storage en la Autopista Norte con Calle 197, con acceso vehicular amplio",
     badge: "Nueva sede",
+    sizesHint: "Todos los tamaños y personalizados",
   },
   {
     slug: "toberin",
@@ -54,6 +56,7 @@ export const sedes: Sede[] = [
     address: "Calle 163 con Carrera 19B, Toberín, Bogotá — 3 puntos, PENDIENTE CONFIRMAR nomenclaturas",
     image: "/img/sede-toberin.svg",
     alt: "Pasillo de minibodegas en la sede Toberín con iluminación cálida y puertas numeradas",
+    sizesHint: "Bodegas pequeñas y medianas",
   },
   {
     slug: "spring-calle-135",
@@ -63,6 +66,7 @@ export const sedes: Sede[] = [
     address: "Calle 135 # 46-55, Bogotá",
     image: "/img/sede-spring.svg",
     alt: "Entrada de la sede Spring en la Calle 135 con zona de cargue cubierta",
+    sizesHint: "Bodegas pequeñas, medianas y grandes",
   },
   {
     slug: "paloquemao",
@@ -72,7 +76,21 @@ export const sedes: Sede[] = [
     address: "Paloquemao, Bogotá — 2 puntos (Paloquemao 32 y 17), PENDIENTE CONFIRMAR nomenclaturas",
     image: "/img/sede-paloquemao.svg",
     alt: "Bodegas con acceso para carga en la sede Paloquemao, en el centro de Bogotá",
+    sizesHint: "Bodegas medianas y grandes",
   },
+];
+
+// Pins for the stylized SVG map (viewBox 0 0 240 300). One pin per physical point;
+// clusters share the slug of their sede card so card hover/focus highlights them together.
+// Same order rule: Calle 197 first.
+export const sedePins: { slug: string; label: string; x: number; y: number }[] = [
+  { slug: "autopista-norte-197", label: "Autopista Norte · Calle 197", x: 150, y: 42 },
+  { slug: "toberin", label: "Toberín 1", x: 140, y: 80 },
+  { slug: "toberin", label: "Toberín 2", x: 152, y: 90 },
+  { slug: "toberin", label: "Toberín 3", x: 132, y: 92 },
+  { slug: "spring-calle-135", label: "Spring · Calle 135", x: 100, y: 120 },
+  { slug: "paloquemao", label: "Paloquemao 32", x: 96, y: 208 },
+  { slug: "paloquemao", label: "Paloquemao 17", x: 108, y: 218 },
 ];
 
 // Footer lists the 7 physical addresses as text (spec §01-3). Same order rule.
@@ -93,18 +111,27 @@ export const zones = [
   { label: "Centro", href: "/sedes/paloquemao/" },
 ];
 
-// `answer` feeds the hero size-checker. Calle 197 always named first (commercial rule).
+// `answer` feeds the visualizer availability line; `m3` is the preset the intent cards
+// push into the shared calc store; `sizeLabel` is the visualizer readout.
+// Calle 197 always named first (commercial rule).
 export const intentCards = [
-  { id: "cajas", title: "Algunas cajas", range: "1-3 m³", hint: "Cajas, maletas, archivo", answer: "Bodega pequeña, disponible en Calle 197 y Toberín" },
-  { id: "apartaestudio", title: "Apartaestudio", range: "4-8 m³", hint: "Cama, nevera, escritorio", answer: "Bodega mediana, disponible en Calle 197 y Toberín" },
-  { id: "apartamento", title: "Apartamento", range: "9-15 m³", hint: "Sala, comedor, 2 alcobas", answer: "Bodega mediana o grande, disponible en Calle 197 y Spring" },
-  { id: "empresa", title: "Empresa", range: "16 m³ +", hint: "Inventario, mobiliario, archivo", answer: "Bodega grande o personalizada, disponible en Calle 197 y Paloquemao" },
+  { id: "cajas", title: "Algunas cajas", range: "1-3 m³", m3: 2, sizeLabel: "Bodega pequeña", hint: "Cajas, maletas, archivo", answer: "Bodega pequeña, disponible en Calle 197 y Toberín" },
+  { id: "apartaestudio", title: "Apartaestudio", range: "4-8 m³", m3: 6, sizeLabel: "Bodega mediana", hint: "Cama, nevera, escritorio", answer: "Bodega mediana, disponible en Calle 197 y Toberín" },
+  { id: "apartamento", title: "Apartamento", range: "9-15 m³", m3: 12, sizeLabel: "Bodega grande", hint: "Sala, comedor, 2 alcobas", answer: "Bodega mediana o grande, disponible en Calle 197 y Spring" },
+  { id: "empresa", title: "Empresa", range: "16 m³ +", m3: 20, sizeLabel: "Bodega grande", hint: "Inventario, mobiliario, archivo", answer: "Bodega grande o personalizada, disponible en Calle 197 y Paloquemao" },
 ] as const;
+
+// Labels for the hero m³ visualizer (interactive moment 1).
+export const visualizer = {
+  title: "¿Cuánto espacio necesitas?",
+  sliderLabel: "Arrastra para estimar tu espacio",
+  cta: "Calcular con precisión",
+};
 
 export const sizes = [
   { name: "Pequeñas", range: "1-5 m³", fits: "Cajas, archivo, objetos sueltos", hint: "Disponible en todas las sedes", href: "/bodegas-pequenas/" },
   { name: "Medianas", range: "6-15 m³", fits: "Apartamento de 1-2 alcobas", hint: "Disponible en todas las sedes", href: "/bodegas-medianas/" },
-  { name: "Grandes", range: "16-50 m³", fits: "Casa completa, inventario", hint: "Mayor disponibilidad en Calle 197", href: "/bodegas-grandes/" },
+  { name: "Grandes", range: "16-50 m³", fits: "Casa completa, inventario", hint: "Calle 197 · Alta disponibilidad", hot: true, href: "/bodegas-grandes/" },
   { name: "Personalizados", range: "50 m³ +", fits: "Espacios a la medida de tu operación", hint: "Se cotizan con visita técnica", href: "/espacios-personalizados/", differential: true },
 ];
 
@@ -200,6 +227,9 @@ export const faq = [
 
 // PENDIENTE CONFIRMAR minutos reales de respuesta.
 export const reassurance = "Te respondemos en menos de 15 minutos en horario de atención.";
+
+// FAQ dark cell: the honest range from faq[0], restated as a scannable line.
+export const priceSummary = "Pequeña $150.000-$350.000 · Mediana $350.000-$750.000 · Grande desde $750.000 COP/mes";
 
 export const nav = [
   { label: "Bodegaje", href: "/bodegaje-bogota/" },
