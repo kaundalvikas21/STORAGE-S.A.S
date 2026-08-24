@@ -35,14 +35,14 @@ export default function ClosingBand() {
               white fill at this alpha would wash it out instead of seating it. */}
           <Reveal delay={0.2} className="rounded-xl bg-primary-deep/50 ring-1 ring-on-primary/20 backdrop-blur-md p-1.5">
             <div className="rounded-xl-inner bg-on-primary/[0.05] p-6 md:p-8">
-              <ul className="grid grid-cols-3 gap-4 pb-6 border-b border-on-primary/15" role="list">
+              <ul className="grid grid-cols-3 items-center gap-4 pb-6 border-b border-on-primary/15" role="list">
                 {figures.map((f) => (
                   <li key={f.label}>
                     <p className="tnum font-display text-2xl md:text-3xl font-semibold text-accent">
                       {f.value}
                       {f.suffix}
                     </p>
-                    <p className="mt-1 text-[13px] text-on-primary/75 leading-snug">{f.label}</p>
+                    <p className="mt-1 min-h-[2.75em] md:min-h-0 text-[13px] text-on-primary/75 leading-snug">{f.label}</p>
                   </li>
                 ))}
               </ul>
