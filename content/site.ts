@@ -80,18 +80,26 @@ export const sedes: Sede[] = [
   },
 ];
 
-// Pins for the stylized SVG map (viewBox 0 0 240 300). One pin per physical point;
-// clusters share the slug of their sede card so card hover/focus highlights them together.
-// Same order rule: Calle 197 first.
-export const sedePins: { slug: string; label: string; x: number; y: number }[] = [
-  { slug: "autopista-norte-197", label: "Autopista Norte · Calle 197", x: 150, y: 42 },
-  { slug: "toberin", label: "Toberín 1", x: 140, y: 80 },
-  { slug: "toberin", label: "Toberín 2", x: 152, y: 90 },
-  { slug: "toberin", label: "Toberín 3", x: 132, y: 92 },
-  { slug: "spring-calle-135", label: "Spring · Calle 135", x: 100, y: 120 },
-  { slug: "paloquemao", label: "Paloquemao 32", x: 96, y: 208 },
-  { slug: "paloquemao", label: "Paloquemao 17", x: 108, y: 218 },
+// Pins for the interactive sede map. One pin per physical point; clusters share the
+// slug of their sede card so card hover/focus highlights them together.
+// Same order rule: Calle 197 first. PENDIENTE CONFIRMAR coordenadas exactas con las direcciones reales.
+export const sedePins: { slug: string; label: string; lat: number; lng: number }[] = [
+  { slug: "autopista-norte-197", label: "Autopista Norte · Calle 197", lat: 4.7662, lng: -74.0459 },
+  { slug: "toberin", label: "Toberín 1", lat: 4.7451, lng: -74.0463 },
+  { slug: "toberin", label: "Toberín 2", lat: 4.7439, lng: -74.0441 },
+  { slug: "toberin", label: "Toberín 3", lat: 4.7462, lng: -74.0489 },
+  { slug: "spring-calle-135", label: "Spring · Calle 135", lat: 4.7256, lng: -74.0621 },
+  { slug: "paloquemao", label: "Paloquemao 32", lat: 4.6172, lng: -74.0843 },
+  { slug: "paloquemao", label: "Paloquemao 17", lat: 4.6136, lng: -74.0862 },
 ];
+
+// Map tiles. OSM is a DEV PLACEHOLDER only: the OSMF tile policy does not allow
+// hard-coded commercial production use. PENDIENTE: swap for the client's free
+// MapTiler/Stadia key (URL + attribution) before launch. Swap here only.
+export const mapTiles = {
+  url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+};
 
 // Footer lists the 7 physical addresses as text (spec §01-3). Same order rule.
 export const allAddresses: { label: string; address: string }[] = [

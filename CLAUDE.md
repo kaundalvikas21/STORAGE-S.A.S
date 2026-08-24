@@ -30,7 +30,7 @@ Single-page marketing site for Storage S.A.S (minibodegas, Bogotá), Spanish (`e
 
 **Motion:** `lib/motion.ts` defines the shared `snap`/`rise`/`stagger` variants. `components/Reveal.tsx` (`Reveal`, `RevealItem` named export — not `Reveal.Item`) is the scroll-reveal wrapper; it renders static markup under `prefers-reduced-motion`. Use it rather than hand-rolled `motion.*` in sections.
 
-**Server/client split:** sections are server components by default. Only `Header`, `Reveal`, `AnimatedNumber`, `IntentCards`, `HeroVisualizer`, `ShowcaseCycler`, `ScrollRow`, `Magnetic` are `"use client"` (one interactive moment each). Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
+**Server/client split:** sections are server components by default. Only `Header`, `Reveal`, `AnimatedNumber`, `IntentCards`, `HeroVisualizer`, `ShowcaseCycler`, `ScrollRow`, `Magnetic`, `SedeMap` + `SedeLeafletMap` (Leaflet, lg-only lazy chunk) are `"use client"`. Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
 
 **Page order is SEO-locked.** `app/page.tsx` DOM order follows wireframe T1; mobile reorders (zone selector under hero) use CSS `order-*` on the flex column, never JSX reordering.
 

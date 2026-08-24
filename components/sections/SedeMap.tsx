@@ -1,50 +1,31 @@
-import { sedePins } from "@/content/site";
+"use client";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+
+const LazyMap = dynamic(() => import("@/components/sections/SedeLeafletMap"), {
+  ssr: false,
+  loading: () => <div aria-hidden="true" className="h-full w-full animate-pulse bg-bg" />,
+});
 
 /**
- * Stylized Bogotá map with the 7 physical points. Hand-rolled SVG ILLUSTRATION,
- * declared in MASTER.md §8.1. The whole cell is aria-hidden: the sede card list
- * alone carries the information; pins light up from card hover/focus via the
- * `.sede-band:has()` rules in globals.css (interactive moment 3, zero JS).
+ * Interactive Bogotá map cell (Leaflet). Desktop-only: the sede card list alone
+ * carries all the information, the map is a faster way in. Mounted only at lg+
+ * so mobile never downloads the map chunk or a single tile.
+ * ponytail: initial matchMedia check only; a mid-session resize past 1024px needs a reload.
  */
 export default function SedeMap() {
-  const featured = sedePins[0];
+  const [desktop, setDesktop] = useState(false);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- deliberate post-hydration gate: mobile must not download the map chunk
+    setDesktop(window.matchMedia("(min-width: 1024px)").matches);
+  }, []);
   return (
-    <div aria-hidden="true" className="relative hidden h-full min-h-[420px] overflow-hidden rounded-lg border border-line bg-surface shadow-1 lg:block">
-      <svg viewBox="0 0 240 300" className="absolute inset-0 h-full w-full p-6">
-        {/* City silhouette (stylized, not cartographic) */}
-        <path
-          d="M150 18 C170 30 178 60 168 92 C190 120 196 160 180 200 C170 245 140 275 105 282 C75 286 52 268 48 236 C44 205 58 180 66 150 C74 122 84 95 104 70 C118 48 132 26 150 18 Z"
-          fill="var(--bg)"
-          stroke="var(--line)"
-          strokeWidth="1.5"
-        />
-        {/* Autopista Norte: the axis the northern sedes hang from */}
-        <path d="M112 270 C118 220 130 160 140 110 C145 85 148 62 150 40" fill="none" stroke="var(--line)" strokeWidth="2" strokeDasharray="1 6" strokeLinecap="round" />
-        {/* Outer <g> positions (SVG attribute), inner <g> carries the CSS scale/pulse —
-            a CSS transform would otherwise REPLACE the translate and send the pin to 0,0. */}
-        {sedePins.slice(1).map((p) => (
-          <g key={p.label} transform={`translate(${p.x}, ${p.y})`}>
-            <g data-pin={p.slug}>
-              <circle r="6" fill="var(--muted-2)" opacity="0.9" />
-              <circle r="2.5" fill="var(--surface)" />
-            </g>
-          </g>
-        ))}
-        {/* Calle 197: larger pin, single pulse (not looping) */}
-        <g transform={`translate(${featured.x}, ${featured.y})`}>
-          <g data-pin={featured.slug} className="pin-pulse">
-            <circle r="12" fill="var(--primary)" opacity="0.18" />
-            <circle r="8" fill="var(--primary)" />
-            <circle r="3" fill="var(--on-primary)" />
-          </g>
-        </g>
-      </svg>
-      <span
-        className="absolute rounded-full bg-accent px-2.5 py-1 text-[12px] font-medium text-on-accent shadow-1"
-        style={{ left: `${(featured.x / 240) * 100}%`, top: `${(featured.y / 300) * 100}%`, transform: "translate(14px, -50%)" }}
-      >
-        Nueva sede · Alta disponibilidad
-      </span>
+    <div
+      role="region"
+      aria-label="Mapa de sedes en Bogotá"
+      className="relative hidden h-full min-h-[420px] overflow-hidden rounded-lg border border-line bg-surface shadow-1 lg:block"
+    >
+      {desktop && <LazyMap />}
     </div>
   );
 }

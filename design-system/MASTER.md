@@ -56,12 +56,13 @@ Dials: DESIGN_VARIANCE 7 · MOTION_INTENSITY 7 · VISUAL_DENSITY 6
 - **Cells/cards**: `--r-lg`, `--surface` fill, `1px --line` border, `--sh-1`; hover `--sh-2` + `-translate-y-0.5`. One dark featured cell max per band. Background diversity per band: white + dark + indigo-soft/photo.
 - **Lime**: availability and positive states only ("Alta disponibilidad" chips, dark-cell stat numerals). Never body text, never on light without `--on-accent` treatment, never decorative.
 - **Numbers**: `.tnum` always; `--primary` on light, `--accent` on dark cells.
-- **Imagery**: `next/image` with Spanish alt in sede cards and the Bodegaje showcase; illustrations (iso unit, map) are inline SVG consuming tokens.
+- **Imagery**: `next/image` with Spanish alt in sede cards and the Bodegaje showcase; the iso-unit illustration is inline SVG consuming tokens. The sede map is a real Leaflet map (desktop-only cell): grayscale-filtered tiles (`.sede-tiles`), token-styled divIcon pins and popups, scroll-zoom off.
 - **Icons**: Phosphor 16-24px `weight="regular"` (stars `fill`). One family; no hand-rolled SVG icons.
 - **Banned**: glass/backdrop-blur, gradient text, neon glows, three.js, scroll-jacking, autoplay video, second marquee, cursor gimmicks.
 
 ## 8. Declared exceptions (do not "fix")
-1. **Hand-rolled SVG illustrations** (isometric unit in `IsoUnit`, Bogotá map in `SedeMap`, noise data-URI): brief-mandated illustrations. The Phosphor-only rule covers *icons* and still stands.
+1. **Hand-rolled SVG illustrations** (isometric unit in `IsoUnit`, noise data-URI): brief-mandated illustrations. The Phosphor-only rule covers *icons* and still stands.
+1b. **External map tiles** (`SedeLeafletMap`): the only external asset host on the page. OSM tiles are a DEV PLACEHOLDER (OSMF policy forbids hard-coded commercial production use); the client's free MapTiler/Stadia key is PENDIENTE and swaps in `content/site.ts` `mapTiles` only. Attribution control must stay visible. Map chunk + tiles load only at lg+ (mobile never pays for them).
 2. **Marquee** (`ClientLogos`): the single permitted marquee. CSS-only, pauses on hover/focus, static wrapped row under reduced motion.
 3. **Dark inverted cells** (`.dark-cell`: SiloDoors featured, TrustBar, FAQ left): core to this variant's bento rhythm. A local variable scope, not a theme flip — the page theme stays light, locked.
 4. **Second accent** (lime `--accent`): deliberately breaks the single-accent aliasing of El Sistema. Scope-limited to availability/positive states; contrast rules in §1.
