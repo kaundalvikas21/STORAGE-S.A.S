@@ -93,10 +93,13 @@ Matrix (utilities live in `app/globals.css`, applied by class — no per-compone
 - **Labels are 12px minimum**, mono, uppercase. 11px is below the floor for metadata/legal text.
 - **Focus rings use the standard `--ring`.** Orange is visible on ink, so the `ring-ink` swap the
   old orange block needed is gone.
-- **Two tiers, not four equal columns.** The three short link lists (Bodegaje, Mudanzas,
-  Empresa) sit side by side; the sede index spans the full width below them with its four zones
-  in a row. Forcing the sede index into a quarter-width column made it 726px tall against a
-  208px neighbour — 518px of dead space above the NAP plate. Two tiers cut that to 102px.
+- **Four equal columns at `lg`, 2x2 at `md`.** Order is Bodegaje, Sedes en Bogotá, Mudanzas,
+  Empresa: the sede index sits second so the two location-led lists read together. Its zones
+  stack single-column inside the ~270px track. Known tradeoff, measured: a quarter-width sede
+  index runs about 726px against a 208px neighbour, leaving dead space above the NAP plate. The
+  earlier two-tier layout cut that to 102px and was traded away for the adjacency. Roughly half
+  the height is placeholder bloat — every address still ends in `PENDIENTE CONFIRMAR`, forcing a
+  3-line wrap; re-measure once the real addresses land before reopening the layout.
 - **Columns are accordions below `md`, plain columns at and above it.** Progressive enhancement
   only: the server renders every `<details>` open, and JS collapses all but the first once it
   knows the viewport is narrow. Never invert this — forcing them open with `::details-content`
@@ -109,9 +112,8 @@ Matrix (utilities live in `app/globals.css`, applied by class — no per-compone
   (`--sh-2` is an ink shadow, `RevealRule` is `bg-ink/30`) and vanish on an ink surface. Use a
   paper-border invert for controls.
 - **Rules are structural only — never decoration under a heading.** The footer earns exactly
-  four at desktop: the footer boundary (`border-bg/25`), the masthead under the wordmark
-  (`border-bg/15`), the tier divider above the sede index (`border-bg/15`), and the NAP plate
-  frame (`border-bg/25`). Nothing else. Eight hairlines at four different widths read as noise;
+  three at desktop: the footer boundary (`border-bg/25`), the masthead under the wordmark
+  (`border-bg/15`), and the NAP plate frame (`border-bg/25`). Nothing else. Eight hairlines at four different widths read as noise;
   display type and the orange zone labels carry the hierarchy on their own, and spacing does
   the separating. Below `md` each accordion row keeps its own rule as tap affordance — that one
   is functional, not decorative. Boundary rules use `/25`, internal rules `/15`; do not mix.

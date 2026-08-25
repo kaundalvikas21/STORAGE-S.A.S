@@ -27,9 +27,9 @@ const list = (items: { label: string; href: string }[]) => (
 export default function Footer() {
   const columns = [
     { title: "Bodegaje", body: list(footerCols.bodegaje) },
+    { title: "Sedes en Bogotá", body: <SedeIndex /> },
     { title: "Mudanzas", body: list(footerCols.mudanzas) },
     { title: "Empresa · Legales · PQRS", body: list(footerCols.empresa) },
-    { title: "Sedes en Bogotá", body: <SedeIndex />, full: true },
   ];
 
   return (

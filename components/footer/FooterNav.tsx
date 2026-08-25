@@ -3,14 +3,14 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { RevealItem, RevealStagger } from "@/components/motion/Reveal";
 
-type Props = { columns: { title: string; body: ReactNode; full?: boolean }[] };
+type Props = { columns: { title: string; body: ReactNode }[] };
 
 /**
  * No rule under the heading at desktop. Eight hairlines at four different widths read as
  * noise, not structure — the display type and the orange zone labels already carry the
  * hierarchy. Spacing separates the heading from its list instead. The only rules left in the
- * footer are the ones doing structural work: the footer boundary, the masthead, the tier
- * divider and the NAP plate. Below `md` the accordion keeps its row rule as tap affordance.
+ * footer are the ones doing structural work: the footer boundary, the masthead and the NAP
+ * plate. Below `md` the accordion keeps its row rule as tap affordance.
  */
 const summaryCls =
   "flex items-center justify-between gap-4 py-4 md:py-0 md:mb-5 " +
@@ -41,15 +41,12 @@ export default function FooterNav({ columns }: Props) {
 
   return (
     <nav aria-label="Enlaces del pie">
-      {/* Two tiers: the short link lists sit side by side, and the sede index — which is 3x
-          taller than any of them — spans the full width instead of leaving a ragged void
-          under its neighbours. Same accordion mechanism for both. */}
-      <RevealStagger className="grid gap-y-2 md:gap-x-10 md:gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+      {/* Four equal columns at lg, 2x2 at md. The sede index sits second, next to Bodegaje,
+          so the two location-led lists read together. It stays ~3x taller than its neighbours;
+          see design-system/MASTER.md §10 for the tradeoff. Same accordion mechanism for all. */}
+      <RevealStagger className="grid gap-y-2 md:gap-x-10 md:gap-y-12 md:grid-cols-2 lg:grid-cols-4">
         {columns.map((col, i) => (
-          <RevealItem
-            key={col.title}
-            className={col.full ? "md:col-span-2 lg:col-span-3 md:mt-2 md:border-t md:border-bg/15 md:pt-12" : undefined}
-          >
+          <RevealItem key={col.title}>
             <details
               ref={(el) => {
                 refs.current[i] = el;

@@ -21,7 +21,7 @@ export default function SedeIndex() {
 
   return (
     <div>
-      <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
+      <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2 md:grid-cols-1" role="list">
         {Object.entries(zones).map(([zone, points]) => (
           <li key={zone}>
             <p className="mb-3 flex items-baseline gap-2 font-mono text-[11px] uppercase tracking-[0.12em] text-primary">
