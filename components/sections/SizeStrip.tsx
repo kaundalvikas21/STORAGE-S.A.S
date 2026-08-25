@@ -5,8 +5,13 @@ import Reveal, { RevealItem } from "@/components/Reveal";
 import { sizePhotos } from "@/content/images";
 import { sizes } from "@/content/site";
 
+/* No lift: the photograph carries the hover (scale-zoom inside a fixed frame) and the ring warms
+   to brass. `ring-1` sits in the shared string so every cell shares one hover ring; the rest colour
+   comes from the variant below. Chip = the arrow badge that fills on hover. */
 const card =
-  "group flex h-full flex-col overflow-hidden rounded-lg cursor-pointer transition-[transform,box-shadow] duration-DEFAULT ease-premium hover:-translate-y-lift hover:shadow-2 active:translate-y-0 active:scale-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
+  "group flex h-full flex-col overflow-hidden rounded-lg cursor-pointer ring-1 shadow-1 transition-[transform,box-shadow,background-color] duration-DEFAULT ease-premium hover:ring-accent/40 active:scale-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
+const chip =
+  "flex h-7 w-7 items-center justify-center rounded-full transition-[transform,background-color,color] duration-DEFAULT ease-premium group-hover:translate-x-0.5 group-hover:-translate-y-px";
 
 export default function SizeStrip() {
   return (
@@ -25,7 +30,7 @@ export default function SizeStrip() {
             const img = sizePhotos[s.href];
             return (
               <RevealItem as="li" key={s.href}>
-                <Link href={s.href} className={`${card} ${s.differential ? "bg-primary text-on-primary shadow-1" : "bg-surface ring-1 ring-line shadow-1"}`}>
+                <Link href={s.href} className={`${card} ${s.differential ? "bg-primary text-on-primary ring-primary hover:bg-primary-deep" : "bg-surface ring-line"}`}>
                   {img && <Photo img={img} sizes="(min-width: 1024px) 290px, (min-width: 640px) 50vw, 100vw" className="aspect-[16/10]" />}
                   <div className="flex flex-1 flex-col p-5 md:p-6">
                     <div className="flex flex-wrap items-start justify-between gap-2">
@@ -40,7 +45,7 @@ export default function SizeStrip() {
                     <p className={`mt-2 text-[14px] ${s.differential ? "text-on-primary/85" : "text-ink-2"}`}>{s.fits}</p>
                     <span className={`mt-auto pt-5 inline-flex items-center gap-2 text-[14px] font-semibold ${s.differential ? "text-on-primary" : "text-primary"}`}>
                       Ver {s.name.toLowerCase()}
-                      <span className={`flex h-7 w-7 items-center justify-center rounded-full transition-transform duration-DEFAULT ease-premium group-hover:translate-x-0.5 group-hover:-translate-y-px ${s.differential ? "bg-on-primary/15" : "bg-primary/10"}`}>
+                      <span className={`${chip} ${s.differential ? "bg-on-primary/15 group-hover:bg-accent group-hover:text-on-accent" : "bg-primary/10 group-hover:bg-primary group-hover:text-on-primary"}`}>
                         <ArrowUpRight size={14} weight="bold" aria-hidden="true" />
                       </span>
                     </span>

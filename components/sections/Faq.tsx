@@ -3,8 +3,10 @@ import { ArrowRight, Plus } from "@phosphor-icons/react/dist/ssr";
 import Reveal, { RevealItem } from "@/components/Reveal";
 import { faq } from "@/content/site";
 
-/** Native <details> accordion: no JS state. Height animates via interpolate-size + ::details-content
- *  (app/globals.css); browsers without it snap open. Content mirrored in FAQPage JSON-LD (app/page.tsx). */
+/** Native <details> accordion: no JS state. `name="faq"` makes it an exclusive group, so the browser
+ *  closes the previously open row; browsers without it just allow several open. Height animates via
+ *  interpolate-size + ::details-content (app/globals.css); browsers without it snap open.
+ *  Content mirrored in FAQPage JSON-LD (app/page.tsx). */
 export default function Faq() {
   return (
     <section aria-labelledby="faq-title" className="order-11">
@@ -22,10 +24,10 @@ export default function Faq() {
           <Reveal group className="flex flex-col gap-3">
             {faq.map((f, i) => (
               <RevealItem key={f.q}>
-                <details className="group rounded-lg bg-surface ring-1 ring-line shadow-1 open:shadow-2 transition-shadow duration-DEFAULT ease-premium" open={i === 0}>
+                <details name="faq" className="group rounded-lg bg-surface ring-1 ring-line shadow-1 open:shadow-2 open:ring-primary/35 open:bg-primary-soft/30 transition-[box-shadow,background-color] duration-DEFAULT ease-premium" open={i === 0}>
                   <summary className="flex items-center justify-between gap-4 p-5 md:p-6 rounded-lg cursor-pointer transition-colors duration-fast ease-premium hover:bg-primary-soft/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
                     <h3 className="font-display text-lg md:text-xl font-semibold text-ink">{f.q}</h3>
-                    <span className="faq-chevron flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary transition-transform duration-DEFAULT ease-premium">
+                    <span className="faq-chevron flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary group-open:bg-primary group-open:text-on-primary transition-[transform,background-color,color] duration-DEFAULT ease-premium">
                       <Plus size={16} weight="bold" aria-hidden="true" />
                     </span>
                   </summary>

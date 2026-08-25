@@ -67,8 +67,9 @@ Every hover/press/focus value is a variable — no magic numbers in JSX.
 - Linked card: lift + shadow 1→2, photo zooms inside its frame, arrow nudges x+2px; the whole card is the `<Link>`.
 - Text link: underline draws left→right (`.link-underline`, `--transition-fast`).
 - Nav item: underline-draw + colour shift; `aria-current` keeps a persistent accent marker.
-- FAQ row: background tint on hover; open rotates the `+` 45°, content height animates (`interpolate-size`).
-- Sede card: reveals the "Cómo llegar" action row on hover; always visible on touch (`@media (hover: none)`).
+- FAQ row: background tint on hover; exclusive group (`name="faq"`), so opening one closes the previous. Open state = `primary/35` ring, `primary-soft/30` card tint, `shadow-2`, and the `+` chip inverts to solid `primary` while rotating 45°; content height animates (`interpolate-size`).
+- Sede card (photo-led, so the photograph carries the hover, not the card): frame stays put, photo scales to `--photo-zoom`, shell ring warms `line` → `accent/40` over an `accent-soft/50` bezel, and the "Cómo llegar" arrow chip fills solid `primary`. The action row is always visible, pinned to the card foot.
+- Size card: same contract. Ring warms to `accent/40`, the photo zooms, and the arrow chip fills - `primary` on the light cells, `accent` on the dark differential cell, which deepens to `primary-deep` on hover instead of zooming since it carries no photograph.
 - Logo row: opacity 60 → 100; track pauses on hover **and** `:focus-within`.
 - Inputs: ring + label colour shift. *No form exists on this page yet (quote/calculator are external URLs) — the rule is recorded for when one lands.*
 - `prefers-reduced-motion: reduce` → all transitions/animations 0ms, reveals render static, count-ups show final value.
@@ -76,7 +77,7 @@ Every hover/press/focus value is a variable — no magic numbers in JSX.
 
 ## 7. Component rules
 - **Buttons**: pill, `px-6 py-3`, 15px/600. Primary = brass bg + ink text; Secondary = green 1.5px outline + green text; Ghost on dark = off-white outline. Trailing icon sits in its own 32px circle (`bg-black/5`). `cursor-pointer`, `focus-visible:ring-2 ring-offset-2`.
-- **Cards**: double bezel — outer shell `bg-bg-deep ring-1 ring-line p-1.5 rounded-[--r-xl]`, inner core `bg-surface rounded-[calc(var(--r-xl)-6px)] shadow-sh-1`. Hover → `shadow-sh-2`, translateY(-2px).
+- **Cards**: double bezel — outer shell `bg-bg-deep ring-1 ring-line p-1.5 rounded-[--r-xl]`, inner core `bg-surface rounded-[calc(var(--r-xl)-6px)] shadow-sh-1`. Hover → `shadow-sh-2`, translateY(-2px), **except the sede and size cards**, whose hover lives in the photograph instead (§6.1).
 - **Chips**: pill, `px-3 py-1`, 12px/500, `primary-soft` bg + primary text; wrap freely (`flex-wrap`, no `whitespace-nowrap` on long Spanish words).
 - **Badges** carry an icon + text (meaning never by color alone).
 - **Eyebrow** precedes every H2.
@@ -90,4 +91,5 @@ Every hover/press/focus value is a variable — no magic numbers in JSX.
 2. **`--ease-premium` / `--transition-fast` / `--transition-base` are aliases**, not new values. The spec names them; La Bóveda already had `--ease` / `--d-fast` / `--d` for the same concepts. Aliasing keeps one speed per concept instead of two competing ones.
 3. **WhatsApp is text, never a link.** The spec asks for click-to-contact; the CRO rule outranks it — every CTA routes to `/cotizar/` so the qualifying form is never bypassed.
 4. **Hand-rolled line-art SVGs in `IntentCards`.** Phosphor has no "apartaestudio vs apartamento volume" glyph; the four illustrations encode growing scale, which is the section's whole point.
-5. **`SizeStrip` shows four cards, only three carry photos.** "Personalizados" is the dark differential cell — photo-less by design, so the row never reads as four identical cards.
+5. **The sede badge is a full-bleed band on the photo's bottom edge.** Taste-skill bans pills and credits over photography; a band is neither, and floating it is what keeps all four card titles flush - in flow it pushed the featured card's title ~44px down. The copy needs 217px at `lg` against the 198px a corner pill leaves, so it was never fitting in a corner anyway.
+6. **`SizeStrip` shows four cards, only three carry photos.** "Personalizados" is the dark differential cell — photo-less by design, so the row never reads as four identical cards.

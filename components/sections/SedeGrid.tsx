@@ -22,30 +22,37 @@ export default function SedeGrid() {
         {/* Order comes from content/site.ts — Calle 197 first, by commercial rule. */}
         <Reveal group as="ul" className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" role="list">
           {sedes.map((s) => (
-            <RevealItem as="li" key={s.slug} className="sede-card">
-              <Link href={`/sedes/${s.slug}/`} className="group block h-full rounded-xl bg-bg-deep ring-1 ring-line p-1.5 cursor-pointer transition-[transform,box-shadow] duration-DEFAULT ease-premium hover:-translate-y-lift hover:shadow-2 active:translate-y-0 active:scale-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
+            <RevealItem as="li" key={s.slug}>
+              <Link href={`/sedes/${s.slug}/`} className="group block h-full rounded-xl bg-bg-deep ring-1 ring-line p-1.5 cursor-pointer transition-[transform,box-shadow,background-color] duration-DEFAULT ease-premium hover:bg-accent-soft/50 hover:ring-accent/40 active:scale-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
                 <div className="h-full rounded-xl-inner bg-surface shadow-inset overflow-hidden flex flex-col">
-                  <div className="relative">
+                  {/* Hover lives in the photograph (scale-zoom inside a fixed frame), not in the card. */}
+                  <div className="relative shrink-0">
                     <Photo
                       img={sedePhotos[s.slug]}
                       sizes="(min-width: 1024px) 290px, (min-width: 640px) 50vw, 100vw"
                       className="aspect-[4/3]"
                     />
+                    {/* Full-bleed band on the photo's bottom edge, never a corner pill: the copy gets a
+                        whole card width to wrap in, and floating it keeps every card title flush. */}
                     {s.badge && (
-                      <span className="absolute left-3 top-3 max-w-[calc(100%-1.5rem)] inline-flex items-start gap-1.5 rounded-full bg-accent px-3 py-1.5 text-[10px] font-medium uppercase leading-tight tracking-[0.1em] text-on-accent shadow-1">
-                        <Sparkle size={11} weight="fill" aria-hidden="true" className="mt-px shrink-0" />
+                      <p className="absolute inset-x-0 bottom-0 flex items-center gap-1.5 bg-accent px-5 py-2 text-[11px] font-semibold uppercase leading-tight tracking-[0.1em] text-on-accent">
+                        <Sparkle size={12} weight="fill" aria-hidden="true" className="shrink-0" />
                         {s.badge}
-                      </span>
+                      </p>
                     )}
                   </div>
-                  <div className="p-5 flex flex-col gap-2">
+                  <div className="flex flex-1 flex-col gap-2 p-5">
                     <h3 className="font-display text-xl font-semibold text-ink">{s.name}</h3>
                     <span className="inline-flex w-fit rounded-full bg-primary-soft px-3 py-1 text-[12px] font-medium text-primary">{s.zone}</span>
                     <p className="text-[13px] text-muted leading-snug">{s.coverage}</p>
-                    {/* Affordance, not a second link: the whole card already routes to the sede page. */}
-                    <span className="reveal-action mt-1 inline-flex items-center gap-1.5 text-[13px] font-semibold text-primary">
+                  </div>
+                  {/* Affordance, not a second link: the whole card already routes to the sede page.
+                      Always rendered - flex-1 above pins it to the card foot so the row aligns across
+                      the grid, and a desktop hover-only action row hid what the card was for. */}
+                  <div className="flex items-center justify-between gap-3 border-t border-line px-5 py-3.5">
+                    <span className="text-[13px] font-semibold text-primary">Cómo llegar</span>
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary transition-colors duration-DEFAULT ease-premium group-hover:bg-primary group-hover:text-on-primary">
                       <NavigationArrow size={14} weight="bold" aria-hidden="true" />
-                      Cómo llegar
                     </span>
                   </div>
                 </div>

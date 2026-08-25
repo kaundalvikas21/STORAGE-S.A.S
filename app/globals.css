@@ -150,20 +150,6 @@ details[open] .details-caret {
   --underline-bottom: 0.7rem;
 }
 
-/* Hover-reveal action row. Enhancement only: on touch it is always visible. */
-@media (hover: hover) {
-  .reveal-action {
-    opacity: 0;
-    transform: translateY(4px);
-    transition: opacity var(--transition-base) var(--ease-premium), transform var(--transition-base) var(--ease-premium);
-  }
-  .group:hover .reveal-action,
-  .group:focus-visible .reveal-action {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 /* Hero load choreography. CSS, not JS: with scripting off the animations still run, so the
    H1 is never left at opacity 0 (framer-motion's `initial` would serialize that into the SSR HTML). */
 @keyframes rise-in {
