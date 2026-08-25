@@ -1,47 +1,51 @@
 import Link from "next/link";
-import { ArrowRight, Package, Door, Garage, Ruler } from "@phosphor-icons/react/dist/ssr";
-import Reveal, { RevealItem } from "@/components/Reveal";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import Photo from "@/components/Photo";
+import Reveal from "@/components/motion/Reveal";
+import RevealStagger, { RevealItem } from "@/components/motion/RevealStagger";
+import type { ImageKey } from "@/content/images";
 import { sizes } from "@/content/site";
 
-const icons = [Package, Door, Garage, Ruler];
+const slots: ImageKey[] = ["sizeSmall", "sizeMedium", "sizeLarge", "sizeCustom"];
 
-/** Comparison row: 4 typographic size cards, tabular ranges carry the visual weight. */
+/**
+ * Comparison row: 4 illustrated size cards. Each transparent illustration floats over `.illus-wash`
+ * (token gradient that drifts on hover) with the m³ range pinned as a chip; text carries the message below.
+ */
 export default function SizeStrip() {
   return (
     <section aria-labelledby="sizes-title" className="order-6 border-y border-line bg-surface">
-      <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 py-14 md:py-20 lg:py-24">
+      <div className="mx-auto max-w-site px-5 py-14 md:px-8 md:py-20 lg:px-10 lg:py-24">
         <Reveal>
-          <h2 id="sizes-title" className="font-display text-3xl font-semibold text-ink max-w-[20ch]">Minibodegas del tamaño justo</h2>
-          <p className="mt-3 text-[15px] text-muted max-w-[52ch]">Bodegas por meses desde 1 m³. Cambias de tamaño cuando tu necesidad cambia.</p>
+          <h2 id="sizes-title" className="font-display text-3xl font-semibold text-ink max-w-[20ch]">
+            Minibodegas del tamaño justo
+          </h2>
+          <p className="mt-3 max-w-[52ch] text-[15px] text-muted">Bodegas por meses desde 1 m³. Cambias de tamaño cuando tu necesidad cambia.</p>
         </Reveal>
 
-        <Reveal group as="ul" className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" role="list">
-          {sizes.map((s, i) => {
-            const Icon = icons[i];
-            return (
-              <RevealItem as="li" key={s.href}>
-                <Link
-                  href={s.href}
-                  className="group flex h-full flex-col rounded-lg border border-line bg-bg p-6 transition-colors duration-fast ease-soft hover:border-muted-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <Icon size={22} weight="regular" aria-hidden="true" className="text-primary" />
-                    {s.differential && (
-                      <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-[12px] font-medium text-primary-deep">Diferencial</span>
-                    )}
-                  </div>
-                  <h3 className="mt-4 text-lg font-semibold text-ink break-words">{s.name}</h3>
-                  <p className="tnum mt-1 text-2xl font-semibold text-ink">{s.range}</p>
-                  <p className="mt-3 text-[14px] text-ink-2">Cabe aprox.: {s.fits}</p>
+        <RevealStagger as="ul" role="list" className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {sizes.map((s, i) => (
+            <RevealItem as="li" key={s.href}>
+              <Link href={s.href} className="card h-full">
+                <div className="illus-wash relative aspect-square border-b border-line">
+                  <Photo slot={slots[i]} fit="contain" className="absolute inset-5 md:inset-6" sizes="(min-width: 1024px) 290px, (min-width: 640px) 50vw, 100vw" />
+                  <span className="tnum absolute left-4 top-4 rounded-full border border-line bg-bg/90 px-3 py-1 text-[13px] font-semibold text-primary">{s.range}</span>
+                  {s.differential && (
+                    <span className="absolute right-4 top-4 rounded-full bg-primary px-2.5 py-1 text-[12px] font-medium text-on-primary">Diferencial</span>
+                  )}
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="card-title text-xl font-semibold text-ink">{s.name}</h3>
+                  <p className="mt-2 text-[14px] text-ink-2">Cabe aprox.: {s.fits}</p>
                   <p className="mt-1 text-[13px] text-muted">{s.hint}</p>
-                  <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-[14px] font-medium text-primary group-hover:text-primary-deep">
-                    Ver bodegas <ArrowRight size={14} aria-hidden="true" className="transition-transform duration-fast ease-soft group-hover:translate-x-1" />
+                  <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-[14px] font-medium text-primary">
+                    Ver bodegas <ArrowRight size={14} aria-hidden="true" className="card-arrow" />
                   </span>
-                </Link>
-              </RevealItem>
-            );
-          })}
-        </Reveal>
+                </div>
+              </Link>
+            </RevealItem>
+          ))}
+        </RevealStagger>
         <p className="mt-6 text-[13px] text-muted">Los espacios personalizados son un diferencial de Storage: ningún competidor los ofrece.</p>
       </div>
     </section>

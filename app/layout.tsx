@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import MobileStickyBar from "@/components/MobileStickyBar";
-import { CALC_URL, QUOTE_URL, SITE_URL, allAddresses, company, nav } from "@/content/site";
+import { SITE_URL } from "@/content/site";
+import { company } from "@/lib/company";
+import { siteLd } from "@/lib/jsonld";
 
 const display = Instrument_Sans({ subsets: ["latin"], display: "swap", variable: "--font-display" });
 
@@ -23,53 +25,15 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": `${SITE_URL}/#organization`,
-    name: company.legalName,
-    alternateName: company.brand,
-    url: SITE_URL,
-    foundingDate: String(company.founded),
-    telephone: company.phone,
-    email: company.email,
-    address: allAddresses.map((a) => ({
-      "@type": "PostalAddress",
-      name: a.label,
-      streetAddress: a.address,
-      addressLocality: "Bogotá",
-      addressCountry: "CO",
-    })),
-    numberOfEmployees: { "@type": "QuantitativeValue", value: 22 },
-    areaServed: { "@type": "City", name: "Bogotá" },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": `${SITE_URL}/#website`,
-    url: SITE_URL,
-    name: company.brand,
-    inLanguage: "es-CO",
-    publisher: { "@id": `${SITE_URL}/#organization` },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: [...nav, { label: "Calcular mi espacio", href: CALC_URL }, { label: "Cotizar", href: QUOTE_URL }].map((n, i) => ({
-      "@type": "SiteNavigationElement",
-      position: i + 1,
-      name: n.label,
-      url: `${SITE_URL}${n.href}`,
-    })),
-  },
-];
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es-CO" className={display.variable}>
       <body className="font-body">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        {/* Motion primitives SSR their hidden state; with JS off this rule makes every block visible. */}
+        <noscript>
+          <style>{`[data-motion]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteLd) }} />
         <Header />
         {children}
         <Footer />

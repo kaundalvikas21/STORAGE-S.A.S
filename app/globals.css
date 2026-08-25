@@ -37,6 +37,24 @@
   --d: 150ms;
   --d-slow: 200ms;
 
+  /* Interaction tokens (MASTER.md §6b) */
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-fast: 150ms;
+  --transition-base: 250ms;
+  --transition-photo: 700ms; /* hover zooms: long and gentle, never a snap */
+  --ease-smooth: cubic-bezier(0.33, 1, 0.68, 1);
+  --hover-lift: 2px;
+  --card-lift: 3px;
+  --hover-scale: 1.02;
+  --photo-zoom: 1.05;
+
+  /* Photo treatment (MASTER.md §7 Imagery) */
+  --on-photo: #ffffff;
+  --photo-scrim: 40%;
+  --photo-scrim-deep: 72%;
+  --photo-saturate: 0.82;
+  --utility-h: 34px;
+
   --t-display: clamp(2.5rem, 1.9rem + 2.9vw, 4rem);
   --t-3xl: clamp(1.75rem, 1.4rem + 1.7vw, 2.5rem);
   --t-2xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
@@ -77,7 +95,7 @@ body {
   color: var(--muted);
 }
 
-/* Native accordion marker reset */
+/* Native accordion: no marker; content height + fade animate where the browser supports ::details-content. */
 details > summary {
   list-style: none;
   cursor: pointer;
@@ -85,12 +103,201 @@ details > summary {
 details > summary::-webkit-details-marker {
   display: none;
 }
+@supports (interpolate-size: allow-keywords) {
+  details.faq {
+    interpolate-size: allow-keywords;
+  }
+  details.faq::details-content {
+    height: 0;
+    overflow: clip;
+    transition: height var(--transition-base) var(--ease-premium), content-visibility var(--transition-base) allow-discrete;
+  }
+  details.faq[open]::details-content {
+    height: auto;
+  }
+}
+details.faq[open] > .faq-body {
+  animation: rise-in var(--transition-base) var(--ease-premium) both;
+}
 
+/* ---- Interaction system (MASTER.md §6b): one matrix, every interactive element maps to a row ---- */
+@layer components {
+  /* TEXT LINK / NAV ITEM: underline draws left→right on hover, colour shifts. */
+  .link-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0 1px;
+    transition: background-size 200ms var(--ease-premium), color var(--transition-fast) var(--ease-premium);
+  }
+  .link-draw:hover,
+  .link-draw:focus-visible,
+  .link-draw[aria-current="page"] {
+    background-size: 100% 1px;
+  }
+
+  /* CARD (linked): the card itself never moves or scales; border/shadow strengthen, the photo zooms inside its
+     frame, title → accent, arrow slides in. */
+  .card {
+    @apply relative flex flex-col overflow-hidden rounded-lg border border-line bg-bg cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+    transition: border-color var(--transition-base) var(--ease-premium), box-shadow var(--transition-base) var(--ease-premium);
+  }
+  .card:hover,
+  .card:focus-within {
+    border-color: var(--muted-2);
+    box-shadow: var(--sh-3);
+  }
+  .card:active {
+    border-color: var(--primary);
+  }
+  .card .photo img {
+    transition: transform var(--transition-photo) var(--ease-smooth);
+    will-change: transform; /* own compositor layer: the saturate filter and the zoom both run on the GPU */
+    backface-visibility: hidden;
+  }
+  .card:hover .photo img,
+  .card:focus-within .photo img {
+    transform: scale(var(--photo-zoom));
+  }
+  .card:hover .card-title,
+  .card:focus-within .card-title {
+    color: var(--primary);
+  }
+  .card-title {
+    transition: color var(--transition-fast) var(--ease-premium);
+  }
+  .card-arrow {
+    transition: transform var(--transition-base) var(--ease-premium), opacity var(--transition-base) var(--ease-premium);
+  }
+  @media (hover: hover) {
+    .card-arrow {
+      opacity: 0;
+      transform: translateX(-6px);
+    }
+    .card:hover .card-arrow,
+    .card:focus-within .card-arrow {
+      opacity: 1;
+      transform: none;
+    }
+    /* SEDE CARD: action row is a hover enhancement; always visible on touch (see the no-hover branch). */
+    .card-reveal {
+      opacity: 0;
+      transform: translateY(4px);
+      transition: transform var(--transition-base) var(--ease-premium), opacity var(--transition-base) var(--ease-premium);
+    }
+    .card:hover .card-reveal,
+    .card:focus-within .card-reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* PHOTO frame: dominant-colour blur under next/image, token scrim on top so mixed sources read as one set. */
+  .photo {
+    @apply relative overflow-hidden bg-surface;
+  }
+  .photo:not(.photo-illus) img {
+    filter: saturate(var(--photo-saturate));
+  }
+  .photo-illus {
+    @apply bg-transparent;
+  }
+  .photo-illus img {
+    filter: drop-shadow(0 16px 24px rgba(22, 24, 29, 0.14));
+    transition: transform var(--transition-photo) var(--ease-smooth);
+    will-change: transform;
+  }
+  /* Illustration cards: token gradient wash. Hover crossfades to a second wash via ::before opacity
+     (opacity only: animating background-position repaints the gradient every frame and stutters). */
+  .illus-wash {
+    background-image: linear-gradient(150deg, var(--primary-soft) 0%, var(--bg) 48%, var(--surface) 100%);
+  }
+  .illus-wash::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(150deg, var(--surface) 0%, var(--bg) 40%, var(--primary-soft) 100%);
+    opacity: 0;
+    transition: opacity var(--transition-photo) var(--ease-smooth);
+    pointer-events: none;
+  }
+  .card:hover .illus-wash::before,
+  .card:focus-within .illus-wash::before {
+    opacity: 1;
+  }
+  .card:hover .photo-illus img,
+  .card:focus-within .photo-illus img {
+    transform: translateY(-6px) scale(1.04);
+  }
+  .photo-scrim {
+    background: linear-gradient(to top, color-mix(in srgb, var(--ink) var(--photo-scrim), transparent), transparent 60%);
+  }
+  /* Hero: left-weighted scrim so the text column reads white at AA while the right side stays vivid. */
+  .photo-scrim-hero {
+    background:
+      linear-gradient(90deg, color-mix(in srgb, var(--ink) 68%, transparent) 0%, color-mix(in srgb, var(--ink) 58%, transparent) 32%, color-mix(in srgb, var(--ink) 26%, transparent) 60%, color-mix(in srgb, var(--ink) 6%, transparent) 100%),
+      linear-gradient(to top, color-mix(in srgb, var(--ink) 30%, transparent), transparent 40%);
+  }
+  .photo-scrim-deep {
+    background: color-mix(in srgb, var(--ink) var(--photo-scrim-deep), transparent);
+  }
+
+  /* LOGO ROW: muted at rest, full on hover. */
+  .logo {
+    filter: grayscale(1);
+    opacity: 0.6;
+    transition: filter var(--transition-base) var(--ease-premium), opacity var(--transition-base) var(--ease-premium), color var(--transition-base) var(--ease-premium);
+  }
+  .logo:hover,
+  .logo:focus-visible {
+    filter: none;
+    opacity: 1;
+  }
+
+  /* FAQ ROW */
+  .faq-row {
+    transition: background-color var(--transition-fast) var(--ease-premium);
+  }
+  .faq-row:hover {
+    background-color: var(--surface);
+  }
+  .faq-icon {
+    transition: transform 200ms var(--ease-premium);
+  }
+  details[open] .faq-icon {
+    transform: rotate(45deg);
+  }
+}
+
+/* Hero load choreography: CSS keyframes so the H1 is in the DOM immediately and animates without JS. */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes photo-settle {
+  from { transform: scale(1.04); }
+  to { transform: scale(1); }
+}
+.hero-rise {
+  animation: rise-in 700ms var(--ease-premium) both;
+  animation-delay: var(--delay, 0ms);
+}
+.hero-photo {
+  animation: photo-settle 1.2s var(--ease-premium) both;
+}
+
+/* Reduced motion: every CSS animation collapses to a 120ms opacity fade; transforms are removed. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
-    animation-duration: 0.001ms !important;
+    animation-duration: 120ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+    transition-duration: 120ms !important;
+    transition-property: opacity, color, background-color, border-color, background-size !important;
   }
+  .hero-rise { animation-name: fade-in !important; animation-delay: 0ms !important; }
+  .hero-photo { animation: none !important; }
+  .card:hover .photo img { transform: none !important; }
+  /* Motion primitives: opacity fades only; any SSR-rendered offset is cleared. */
+  [data-motion] { transform: none !important; }
 }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }

@@ -28,13 +28,17 @@ Single-page marketing site for Storage S.A.S (minibodegas, Bogotá), Spanish (`e
 
 **Fonts:** Fraunces (`--font-display`, variable opsz) + Inter (`--font-body`) loaded via `next/font/google` in `app/layout.tsx`.
 
-**Motion:** `lib/motion.ts` defines the shared `spring`/`rise`/`stagger` variants. `components/Reveal.tsx` (`Reveal`, `RevealItem` named export — not `Reveal.Item`) is the scroll-reveal wrapper; it renders static markup under `prefers-reduced-motion`. Use it rather than hand-rolled `motion.*` in sections.
+**Motion:** `lib/motion.ts` defines the shared `spring`/`fade`/`rise`/`stagger` variants. Primitives live in `components/motion/`: `Reveal` (+ `RevealRule`), `RevealStagger` (+ `RevealItem` named export), `CountUp`, `Parallax`. Reduced motion swaps every primitive to a 120ms fade; `app/layout.tsx` ships a `<noscript>` rule so `[data-motion]` blocks are visible with JS off. Use them rather than hand-rolled `motion.*` in sections.
 
-**Server/client split:** sections are server components by default. Only `Header`, `Reveal`, `AnimatedNumber`, `IntentCards` are `"use client"`. Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
+**Images:** `content/images.ts` is the manifest (slot → src/alt/credit/blur); render through `components/Photo.tsx` only. Client photos replace the Unsplash sources there and nowhere else.
+
+**NAP:** `lib/company.ts` feeds both the footer NAP band and the Organization JSON-LD (`lib/jsonld.ts`); `content/site.ts` re-exports it.
+
+**Server/client split:** sections are server components by default. Only `components/layout/{Header,MegaMenu,MobileDrawer}`, `components/motion/*` and `SizeChecker` are `"use client"`. Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
 
 **Page order is SEO-locked.** `app/page.tsx` DOM order follows wireframe T1; mobile reorders (zone selector under hero) use CSS `order-*` on the flex column, never JSX reordering.
 
-Images are placeholder SVGs in `public/img/`.
+Images come from `content/images.ts` (Unsplash License sources until the client's sede photos land).
 
 ## The Anti-Slop Ban System
 

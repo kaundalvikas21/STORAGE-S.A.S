@@ -1,5 +1,6 @@
 import { GoogleLogo, Star } from "@phosphor-icons/react/dist/ssr";
-import Reveal, { RevealItem, RevealRule } from "@/components/Reveal";
+import { RevealRule } from "@/components/motion/Reveal";
+import RevealStagger, { RevealItem } from "@/components/motion/RevealStagger";
 import { reviews as seed, type Review } from "@/content/site";
 
 const initials = (name: string) =>
@@ -9,23 +10,25 @@ const initials = (name: string) =>
     .join("")
     .slice(0, 2);
 
-/** Pass `reviews` from a server fetch (Google Places / reviews API) to replace the seed data. */
+/** Pass `reviews` from a server fetch (Google Places / reviews API) to replace the seed data. Cards stagger 80ms apart. */
 export default function Reviews({ reviews = seed }: { reviews?: Review[] }) {
   return (
     <section aria-labelledby="reviews-title" className="order-9">
-      <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 py-14 md:py-20 lg:py-24">
-        <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
+      <div className="mx-auto max-w-site px-5 py-14 md:px-8 md:py-20 lg:px-10 lg:py-24">
+        <RevealStagger className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <RevealItem>
             <p className="eyebrow mb-3">Reseñas en Google</p>
-            <h2 id="reviews-title" className="font-display text-3xl font-semibold text-ink max-w-[20ch]">Lo que dicen quienes ya guardan con nosotros</h2>
+            <h2 id="reviews-title" className="font-display text-3xl font-semibold text-ink max-w-[20ch]">
+              Lo que dicen quienes ya guardan con nosotros
+            </h2>
             <RevealRule className="mt-5 max-w-[320px]" />
-          </div>
-          <p className="inline-flex items-center gap-2 text-[13px] text-muted">
+          </RevealItem>
+          <RevealItem as="div" className="inline-flex items-center gap-2 text-[13px] text-muted">
             <GoogleLogo size={18} weight="regular" aria-hidden="true" /> Reseñas verificadas de Google
-          </p>
-        </Reveal>
+          </RevealItem>
+        </RevealStagger>
 
-        <Reveal group as="ul" className="mt-10 grid gap-5 md:grid-cols-3" role="list">
+        <RevealStagger as="ul" role="list" gap={0.08} className="mt-10 grid gap-5 md:grid-cols-3">
           {reviews.map((r) => (
             <RevealItem as="li" key={`${r.author}-${r.date}`}>
               <article className="flex h-full flex-col rounded-lg border border-line bg-bg p-6 md:p-7">
@@ -34,7 +37,7 @@ export default function Reviews({ reviews = seed }: { reviews?: Review[] }) {
                     <Star key={i} size={14} weight={i < r.rating ? "fill" : "regular"} aria-hidden="true" className="text-primary" />
                   ))}
                 </p>
-                <blockquote className="mt-4 text-[15px] text-ink-2 leading-relaxed">
+                <blockquote className="mt-4 text-[15px] leading-relaxed text-ink-2">
                   <p>“{r.text}”</p>
                 </blockquote>
                 <footer className="mt-auto flex items-center gap-3 border-t border-line pt-4 mt-5">
@@ -47,7 +50,7 @@ export default function Reviews({ reviews = seed }: { reviews?: Review[] }) {
               </article>
             </RevealItem>
           ))}
-        </Reveal>
+        </RevealStagger>
       </div>
     </section>
   );

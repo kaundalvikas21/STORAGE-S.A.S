@@ -24,6 +24,7 @@ Dials: DESIGN_VARIANCE 3 · MOTION_INTENSITY 3 · VISUAL_DENSITY 5
 | `--accent-soft` | `#EEF2FD` | aliases `--primary-soft` |
 | `--on-accent` | `#FFFFFF` | aliases `--on-primary` |
 | `--ring` | `#2456E6` | focus-visible ring |
+| `--on-photo` | `#FFFFFF` | text over `--photo-scrim-deep` photo bands (closing CTA) |
 
 ## 2. Typography
 - Display + body: **Instrument Sans** (variable) — `--font-display`; `--font-body` and `--font-mono` alias it (mono died with El Contenedor; the alias is a safety net). Headings 600, tracking -0.02em, tight leading; sentence case, no `text-transform`.
@@ -43,19 +44,38 @@ Dials: DESIGN_VARIANCE 3 · MOTION_INTENSITY 3 · VISUAL_DENSITY 5
 
 ## 6. Motion (barely there)
 - Easing `--ease: cubic-bezier(0,0,.2,1)`. Durations `--d-fast 150ms` · `--d 150ms` · `--d-slow 200ms`.
-- Reveals: opacity + 4px rise, stagger 40ms, once. Motion clarifies, never decorates.
+- Reveals: opacity + 24px rise on a soft spring, stagger 70ms, once (parameters in §6b). Motion clarifies, never decorates.
 - Exactly two signature moments: (1) the hero segmented control's 150ms answer fade; (2) the HowItWorks connecting hairline drawing on scroll (`scaleX 0→1`, 300ms ease-out).
 - `prefers-reduced-motion: reduce` → everything 0ms, count-ups show final value, answer swaps instantly.
+
+## 6b. Interaction tokens (premium polish pass)
+| Token | Value | Use |
+|---|---|---|
+| `--ease-premium` | `cubic-bezier(0.22, 1, 0.36, 1)` | every hover/press/reveal transition |
+| `--transition-fast` | `150ms` | colour, header compress, arrow nudge |
+| `--transition-base` | `250ms` | lift, photo zoom, logo, FAQ height |
+| `--hover-lift` / `--card-lift` | `2px` / `3px` | primary button translateY (`--card-lift` reserved; image cards do not move) |
+| `--hover-scale` | `1.02` | reserved (chips) |
+| `--photo-zoom` | `1.05` | photo inside a hovered card, frame never grows |
+| `--transition-photo` / `--ease-smooth` | `700ms` / `cubic-bezier(0.33, 1, 0.68, 1)` | hover zooms and the illustration wash crossfade: long, decelerating, GPU-composited (`will-change: transform`), so they glide instead of snapping |
+| `--utility-h` | `34px` | header utility bar; the header translates by this on scroll-down |
+
+Interaction matrix (globals.css `@layer components`): PRIMARY BUTTON lift + `--sh-3` bloom + brightness 1.05, active scale .98, focus 2px ring offset 2, arrow x+4 · SECONDARY/GHOST bg tint + border darkens · CARD `.card`: the card never lifts or scales (client rule); border `--muted-2` + `--sh-3`, `.photo img` zooms to `--photo-zoom` inside the frame, `.card-title` → primary, `.card-arrow` slides in (always visible on touch); `:active` border → `--primary` · TEXT LINK / NAV `.link-draw`: underline draws left→right 200ms, `aria-current="page"` keeps it drawn · FAQ `.faq-row` tint, `.faq-icon` rotates 45°, `::details-content` height where supported · SEDE CARD `.card-reveal` action row (hover enhancement, static on touch) · LOGO `.logo` grayscale + 60% → full. Every hover has an `:active` scale .98 twin; every focusable element shows the same ring.
+
+Scroll motion (components/motion/): `<Reveal>` opacity 0→1 + y 24→0, spring 110/20, once, viewport margin -12% · `<RevealStagger>`/`<RevealItem>` staggerChildren 0.07, delayChildren 0.1 on every grid · `<CountUp>` 1.2s ease-out once, `.tnum` · `<Parallax>` ≤6% translateY on the hero and closing photos only. Hero load choreography is CSS (`.hero-rise`, `.hero-photo`), so the H1 is in the DOM immediately. Reduced motion: every primitive becomes a 120ms opacity fade (`lib/motion.ts` `fade`, plus the global media query). No-JS: `<noscript>` in app/layout.tsx forces `[data-motion]` visible.
 
 ## 7. Component rules
 - **Buttons**: `--r-sm`, ≥48px tall, sentence case, max 3 words, `font-medium`. Primary = blue bg + white text; Secondary = white bg + `--line` border, ink text; Ghost = borderless neutral (hover `--surface`). Arrow icon slides 4px on hover. `cursor-pointer`, visible focus ring.
 - **Cards**: `--r-lg`, `1px --line` border, `--surface` or white fill, no shadow. Hover: border darkens to `--muted-2` + arrow slide. SiloDoors' Bodegaje card alone carries a 2px `--primary` top border + «Recomendado».
 - **Numbers**: every stat, range and price in `.tnum`; stat numbers in `--primary`.
-- **Imagery**: real photos ONLY in the sede grid (`next/image`, Spanish alt, no filters); nothing above the fold — the hero and silo cards are typographic.
+- **Imagery**: one manifest, `content/images.ts` (semantic slots: heroMain, sede*, silo*, segment*, size*, ctaClosing), rendered only through `<Photo>`: `next/image` fill, `sizes`, quality 70, dominant-colour blur placeholder, `priority` on the hero only. One treatment for every source: `saturate(--photo-saturate)` + token scrim (`--photo-scrim` bottom gradient on cards, `--photo-scrim-deep` flat under text). Images sit under HTML text, never carry it. Alt text is descriptive Colombian Spanish. Client photos replace the Unsplash sources in the manifest only.
 - **Icons**: Phosphor 16–24px, `weight="regular"` (stars `weight="fill"` in `--primary`). One family, no hand-rolled SVG.
 - **Banned**: gradients, glass/backdrop-blur, shadows deeper than `--sh-3`, second accent colors, italic flourishes, marquees, decorative animation, dark inverted sections.
 
 ## 8. Declared exceptions (do not "fix")
+- Premium polish pass overrides three §7 bans on purpose: the header gains `backdrop-blur` + `--sh-2` once scrolled past 24px (compressed sticky state), photo frames use a bottom gradient scrim (a photo device, not a decorative gradient), and the closing band is a dark photo band with `--on-photo` text (contrast ≥ 7:1 through `--photo-scrim-deep`). Everywhere else the hairline-first rules stand.
+- The hero photo (`/img/hero_img_bg_2.png`, art-directed with an empty light left half) is a full-bleed background on lg under `.photo-scrim-hero` (left-weighted `--ink` gradient, 72%→6%) with the text stack in `--on-photo` (≥ 4.9:1 on the lightest pixels of the text column); below lg it renders as a framed image under the text stack. It is the only `priority` image and the H1 remains the first paint.
+- Size cards (`SizeStrip`) show the client's transparent illustrations (`/img/small|medium|big|customized.png`) over `.illus-wash`, a token gradient (`--primary-soft` → `--bg` → `--surface`) that drifts on hover. Client-requested; the only decorative gradient on the page.
 - Em/en dash ban upheld: `·` and `→` are the only separators in new copy; the `—` before `PENDIENTE CONFIRMAR` in placeholder addresses (`content/site.ts`) leaves with the real addresses.
 - The hero contains a 5th element beyond the 4-text-element cap: the size-checker segmented control. Brief-mandated ("the hero ANSWERS, not just announces"); it replaces the IntentCards section, it is an interactive control, not copy.
 - HowItWorks uses numbered verbs `01 Calculas · 02 Cotizas · 03 Te mudas` — brief-mandated 3-step row. These are content verbs, not the banned generic `Paso 1/2/3` labels.

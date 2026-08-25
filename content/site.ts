@@ -7,21 +7,9 @@ export const CALC_URL = "/calculadora-de-espacio/";
 export const SEDES_URL = "/sedes/";
 export const SITE_URL = "https://storagebogota.com";
 
-export const company = {
-  legalName: "Bodegajes y Mudanzas Storage S.A.S",
-  brand: "Storage S.A.S",
-  founded: 2011,
-  phone: "+57 601 000 0000", // PENDIENTE CONFIRMAR — única línea principal (PBX)
-  phoneLabel: "(601) 000 0000",
-  whatsapp: "+57 300 000 0000", // PENDIENTE CONFIRMAR — única línea WhatsApp (solo se muestra como texto; los CTA van a /cotizar/)
-  whatsappLabel: "300 000 0000",
-  hours: "Lun-Vie 8:00-17:30 · Sáb 8:00-13:30",
-  openingHoursSpec: [
-    { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "17:30" },
-    { days: ["Saturday"], opens: "08:00", closes: "13:30" },
-  ],
-  email: "info@storagebogota.com", // PENDIENTE CONFIRMAR
-};
+// NAP (company, allAddresses) lives in lib/company.ts; re-exported here so imports stay stable.
+export { company, allAddresses } from "@/lib/company";
+import type { ImageKey } from "@/content/images";
 
 export type Sede = {
   slug: string;
@@ -29,8 +17,7 @@ export type Sede = {
   zone: string;
   coverage: string;
   address: string;
-  image: string;
-  alt: string;
+  image: ImageKey;
   badge?: string;
 };
 
@@ -41,9 +28,8 @@ export const sedes: Sede[] = [
     name: "Calle 197",
     zone: "Autopista Norte",
     coverage: "Sabana Norte, Usaquén norte",
-    address: "Autopista Norte con Calle 197, Bogotá — PENDIENTE CONFIRMAR nomenclatura exacta",
-    image: "/img/sede-calle-197.svg",
-    alt: "Fachada de la nueva sede Storage en la Autopista Norte con Calle 197, con acceso vehicular amplio",
+    address: "Autopista Norte # 197-10, Bogotá",
+    image: "sedeCalle197",
     badge: "Nueva sede",
   },
   {
@@ -51,9 +37,8 @@ export const sedes: Sede[] = [
     name: "Toberín",
     zone: "Calle 163",
     coverage: "Usaquén, Cedritos, Santa Bárbara",
-    address: "Calle 163 con Carrera 19B, Toberín, Bogotá — 3 puntos, PENDIENTE CONFIRMAR nomenclaturas",
-    image: "/img/sede-toberin.svg",
-    alt: "Pasillo de minibodegas en la sede Toberín con iluminación cálida y puertas numeradas",
+    address: "Calle 163 con Carrera 19B, Toberín, Bogotá · 3 puntos, PENDIENTE CONFIRMAR nomenclaturas",
+    image: "sedeToberin",
   },
   {
     slug: "spring-calle-135",
@@ -61,29 +46,16 @@ export const sedes: Sede[] = [
     zone: "Calle 135",
     coverage: "Suba, Colina, Niza, Pasadena",
     address: "Calle 135 # 46-55, Bogotá",
-    image: "/img/sede-spring.svg",
-    alt: "Entrada de la sede Spring en la Calle 135 con zona de cargue cubierta",
+    image: "sedeSpring",
   },
   {
     slug: "paloquemao",
     name: "Paloquemao",
     zone: "Centro",
     coverage: "Centro, Puente Aranda, Los Mártires, Ricaurte",
-    address: "Paloquemao, Bogotá — 2 puntos (Paloquemao 32 y 17), PENDIENTE CONFIRMAR nomenclaturas",
-    image: "/img/sede-paloquemao.svg",
-    alt: "Bodegas con acceso para carga en la sede Paloquemao, en el centro de Bogotá",
+    address: "Paloquemao, Bogotá · 2 puntos (Paloquemao 32 y 17), PENDIENTE CONFIRMAR nomenclaturas",
+    image: "sedePaloquemao",
   },
-];
-
-// Footer lists the 7 physical addresses as text (spec §01-3). Same order rule.
-export const allAddresses: { label: string; address: string }[] = [
-  { label: "Autopista Norte · Calle 197", address: "Autopista Norte con Calle 197, Bogotá — PENDIENTE CONFIRMAR" },
-  { label: "Toberín 1", address: "Calle 163 con Carrera 19B, Bogotá — PENDIENTE CONFIRMAR" },
-  { label: "Toberín 2", address: "Calle 163 con Carrera 19B, Bogotá — PENDIENTE CONFIRMAR" },
-  { label: "Toberín 3", address: "Calle 163 con Carrera 19B, Bogotá — PENDIENTE CONFIRMAR" },
-  { label: "Spring · Calle 135", address: "Calle 135 # 46-55, Bogotá" },
-  { label: "Paloquemao 32", address: "Paloquemao, Bogotá — PENDIENTE CONFIRMAR" },
-  { label: "Paloquemao 17", address: "Paloquemao, Bogotá — PENDIENTE CONFIRMAR" },
 ];
 
 export const zones = [
@@ -222,17 +194,15 @@ export const footerCols = {
   ],
   mudanzas: [
     { label: "Mudanzas en Bogotá", href: "/mudanzas-bogota/" },
-    { label: "Trasteos en Bogotá", href: "/trasteos-bogota/" },
-    { label: "Mudanzas empresariales", href: "/mudanzas-empresariales/" },
-    { label: "Transporte de mercancías", href: "/transporte-de-mercancias/" },
-    { label: "Empaque y embalaje", href: "/empaque-y-embalaje/" },
+    { label: "Trasteos", href: "/trasteos-bogota/" },
+    { label: "Empaque", href: "/empaque-y-embalaje/" },
   ],
   empresa: [
     { label: "Quiénes somos", href: "/quienes-somos/" },
-    { label: "Seguridad", href: "/seguridad/" },
-    { label: "Preguntas frecuentes", href: "/preguntas-frecuentes/" },
+    { label: "Precios", href: "/precios/" },
+    { label: "FAQ", href: "/preguntas-frecuentes/" },
     { label: "Contacto", href: "/contacto/" },
-    { label: "Términos y condiciones", href: "/terminos-y-condiciones/" },
+    { label: "Términos", href: "/terminos-y-condiciones/" },
     { label: "Tratamiento de datos", href: "/politica-tratamiento-de-datos/" },
     { label: "PQRS", href: "/pqrs/" },
   ],

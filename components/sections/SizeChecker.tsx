@@ -5,7 +5,9 @@ import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { CALC_URL, intentCards } from "@/content/site";
-import { snap } from "@/lib/motion";
+import { fade } from "@/lib/motion";
+
+const swap = { duration: 0.15, ease: [0.22, 1, 0.36, 1] as const };
 
 type Id = (typeof intentCards)[number]["id"];
 
@@ -21,7 +23,7 @@ export default function SizeChecker() {
 
   return (
     <div className="mt-10 max-w-2xl">
-      <p id="size-checker-label" className="text-[14px] font-medium text-muted">
+      <p id="size-checker-label" className="text-[14px] font-medium text-muted lg:text-on-photo/80">
         ¿Qué necesitas guardar?
       </p>
       <div
@@ -37,7 +39,7 @@ export default function SizeChecker() {
               type="button"
               aria-pressed={selected}
               onClick={() => setId(card.id)}
-              className={`min-h-[44px] cursor-pointer rounded-[4px] px-4 text-[14px] font-medium transition-colors duration-fast ease-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+              className={`min-h-[44px] cursor-pointer rounded-[4px] px-4 text-[14px] font-medium transition-[color,background-color,transform] duration-fast ease-premium active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                 selected ? "bg-bg text-ink shadow-1" : "text-muted hover:text-ink"
               }`}
             >
@@ -46,18 +48,18 @@ export default function SizeChecker() {
           );
         })}
       </div>
-      <p aria-live="polite" className="mt-4 text-[15px] text-ink-2">
+      <p aria-live="polite" className="mt-4 text-[15px] text-ink-2 lg:text-on-photo/90">
         <motion.span
           key={active.id}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={reduce ? { duration: 0 } : snap}
+          transition={reduce ? fade : swap}
           className="tnum"
         >
           → {active.answer} ({active.range}).{" "}
           <Link
             href={`${CALC_URL}?perfil=${active.id}`}
-            className="inline-flex items-center gap-1 font-medium text-primary hover:text-primary-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-[2px]"
+            className="link-draw inline-flex items-center gap-1 font-medium text-primary hover:text-primary-deep lg:text-on-photo lg:underline lg:underline-offset-4 lg:decoration-on-photo/50 lg:hover:text-on-photo lg:hover:decoration-on-photo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-[2px]"
           >
             Confirmar en la calculadora
             <ArrowRight size={14} aria-hidden="true" />

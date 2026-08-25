@@ -10,17 +10,7 @@ import Reviews from "@/components/sections/Reviews";
 import ClientLogos from "@/components/sections/ClientLogos";
 import Faq from "@/components/sections/Faq";
 import ClosingBand from "@/components/sections/ClosingBand";
-import { faq } from "@/content/site";
-
-const faqLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faq.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
-};
+import { faqLd } from "@/lib/jsonld";
 
 /**
  * DOM order follows wireframe T1 (hero → calculator → silos → sedes → sizes → segments → trust → reviews → logos → faq → cta).
@@ -30,7 +20,9 @@ export default function HomePage() {
   return (
     <main className="flex flex-col">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
-      <div className="order-0"><Hero /></div>
+      <div className="order-0">
+        <Hero />
+      </div>
       <HowItWorks />
       <ZoneSelector />
       <SiloDoors />

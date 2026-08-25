@@ -13,7 +13,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: Object.fromEntries(
-        ["bg", "bg-deep", "surface", "ink", "ink-2", "muted", "muted-2", "line", "primary", "primary-deep", "primary-soft", "on-primary", "accent", "accent-deep", "accent-soft", "on-accent", "ring"].map((n) => [n, token(`--${n}`)]),
+        ["bg", "bg-deep", "surface", "ink", "ink-2", "muted", "muted-2", "line", "primary", "primary-deep", "primary-soft", "on-primary", "accent", "accent-deep", "accent-soft", "on-accent", "ring", "on-photo"].map((n) => [n, token(`--${n}`)]),
       ) as unknown as Record<string, string>,
       borderRadius: {
         sm: "var(--r-sm)",
