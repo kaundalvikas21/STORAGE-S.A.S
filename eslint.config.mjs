@@ -7,7 +7,7 @@ const maxLines = (max) => ({
 });
 
 export default defineConfig([
-  { ignores: [".claude/**", ".next/**", "out/**", "node_modules/**", "next-env.d.ts"] },
+  { ignores: [".claude/**", ".next/**", "out/**", "export/**", "node_modules/**", "next-env.d.ts"] },
   ...nextVitals,
   ...nextTs,
   { files: ["app/**/*.tsx"], rules: maxLines(120) },
