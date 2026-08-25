@@ -20,13 +20,13 @@ const H1 = "Minibodegas y bodegaje en Bogotá";
 export default function Hero() {
   return (
     <section aria-labelledby="hero-title" className="relative overflow-hidden">
-      {/* Backdrop: the plate already fades to a bare wall on the left, so the veil only has to
-          cool it toward --bg and hold the H1's contrast. Heavier below lg, where object-cover
-          crops the empty left band away and the corridor slides under the text. */}
+      {/* Backdrop: a white (--surface) veil, not a grey --bg wash, so the corridor stays clean
+          and bright; the left-weighted gradient holds the H1's contrast. Heavier below lg, where
+          object-cover crops the empty left band away and the corridor slides under the text. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <Photo img={heroBackdrop} sizes="100vw" tint={false} zoom={false} priority className="h-full w-full" />
-        <span className="absolute inset-0 bg-bg/80 lg:bg-bg/55" />
-        <span className="absolute inset-0 bg-gradient-to-r from-bg via-bg/85 to-bg/45 lg:via-bg/70 lg:to-bg/20" />
+        <span className="absolute inset-0 bg-surface/40 lg:bg-surface/15" />
+        <span className="absolute inset-0 bg-gradient-to-r from-surface via-surface/80 to-surface/10 lg:via-surface/60 lg:to-transparent" />
         {/* Dissolve into --bg before the section ends: overflow-hidden would otherwise cut the
             photo off as a hard rule right above the intent cards. */}
         <span className="absolute inset-0 bg-gradient-to-b from-transparent from-55% to-bg" />

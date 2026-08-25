@@ -28,7 +28,7 @@ export default function IntentCards() {
   const selected = profileFor(useM3()).id;
   return (
     <section aria-labelledby="intent-title" className="order-2">
-      <div className="mx-auto max-w-site px-5 pb-14 md:px-8 md:pb-16 lg:px-10">
+      <div className="mx-auto max-w-site px-5 py-14 md:px-8 md:py-20 lg:px-10 lg:py-24">
         <h2 id="intent-title" className="sr-only">
           Entrada a la calculadora de espacio
         </h2>

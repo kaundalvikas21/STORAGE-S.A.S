@@ -20,7 +20,7 @@ export default function SegmentStrip() {
             const Icon = icons[i];
             return (
               <RevealItem as="li" key={s.href}>
-                <Link href={s.href} className={`group flex h-full flex-col rounded-lg border border-line p-8 shadow-1 md:p-10 transition-all duration ease-soft hover:-translate-y-0.5 hover:shadow-2 active:scale-[0.98] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${i === 1 ? "bg-primary-soft" : "bg-surface"}`}>
+                <Link href={s.href} className={`group flex h-full flex-col rounded-lg border border-line p-8 shadow-1 md:p-10 transition-[transform,box-shadow,border-color] duration ease-soft hover:-translate-y-0.5 hover:shadow-2 active:scale-[0.98] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${i === 1 ? "bg-primary-soft" : "bg-surface"}`}>
                   <Icon size={26} weight="regular" aria-hidden="true" className="text-primary" />
                   <h3 className="mt-5 text-2xl font-semibold text-ink transition-colors duration-fast ease-soft group-hover:text-primary">{s.title}</h3>
                   <p className="mt-3 text-[15px] text-ink-2 leading-relaxed max-w-[46ch]">{s.body}</p>

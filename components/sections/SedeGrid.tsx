@@ -34,7 +34,7 @@ export default function SedeGrid() {
                 <Link
                   href={`/sedes/${s.slug}/`}
                   data-sede={s.slug}
-                  className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-lg border border-line bg-surface shadow-1 transition-all duration ease-soft hover:-translate-y-0.5 hover:border-muted-2 hover:shadow-2 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-lg border border-line bg-surface shadow-1 transition-[transform,box-shadow,border-color] duration ease-soft hover:-translate-y-0.5 hover:border-muted-2 hover:shadow-2 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                   <span className="relative block">
                     <Photo img={sedePhotos[s.slug]} sizes="(min-width: 1024px) 280px, (min-width: 640px) 50vw, 100vw" scrim="bottom" className="aspect-[4/3]" />

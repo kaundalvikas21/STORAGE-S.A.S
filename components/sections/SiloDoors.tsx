@@ -7,7 +7,7 @@ import { siloMudanzas } from "@/content/images";
 import { silos } from "@/content/site";
 
 const cell =
-  "group flex h-full flex-col rounded-lg border border-line bg-surface p-6 shadow-1 cursor-pointer transition-all duration ease-soft hover:-translate-y-0.5 hover:border-muted-2 hover:shadow-2 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+  "group flex h-full flex-col rounded-lg border border-line bg-surface p-6 shadow-1 cursor-pointer transition-[transform,box-shadow,border-color] duration ease-soft hover:-translate-y-0.5 hover:border-muted-2 hover:shadow-2 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 
 const title = "transition-colors duration-fast ease-soft group-hover:text-primary";
 
@@ -33,7 +33,7 @@ export default function SiloDoors() {
 
         <Reveal group delay={0.1} className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-5">
           <RevealItem className="sm:col-span-2">
-            <Link href={silos.bodegaje.href} className="dark-cell group flex h-full cursor-pointer flex-col rounded-lg p-6 shadow-3 transition-all duration ease-soft hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:p-8">
+            <Link href={silos.bodegaje.href} className="dark-cell group flex h-full cursor-pointer flex-col rounded-lg p-6 shadow-3 transition-[transform,box-shadow,border-color] duration ease-soft hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:p-8">
               <div className="flex items-center justify-between">
                 <Vault size={26} weight="regular" aria-hidden="true" className={icon} />
                 <span className="rounded-full bg-accent px-2.5 py-1 text-[12px] font-medium text-on-accent">Recomendado</span>
