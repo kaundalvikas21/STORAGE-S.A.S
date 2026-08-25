@@ -57,6 +57,7 @@ Every hover/press/focus value is a variable — no magic numbers in JSX.
 | `--hover-scale` | `1.02` | card inner core swell on hover |
 | `--press-scale` | `0.98` | `:active` on every tappable element (touch parity) |
 | `--photo-zoom` | `1.05` | photo scale inside an `overflow-hidden` frame that never grows |
+| `--d-photo` | `600ms` | photo zoom duration: slower than `--d-slow` so a bitmap scale never reads as a snap; the image is GPU-promoted |
 | `--ease-premium` | `var(--ease)` | alias — La Bóveda's curve is already the premium ease-out |
 | `--transition-fast` | `var(--d-fast)` | alias — hover colour / underline draw |
 | `--transition-base` | `var(--d)` | alias — lift, shadow bloom, icon nudge |
@@ -92,4 +93,4 @@ Every hover/press/focus value is a variable — no magic numbers in JSX.
 3. **WhatsApp is text, never a link.** The spec asks for click-to-contact; the CRO rule outranks it — every CTA routes to `/cotizar/` so the qualifying form is never bypassed.
 4. **Hand-rolled line-art SVGs in `IntentCards`.** Phosphor has no "apartaestudio vs apartamento volume" glyph; the four illustrations encode growing scale, which is the section's whole point.
 5. **The sede badge is a full-bleed band on the photo's bottom edge.** Taste-skill bans pills and credits over photography; a band is neither, and floating it is what keeps all four card titles flush - in flow it pushed the featured card's title ~44px down. The copy needs 217px at `lg` against the 198px a corner pill leaves, so it was never fitting in a corner anyway.
-6. **`SizeStrip` shows four cards, only three carry photos.** "Personalizados" is the dark differential cell — photo-less by design, so the row never reads as four identical cards.
+6. **`SizeStrip` shows four illustrated cards on gradient wells.** Transparent PNG illustrations (`fit="contain"`) over a `bg-deep → surface` well; "Personalizados" keeps the dark `primary` shell and a `primary-deep → primary` well, so the row still never reads as four identical cards.

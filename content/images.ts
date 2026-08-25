@@ -20,9 +20,9 @@ export const photos = {
    * Swap point - drop the file in public/img/ and set `src: "/img/<archivo>"`; nothing else changes.
    */
   heroMain: {
-    src: u("1649313444539-a8900c5cdc54", 1800),
-    alt: "Hilera de minibodegas con puertas metálicas verdes y acceso vehicular amplio",
-    credit: "Adam Winger · unsplash.com/photos/8Bsh8NnVCEo",
+    src: "/img/hero_img_bg_3.png",
+    alt: "Patio de carga de minibodegas con montacargas, camión de mudanzas y Bogotá al fondo",
+    credit: "Storage S.A.S",
   },
 
   sedeCalle197: {
@@ -68,20 +68,26 @@ export const photos = {
     credit: "CHUTTERSNAP · unsplash.com/photos/brown-cardboard-boxes-on-white-metal-rack",
   },
 
+  /** Transparent PNG illustrations: SizeStrip renders them with `fit="contain"` over a gradient well. */
   sizeSmall: {
-    src: u("1757837593538-b4a8654132f1", 800),
-    alt: "Cajas de cartón apiladas y organizadas dentro de una bodega",
-    credit: "Declan Sun · unsplash.com/photos/6N6EXN0x_E4",
+    src: "/img/small.png",
+    alt: "Cajas de cartón, libros, una lámpara y una planta: lo que cabe en una bodega pequeña",
+    credit: "Storage S.A.S",
   },
   sizeMedium: {
-    src: u("1617782674367-341cf5f527c9", 800),
-    alt: "Puerta de persiana metálica cerrada de una bodega mediana",
-    credit: "the blowup · unsplash.com/photos/gray-roll-up-door-closed",
+    src: "/img/medium.png",
+    alt: "Sofá, sillón, maleta y cajas: el contenido de un apartamento de 1 a 2 alcobas",
+    credit: "Storage S.A.S",
   },
   sizeLarge: {
-    src: u("1771530789155-b1f03fbf82b5", 800),
-    alt: "Interior de bodega amplia con piso pulido e iluminación clara",
-    credit: "Craftsman Concrete Floors · unsplash.com/photos/3lkaszxWfGc",
+    src: "/img/big.png",
+    alt: "Mobiliario de casa completa con cajas apiladas y electrodomésticos",
+    credit: "Storage S.A.S",
+  },
+  sizeCustom: {
+    src: "/img/customized.png",
+    alt: "Estantería industrial con estibas, cajas y un montacargas: espacio a la medida de una operación",
+    credit: "Storage S.A.S",
   },
 
   /** Renders under a dark scrim behind HTML text: decorative, so alt stays empty. */
@@ -100,9 +106,10 @@ export const sedePhotos: Record<string, Photo> = {
   paloquemao: photos.sedePaloquemao,
 };
 
-/** SizeStrip: "Personalizados" is the dark differential cell and stays photo-less (MASTER.md §8.5). */
+/** SizeStrip: keyed by `sizes[].href`. "Personalizados" keeps its dark differential shell around its illustration. */
 export const sizePhotos: Record<string, Photo> = {
   "/bodegas-pequenas/": photos.sizeSmall,
   "/bodegas-medianas/": photos.sizeMedium,
   "/bodegas-grandes/": photos.sizeLarge,
+  "/espacios-personalizados/": photos.sizeCustom,
 };

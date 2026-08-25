@@ -31,7 +31,7 @@ export default function Hero() {
     <section aria-labelledby="hero-title" className="relative isolate flex min-h-[86svh] flex-col overflow-hidden bg-bg">
       {/* -inset-[3%] gives the parallax headroom so the frame edge never shows. */}
       <Parallax className="absolute -inset-[3%] -z-10">
-        <Photo img={photos.heroMain} sizes="100vw" className="photo-settle h-full w-full" scrim="hero" priority zoom={false} />
+        <Photo img={photos.heroMain} sizes="100vw" className="photo-settle h-full w-full" scrim="hero" position="object-[62%_center] md:object-right" priority zoom={false} />
       </Parallax>
 
       <div className="flex flex-1 items-center">

@@ -20,6 +20,10 @@ type Props = {
   zoom?: boolean;
   /** Hero only. Everywhere else the LCP element is HTML text, so photos lazy-load. */
   priority?: boolean;
+  /** "contain" for transparent illustrations that must never be cropped; the frame supplies the ground. */
+  fit?: "cover" | "contain";
+  /** Tailwind object-position classes, e.g. "object-[68%_center] md:object-right", to pin a wide photograph's subject per breakpoint. */
+  position?: string;
 };
 
 export default function Photo({
@@ -30,6 +34,8 @@ export default function Photo({
   tint = true,
   zoom = true,
   priority = false,
+  fit = "cover",
+  position,
 }: Props) {
   // Under a dark scrim the warm wash only muddies the photo, and the scrim already unifies it.
   const tinted = tint && scrim === "none";
@@ -43,7 +49,9 @@ export default function Photo({
         priority={priority}
         placeholder="blur"
         blurDataURL={BLUR}
-        className={`object-cover ${zoom ? "transition-transform duration-slow ease-premium group-hover:scale-zoom" : ""}`}
+        // transform-gpu + will-change keep the scale on the compositor: without them the browser
+        // re-rasterises the bitmap on the first hover frame, which reads as a stutter, then a freeze.
+        className={`${fit === "contain" ? "object-contain" : "object-cover"} ${position ?? ""} ${zoom ? "transform-gpu will-change-transform [backface-visibility:hidden] transition-transform duration-photo ease-premium group-hover:scale-zoom" : ""}`}
       />
       {tinted && <span aria-hidden="true" className="absolute inset-0 bg-accent-soft/30 mix-blend-multiply" />}
       {scrim === "hero" && (
@@ -51,12 +59,14 @@ export default function Photo({
           {/* Weighted left on desktop so the photograph still reads on the right. Below md the copy
               spans the full width, so the wash goes heavy and the gradient turns vertical - a
               left-to-right fade protects nothing when the text runs the whole way across. */}
-          <span aria-hidden="true" className="absolute inset-0 bg-bg/72 md:bg-bg/15" />
+          <span aria-hidden="true" className="absolute inset-0 bg-bg/60 md:bg-transparent" />
+          {/* The photograph fades to off-white on its own left half; this only re-tints that fade
+              to --bg so the join is invisible, and stops at 50% so the scene stays untouched. */}
           <span
             aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-b from-bg via-bg/70 to-bg/40 md:bg-gradient-to-r md:from-bg md:via-bg/72 md:to-transparent"
+            className="absolute inset-0 bg-gradient-to-b from-bg via-bg/65 to-bg/20 md:bg-gradient-to-r md:from-bg md:via-bg/70 md:via-30% md:to-transparent md:to-55%"
           />
-          <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-bg/88 via-bg/45 to-transparent" />
+          <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg/80 via-bg/35 to-transparent" />
         </>
       )}
       {scrim === "dark" && (

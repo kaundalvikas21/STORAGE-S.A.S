@@ -56,6 +56,7 @@ const config: Config = {
         fast: "var(--d-fast)",
         DEFAULT: "var(--d)",
         slow: "var(--d-slow)",
+        photo: "var(--d-photo)",
       },
       maxWidth: {
         site: "1200px",

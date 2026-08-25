@@ -43,6 +43,7 @@
   --hover-scale: 1.02;
   --press-scale: 0.98;
   --photo-zoom: 1.05;
+  --d-photo: 600ms;
   --ease-premium: var(--ease);
   --transition-fast: var(--d-fast);
   --transition-base: var(--d);
