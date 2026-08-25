@@ -110,8 +110,8 @@ export const zones = [
   { label: "Centro", href: "/sedes/paloquemao/" },
 ];
 
-// `answer` feeds the visualizer availability line; `m3` is the preset the intent cards
-// push into the shared calc store; `sizeLabel` is the visualizer readout.
+// `m3` is the preset an intent card pushes into the calc store; `answer` and `sizeLabel`
+// are the availability copy for the selected profile.
 // Calle 197 always named first (commercial rule).
 export const intentCards = [
   { id: "cajas", title: "Algunas cajas", range: "1-3 m³", m3: 2, sizeLabel: "Bodega pequeña", hint: "Cajas, maletas, archivo", answer: "Bodega pequeña, disponible en Calle 197 y Toberín" },
@@ -119,13 +119,6 @@ export const intentCards = [
   { id: "apartamento", title: "Apartamento", range: "9-15 m³", m3: 12, sizeLabel: "Bodega mediana", hint: "Sala, comedor, 2 alcobas", answer: "Bodega mediana o grande, disponible en Calle 197 y Spring" },
   { id: "empresa", title: "Empresa", range: "16 m³ +", m3: 20, sizeLabel: "Bodega grande", hint: "Inventario, mobiliario, archivo", answer: "Bodega grande o personalizada, disponible en Calle 197 y Paloquemao" },
 ] as const;
-
-// Labels for the hero m³ visualizer (interactive moment 1).
-export const visualizer = {
-  title: "¿Cuánto espacio necesitas?",
-  sliderLabel: "Arrastra para estimar tu espacio",
-  cta: "Calcular con precisión",
-};
 
 export const sizes = [
   { name: "Pequeñas", range: "1-5 m³", fits: "Cajas, archivo, objetos sueltos", hint: "Disponible en todas las sedes", href: "/bodegas-pequenas/" },

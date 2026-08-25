@@ -2,7 +2,8 @@
 import { useSyncExternalStore } from "react";
 import { intentCards } from "@/content/site";
 
-// Shared m³ state between HeroVisualizer (moment 1) and IntentCards (moment 2).
+// m³ selection behind the intent cards. Kept as a store rather than local state because
+// `profileFor` is shared and the calculator deep link reads the same value.
 // ponytail: module singleton, fine for the single homepage route; move to React
 // context if a second route ever needs isolated calculator state.
 let m3 = 9;

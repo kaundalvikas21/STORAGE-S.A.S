@@ -5,7 +5,7 @@ import { Pause, Play } from "@phosphor-icons/react/dist/ssr";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { BLUR, showcase as shots } from "@/content/images";
 
-const frame = "relative mt-6 aspect-video overflow-hidden rounded-md border border-line";
+const frame = "relative mt-5 aspect-[2/1] overflow-hidden rounded-md border border-line";
 const tint = "absolute inset-0 bg-primary-soft/25 mix-blend-multiply";
 
 /** Auto-cycling (4s), pausable mini-showcase for the Bodegaje featured cell.

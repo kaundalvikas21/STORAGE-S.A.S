@@ -30,11 +30,11 @@ Single-page marketing site for Storage S.A.S (minibodegas, Bogotá), Spanish (`e
 
 **Motion:** `lib/motion.ts` defines the shared `snap`/`rise`/`stagger` variants. `components/Reveal.tsx` (`Reveal`, `RevealItem` named export — not `Reveal.Item`) is the scroll-reveal wrapper; it renders static markup under `prefers-reduced-motion`. Use it rather than hand-rolled `motion.*` in sections.
 
-**Server/client split:** sections are server components by default. Only `Header` (+ `header/MegaMenu`, `header/MobileDrawer`), `Reveal`, `AnimatedNumber`, `IntentCards`, `HeroVisualizer`, `ShowcaseCycler`, `ScrollRow`, `Magnetic`, `SedeMap` + `SedeLeafletMap` (Leaflet, lg-only lazy chunk) are `"use client"`. `Photo` (components/Photo.tsx, renders content/images.ts slots) is a server component. Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
+**Server/client split:** sections are server components by default. Only `Header` (+ `header/MegaMenu`, `header/MobileDrawer`), `Reveal`, `AnimatedNumber`, `IntentCards`, `ShowcaseCycler`, `ScrollRow`, `Magnetic`, `SedeMap` + `SedeLeafletMap` (Leaflet, lg-only lazy chunk) are `"use client"`. `Photo` (components/Photo.tsx, renders content/images.ts slots) is a server component. Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
 
 **Page order is SEO-locked.** `app/page.tsx` DOM order follows wireframe T1; mobile reorders (zone selector under hero) use CSS `order-*` on the flex column, never JSX reordering.
 
-Images are placeholder SVGs in `public/img/`.
+`public/img/` holds the hero background plates (`hero_img_bg*.png`, 1672x941, shot with an empty left band for the headline); the hero uses `hero_img_bg.png`. Every other photo slot is still placeholder Unsplash photography, mapped in `content/images.ts`.
 
 ## The Anti-Slop Ban System
 
@@ -61,7 +61,7 @@ Source of truth: `.claude/skills/design-taste-frontend/SKILL.md` (taste-skill, t
 - ui-ux-pro-max CRITICAL tier: removing focus rings, icon-only buttons without `aria-label`, tap targets under 44×44, hover-only affordances, emoji as icons, placeholder-only form labels, disabling zoom, horizontal page scroll, raw hex in components (use the Tailwind token names).
 
 **Declared exceptions (justified in `design-system/MASTER.md` §8, do not "fix" them):**
-- The current variant's knowing rule-breaks (hand-rolled SVG illustrations, single marquee, dark cells, lime second accent, hero visualizer as 5th element, auto-cycling showcase, text wordmark logos) are enumerated and defended in MASTER.md §8. Read it before "correcting" any of them.
+- The current variant's knowing rule-breaks (hand-rolled SVG volume boxes + noise, single marquee, dark cells, lime second accent, auto-cycling showcase, text wordmark logos, closing frosted panel, hero backdrop photo, sede name/badge over the card photo) are enumerated and defended in MASTER.md §8. Read it before "correcting" any of them.
 - If the client's real brand hex codes arrive, the palette swap happens in `globals.css` variables only.
 
 **Known open violations:** visible address strings in `content/site.ts` (`sedes[]`, `allAddresses[]`) contain `—` before `PENDIENTE CONFIRMAR`. They are client placeholders; when real addresses land, the dashes go with them. Do not add new ones.

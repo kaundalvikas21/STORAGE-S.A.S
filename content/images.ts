@@ -76,21 +76,28 @@ export const segmentEmpresa: Photo = {
   credit: "CHUTTERSNAP · unsplash.com/photos/brown-cardboard-boxes-on-white-metal-rack",
 };
 
-/** ClosingBand background (renders under a dark scrim; text stays HTML). */
+/** Hero backdrop: a purpose-shot minibodega corridor (1672x941, local asset). The plate is
+ *  built with an empty light wall on the left, which is exactly where the H1 and CTAs sit;
+ *  the units and the city view fall behind the visualizer column. Rendered under a light
+ *  `--bg` veil so it reads as depth, not subject, and the page theme stays light.
+ *  Decorative, hence the empty alt. */
+export const heroBackdrop: Photo = {
+  src: "/img/hero_img_bg.png",
+  alt: "",
+  credit: "Asset propio · pasillo de minibodegas con puertas enrollables y vista a la ciudad",
+};
+
+/** ClosingBand background (renders under a dark scrim behind the frosted panel; text stays HTML).
+ *  A night shot on purpose: the band is a `.dark-cell`, so a high-key daytime plate turns to mud
+ *  under the scrim. Any client-supplied replacement should be dusk or night. */
 export const ctaClosing: Photo = {
   src: u("1549829156-071604ac29a4", 1600),
   alt: "",
   credit: "Michael Schmid · unsplash.com/photos/MZC7xHEeKqw · Panorámica nocturna de Bogotá",
 };
 
-/** Declared for later client photos. NOT rendered anywhere yet: the hero keeps the IsoUnit
- *  visualizer (MASTER.md §8.5) and SizeStrip stays icon-driven by design. */
+/** Declared for later client photos. NOT rendered anywhere yet: SizeStrip stays icon-driven by design. */
 export const reserve: Record<string, Photo> = {
-  heroMain: {
-    src: u("1618438502398-195e47778d6c"),
-    alt: "Pasillo iluminado de un edificio de minibodegas",
-    credit: "Raphael · unsplash.com/photos/empty-hallway-with-lights-turned-on-in-the-middle",
-  },
   sizeSmall: {
     src: u("1606824722920-4c652a70f348"),
     alt: "Cajas pequeñas etiquetadas y organizadas en estantes",

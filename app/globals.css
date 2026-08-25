@@ -143,20 +143,6 @@ body::after {
   background-size: 100% 1px;
 }
 
-/* Card action row (sede "Cómo llegar"): hidden only where hover exists; touch and keyboard always see it.
-   Opacity/transform only — the space stays reserved, zero CLS. */
-@media (hover: hover) {
-  .hover-row {
-    opacity: 0;
-    transform: translateY(4px);
-    transition: opacity var(--d) var(--ease), transform var(--d) var(--ease);
-  }
-  .group:is(:hover, :focus-visible, :focus-within) .hover-row {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 /* FAQ open/close height animation: Chromium-only progressive enhancement; others open instantly as before. */
 @supports (interpolate-size: allow-keywords) {
   details.faq-item {
