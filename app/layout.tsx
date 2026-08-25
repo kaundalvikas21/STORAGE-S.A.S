@@ -35,6 +35,13 @@ const jsonLd = [
     foundingDate: String(company.founded),
     telephone: company.phone,
     email: company.email,
+    // Same constant that renders the visible hours line in the footer NAP block.
+    openingHoursSpecification: company.openingHoursSpec.map((h) => ({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: h.days,
+      opens: h.opens,
+      closes: h.closes,
+    })),
     address: allAddresses.map((a) => ({
       "@type": "PostalAddress",
       name: a.label,
@@ -69,8 +76,20 @@ const jsonLd = [
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es-CO" className={`${display.variable} ${mono.variable}`}>
+      <head>
+        {/* Scroll reveals are framer-motion driven, so their hidden state is serialised into the
+            SSR markup. With JS disabled nothing would ever run the show variant — this restores
+            every revealed block so the whole page stays readable. */}
+        <noscript>
+          <style>{"[data-reveal]{opacity:1!important;transform:none!important}"}</style>
+        </noscript>
+      </head>
       <body className="font-body">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        {/* Non-sticky anchor at document position 0 for the footer's "Volver arriba".
+            The header cannot serve as the target: once stuck it is always in view, so the
+            browser considers the anchor reached and barely scrolls. */}
+        <span id="top" aria-hidden="true" />
         <Header />
         {children}
         <Footer />

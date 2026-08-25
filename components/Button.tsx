@@ -27,7 +27,7 @@ export default function Button({ href, children, variant = "primary", size = "lg
   return (
     <Link href={href} className={`${base} ${variants[variant]} ${sizes[size]} ${className}`}>
       <span>{children}</span>
-      {icon && <ArrowUpRight size={16} weight="bold" aria-hidden="true" />}
+      {icon && <ArrowUpRight size={16} weight="bold" aria-hidden="true" className="transition-transform duration-fast ease-soft group-hover:translate-x-1 group-hover:-translate-y-1" />}
     </Link>
   );
 }

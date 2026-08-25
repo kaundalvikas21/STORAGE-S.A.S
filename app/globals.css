@@ -37,12 +37,31 @@
   --d: 180ms;
   --d-slow: 240ms;
 
+  /* Interaction matrix (MASTER.md §8). Aliases, not a second scale. */
+  --transition-fast: var(--d-fast);
+  --transition-base: var(--d-slow);
+  --ease-premium: var(--ease);
+  --hover-lift: -2px;
+  --hover-press: 4px;
+  --photo-zoom: 1.05;
+  --underline-d: 200ms;
+
+  /* Header utility bar height. The bar is `hidden md:flex`, so below md it has no height and
+     the header must not slide up at all — otherwise the logo and hamburger get clipped. */
+  --utility-h: 0px;
+
   --t-display: clamp(2.75rem, 1.4rem + 6.8vw, 6.875rem);
   --t-3xl: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
   --t-2xl: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
 
   /* Space Grotesk carries body copy too; IBM Plex Mono is metadata-only. */
   --font-body: var(--font-display);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --utility-h: 30px;
+  }
 }
 
 html {
@@ -77,27 +96,99 @@ body {
   color: var(--muted);
 }
 
-/* Static blueprint grid, hero background. */
-.blueprint-grid {
-  background-image:
-    linear-gradient(rgba(17, 17, 17, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(17, 17, 17, 0.06) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-
 /* Outlined display text on ink bands (closing CTA). */
 .text-outline {
   -webkit-text-stroke: 2px var(--bg);
   color: transparent;
 }
 
-/* 1-frame mechanical press: hard offset shadow collapses, no transition. */
+/* Hero load choreography. Pure CSS so the LCP element never waits on JS and the hero
+   is fully painted with JavaScript disabled. Delay is set inline per element/word. */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(0.42em); }
+  to { opacity: 1; transform: none; }
+}
+.rise-in {
+  animation: rise-in var(--d) var(--ease-premium) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+/* ── Interaction matrix (MASTER.md §8) ─────────────────────────────────────── */
+
+/* Buttons: hover raises the ink shadow, :active lands flat on it in 1 frame. */
 .press {
   box-shadow: var(--sh-2);
+  transition:
+    transform var(--transition-fast) var(--ease-premium),
+    box-shadow var(--transition-fast) var(--ease-premium),
+    background-color var(--transition-fast) var(--ease-premium),
+    color var(--transition-fast) var(--ease-premium);
+}
+.press:hover {
+  transform: translateY(var(--hover-lift));
+  box-shadow: var(--sh-3);
 }
 .press:active {
-  transform: translate(4px, 4px);
+  transform: translate(var(--hover-press), var(--hover-press));
   box-shadow: none;
+  transition: none;
+}
+
+/* Linked cells: same lift, stronger rules. Put on the <a>, pair with `group`. */
+.cell-hover {
+  transition:
+    transform var(--transition-fast) var(--ease-premium),
+    box-shadow var(--transition-fast) var(--ease-premium),
+    background-color var(--transition-fast) var(--ease-premium),
+    border-color var(--transition-fast) var(--ease-premium);
+}
+.cell-hover:hover,
+.cell-hover:focus-visible {
+  transform: translateY(var(--hover-lift));
+  box-shadow: var(--sh-2);
+}
+.cell-hover:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+  transition: none;
+}
+
+/* Photo zoom happens inside the frame; the frame never grows. */
+.photo-frame {
+  overflow: hidden;
+}
+.photo-frame img {
+  transition: transform var(--transition-base) var(--ease-premium);
+}
+.group:hover .photo-frame img,
+.group:focus-visible .photo-frame img {
+  transform: scale(var(--photo-zoom));
+}
+.group:active .photo-frame img {
+  transform: scale(1.02);
+}
+
+/* Text links: underline draws left→right. */
+.link-draw {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition:
+    background-size var(--underline-d) var(--ease-premium),
+    color var(--transition-fast) var(--ease-premium);
+}
+.link-draw:hover,
+.link-draw:focus-visible {
+  background-size: 100% 1px;
+}
+.link-draw:active {
+  opacity: 0.7;
+}
+
+/* Nav item carrying aria-current gets a persistent orange marker. */
+.nav-item[aria-current] {
+  box-shadow: inset 0 -3px 0 var(--primary);
 }
 
 /* Native accordion marker reset */
@@ -107,6 +198,22 @@ details > summary {
 }
 details > summary::-webkit-details-marker {
   display: none;
+}
+
+/* Height animation with zero JS. Progressive enhancement: browsers without
+   ::details-content support simply open instantly, which is the correct fallback. */
+:root {
+  interpolate-size: allow-keywords;
+}
+details::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size var(--transition-base) var(--ease-premium),
+    content-visibility var(--transition-base) allow-discrete;
+}
+details[open]::details-content {
+  block-size: auto;
 }
 
 /* Marquee: closing band only. Pauses on hover; removed under reduced motion. */
@@ -129,4 +236,10 @@ details > summary::-webkit-details-marker {
     transition-duration: 0.001ms !important;
   }
   .marquee-track { animation: none; }
+  /* Matrix collapses to colour-only feedback: no lift, no zoom, no draw. */
+  .press:hover, .press:active,
+  .cell-hover:hover, .cell-hover:focus-visible, .cell-hover:active { transform: none; }
+  .group:hover .photo-frame img, .group:active .photo-frame img { transform: none; }
+  .link-draw, .link-draw:hover, .link-draw:focus-visible { background-size: 100% 1px; }
+  details::details-content { transition: none; }
 }

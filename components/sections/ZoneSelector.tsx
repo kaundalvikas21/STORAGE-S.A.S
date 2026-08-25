@@ -15,13 +15,13 @@ export default function ZoneSelector() {
           <ul className="flex flex-wrap gap-2" role="list">
             {zones.map((z) => (
               <li key={z.href}>
-                <Link href={z.href} className="inline-flex min-h-[44px] items-center border border-ink bg-bg px-4 font-mono text-[13px] uppercase tracking-[0.06em] text-ink hover:bg-ink hover:text-bg transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                <Link href={z.href} className="inline-flex min-h-[44px] items-center border border-ink bg-bg px-4 font-mono text-[13px] uppercase tracking-[0.06em] text-ink hover:bg-ink hover:text-bg transition-colors duration-fast ease-soft active:opacity-80 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                   {z.label}
                 </Link>
               </li>
             ))}
             <li>
-              <Link href={SEDES_URL} className="inline-flex min-h-[44px] items-center border border-line bg-bg px-4 font-mono text-[13px] uppercase tracking-[0.06em] text-muted hover:border-ink hover:text-ink transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+              <Link href={SEDES_URL} className="inline-flex min-h-[44px] items-center border border-line bg-bg px-4 font-mono text-[13px] uppercase tracking-[0.06em] text-muted hover:border-ink hover:text-ink transition-colors duration-fast ease-soft active:opacity-80 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                 Ver mapa de sedes
               </Link>
             </li>

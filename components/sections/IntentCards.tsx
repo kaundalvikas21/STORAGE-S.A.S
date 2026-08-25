@@ -43,7 +43,7 @@ export default function IntentCards() {
                   onMouseLeave={() => setSelected(null)}
                   onBlur={() => setSelected(null)}
                   aria-current={active ? "true" : undefined}
-                  className={`flex h-full min-h-[168px] flex-col p-5 md:p-6 cursor-pointer transition-colors duration-fast ease-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring ${
+                  className={`flex h-full min-h-[168px] flex-col p-5 md:p-6 cursor-pointer transition-colors duration-fast ease-soft active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring ${
                     active ? "bg-ink text-bg" : "bg-bg text-ink"
                   }`}
                 >

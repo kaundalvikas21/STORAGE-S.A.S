@@ -2,6 +2,8 @@
 // client deliverables (spec: "Confirmed addresses / single phone / single WhatsApp").
 // Swap them here only — nothing else in the page holds contact data.
 
+import type { ImageKey } from "./images";
+
 export const QUOTE_URL = "/cotizar/";
 export const CALC_URL = "/calculadora-de-espacio/";
 export const SEDES_URL = "/sedes/";
@@ -29,8 +31,8 @@ export type Sede = {
   zone: string;
   coverage: string;
   address: string;
-  image: string;
-  alt: string;
+  /** Slot in content/images.ts — the photograph itself is swapped there, never here. */
+  img: ImageKey;
   badge?: string;
 };
 
@@ -42,8 +44,7 @@ export const sedes: Sede[] = [
     zone: "Autopista Norte",
     coverage: "Sabana Norte, Usaquén norte",
     address: "Autopista Norte con Calle 197, Bogotá — PENDIENTE CONFIRMAR nomenclatura exacta",
-    image: "/img/sede-calle-197.svg",
-    alt: "Fachada de la nueva sede Storage en la Autopista Norte con Calle 197, con acceso vehicular amplio",
+    img: "sedeCalle197",
     badge: "Nueva sede · mayor disponibilidad",
   },
   {
@@ -52,8 +53,7 @@ export const sedes: Sede[] = [
     zone: "Calle 163",
     coverage: "Usaquén, Cedritos, Santa Bárbara",
     address: "Calle 163 con Carrera 19B, Toberín, Bogotá — 3 puntos, PENDIENTE CONFIRMAR nomenclaturas",
-    image: "/img/sede-toberin.svg",
-    alt: "Pasillo de minibodegas en la sede Toberín con iluminación cálida y puertas numeradas",
+    img: "sedeToberin",
   },
   {
     slug: "spring-calle-135",
@@ -61,8 +61,7 @@ export const sedes: Sede[] = [
     zone: "Calle 135",
     coverage: "Suba, Colina, Niza, Pasadena",
     address: "Calle 135 # 46-55, Bogotá",
-    image: "/img/sede-spring.svg",
-    alt: "Entrada de la sede Spring en la Calle 135 con zona de cargue cubierta",
+    img: "sedeSpring",
   },
   {
     slug: "paloquemao",
@@ -70,20 +69,22 @@ export const sedes: Sede[] = [
     zone: "Centro",
     coverage: "Centro, Puente Aranda, Los Mártires, Ricaurte",
     address: "Paloquemao, Bogotá — 2 puntos (Paloquemao 32 y 17), PENDIENTE CONFIRMAR nomenclaturas",
-    image: "/img/sede-paloquemao.svg",
-    alt: "Bodegas con acceso para carga en la sede Paloquemao, en el centro de Bogotá",
+    img: "sedePaloquemao",
   },
 ];
 
 // Footer lists the 7 physical addresses as text (spec §01-3). Same order rule.
-export const allAddresses: { label: string; address: string }[] = [
-  { label: "Autopista Norte · Calle 197", address: "Autopista Norte con Calle 197, Bogotá — PENDIENTE CONFIRMAR" },
-  { label: "Toberín 1", address: "Calle 163 con Carrera 19B, Bogotá — PENDIENTE CONFIRMAR" },
-  { label: "Toberín 2", address: "Calle 163 con Carrera 19B, Bogotá — PENDIENTE CONFIRMAR" },
-  { label: "Toberín 3", address: "Calle 163 con Carrera 19B, Bogotá — PENDIENTE CONFIRMAR" },
-  { label: "Spring · Calle 135", address: "Calle 135 # 46-55, Bogotá" },
-  { label: "Paloquemao 32", address: "Paloquemao, Bogotá — PENDIENTE CONFIRMAR" },
-  { label: "Paloquemao 17", address: "Paloquemao, Bogotá — PENDIENTE CONFIRMAR" },
+// `zone` only groups them visually in the footer index — all 7 still render as discrete
+// label + <address> pairs, including the three identical Toberín strings. The repetition IS
+// the local-SEO consistency signal; never collapse them into one entry.
+export const allAddresses: { label: string; address: string; zone: string }[] = [
+  { zone: "Sabana Norte", label: "Autopista Norte · Calle 197", address: "Autopista Norte con Calle 197, Bogotá — PENDIENTE CONFIRMAR" },
+  { zone: "Norte", label: "Toberín 1", address: "Calle 163 con Carrera 19B, Bogotá — PENDIENTE CONFIRMAR" },
+  { zone: "Norte", label: "Toberín 2", address: "Calle 163 con Carrera 19B, Bogotá — PENDIENTE CONFIRMAR" },
+  { zone: "Norte", label: "Toberín 3", address: "Calle 163 con Carrera 19B, Bogotá — PENDIENTE CONFIRMAR" },
+  { zone: "Noroccidente", label: "Spring · Calle 135", address: "Calle 135 # 46-55, Bogotá" },
+  { zone: "Centro", label: "Paloquemao 32", address: "Paloquemao, Bogotá — PENDIENTE CONFIRMAR" },
+  { zone: "Centro", label: "Paloquemao 17", address: "Paloquemao, Bogotá — PENDIENTE CONFIRMAR" },
 ];
 
 export const zones = [
@@ -100,11 +101,11 @@ export const intentCards = [
   { id: "empresa", title: "Empresa", range: "16 m³ +", hint: "Inventario, mobiliario, archivo" },
 ] as const;
 
-export const sizes = [
-  { name: "Pequeñas", range: "1–5 m³", fits: "Cajas, archivo, objetos sueltos", href: "/bodegas-pequenas/" },
-  { name: "Medianas", range: "6–15 m³", fits: "Apartamento de 1–2 alcobas", href: "/bodegas-medianas/" },
-  { name: "Grandes", range: "16–50 m³", fits: "Casa completa, inventario", href: "/bodegas-grandes/" },
-  { name: "Personalizados", range: "50 m³ +", fits: "Espacios a la medida de tu operación", href: "/espacios-personalizados/", differential: true },
+export const sizes: { name: string; range: string; fits: string; href: string; img: ImageKey; differential?: boolean }[] = [
+  { name: "Pequeñas", range: "1–5 m³", fits: "Cajas, archivo, objetos sueltos", href: "/bodegas-pequenas/", img: "sizeSmall" },
+  { name: "Medianas", range: "6–15 m³", fits: "Apartamento de 1–2 alcobas", href: "/bodegas-medianas/", img: "sizeMedium" },
+  { name: "Grandes", range: "16–50 m³", fits: "Casa completa, inventario", href: "/bodegas-grandes/", img: "sizeLarge" },
+  { name: "Personalizados", range: "50 m³ +", fits: "Espacios a la medida de tu operación", href: "/espacios-personalizados/", img: "sizeCustom", differential: true },
 ];
 
 export const segments = [
@@ -112,18 +113,20 @@ export const segments = [
     title: "Para tu hogar",
     body: "Mudanzas, remodelaciones, viajes, falta de espacio.",
     href: "/minibodegas-para-hogar/",
+    img: "segmentHogar" as ImageKey,
   },
   {
     title: "Para tu empresa",
     body: "Inventario, archivo, mobiliario, espacios productivos.",
     href: "/minibodegas-para-empresas/",
+    img: "segmentEmpresa" as ImageKey,
   },
 ];
 
 export const silos = {
-  bodegaje: { title: "Bodegaje y minibodegas", lead: "Guarda lo que no cabe. Espacios desde 1 m³.", body: "Mini bodegas con candado propio, por meses y sin permanencia mínima.", href: "/bodegaje-bogota/" },
-  sedes: { title: "Nuestras sedes", lead: "Encuentra la bodega más cercana a ti.", body: "Siete puntos en el norte, noroccidente, centro y Sabana Norte de Bogotá.", href: SEDES_URL },
-  mudanzas: { title: "Mudanzas y trasteos", lead: "Nos encargamos del traslado completo.", body: "Empaque, transporte y almacenamiento temporal si lo necesitas.", href: "/mudanzas-bogota/" },
+  bodegaje: { title: "Bodegaje y minibodegas", lead: "Guarda lo que no cabe. Espacios desde 1 m³.", body: "Mini bodegas con candado propio, por meses y sin permanencia mínima.", href: "/bodegaje-bogota/", img: "siloBodegaje" as ImageKey },
+  sedes: { title: "Nuestras sedes", lead: "Encuentra la bodega más cercana a ti.", body: "Siete puntos en el norte, noroccidente, centro y Sabana Norte de Bogotá.", href: SEDES_URL, img: "bogotaBand" as ImageKey },
+  mudanzas: { title: "Mudanzas y trasteos", lead: "Nos encargamos del traslado completo.", body: "Empaque, transporte y almacenamiento temporal si lo necesitas.", href: "/mudanzas-bogota/", img: "siloMudanzas" as ImageKey },
 };
 
 export const needs = [

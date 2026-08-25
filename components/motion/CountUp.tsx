@@ -6,7 +6,7 @@ import { useInView, useReducedMotion } from "framer-motion";
 type Props = { value: number; suffix?: string; className?: string };
 
 /** Count-up on scroll. SSR renders the final value so the number exists before hydration; reduced motion keeps it static. */
-export default function AnimatedNumber({ value, suffix = "", className = "" }: Props) {
+export default function CountUp({ value, suffix = "", className = "" }: Props) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-15% 0px" });
   const reduce = useReducedMotion();

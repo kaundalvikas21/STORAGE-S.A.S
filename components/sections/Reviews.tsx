@@ -1,5 +1,5 @@
 import { GoogleLogo } from "@phosphor-icons/react/dist/ssr";
-import Reveal, { RevealItem, RevealRule } from "@/components/Reveal";
+import Reveal, { RevealItem, RevealRule, RevealStagger } from "@/components/motion/Reveal";
 import { reviews as seed, type Review } from "@/content/site";
 
 /** Pass `reviews` from a server fetch (Google Places / reviews API) to replace the seed data. */
@@ -18,7 +18,7 @@ export default function Reviews({ reviews = seed }: { reviews?: Review[] }) {
           </p>
         </Reveal>
 
-        <Reveal group as="ul" className="mt-10 grid gap-5 md:grid-cols-3" role="list">
+        <RevealStagger as="ul" className="mt-10 grid gap-5 md:grid-cols-3" role="list">
           {reviews.map((r) => (
             <RevealItem as="li" key={`${r.author}-${r.date}`}>
               <article className="h-full border-[1.5px] border-ink bg-surface shadow-2 p-6 md:p-7 flex flex-col">
@@ -35,7 +35,7 @@ export default function Reviews({ reviews = seed }: { reviews?: Review[] }) {
               </article>
             </RevealItem>
           ))}
-        </Reveal>
+        </RevealStagger>
       </div>
     </section>
   );

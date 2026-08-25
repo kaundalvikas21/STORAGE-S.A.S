@@ -51,11 +51,72 @@ Dials: DESIGN_VARIANCE 8 · MOTION_INTENSITY 5 · VISUAL_DENSITY 7
 - **Buttons**: square (radius 0–2px), `1.5px` ink border, uppercase, ≥48px tall. Primary = orange bg + ink text; Secondary = paper bg + ink border; Ghost (on ink bands) = paper outline. All use the press effect. `cursor-pointer`, visible focus ring.
 - **Cards/cells**: `1.5px` ink border, flat `--surface`; grids compartmentalized with `gap-px` ink rules. Reviews cards add `--sh-2` offset. No double bezels.
 - **Metadata**: mono uppercase — sede codes (`SEDE 01 · …`), m³ ranges, addresses, hours. Functional labels, not decoration.
-- **Imagery**: documentary duotone — `grayscale` + steel `mix-blend-multiply` overlay; `next/image`, Spanish alt; never carries copy.
+- **Imagery**: full colour, unified by one contrast curve plus a light steel `mix-blend-multiply` cast (`soft`/`base`); `deep` + `mono` (grayscale) is reserved for photos carrying display copy, currently the closing CTA band, `paper` washes a bright photo back behind ink body text. `next/image`, Spanish alt; never carries copy.
 - **Icons**: Phosphor `weight="regular"`, 16–22px. Stars in reviews are text glyphs `■/□` with an aria-label rating.
 - **Banned**: gradients, glass/backdrop-blur, soft/blurred shadows, radius >2px, decorative dots, springs, serif fonts, cuteness. Style never reduces legibility of prices, addresses or hours.
 
-## 8. Declared exceptions (do not "fix")
+## 8. Interaction tokens + state matrix
+Aliases so the premium-polish matrix has names while §6 keeps the real values (one source, no second scale):
+| Token | Value | Use |
+|---|---|---|
+| `--transition-fast` | `var(--d-fast)` 150ms | colour / border / underline draw |
+| `--transition-base` | `var(--d-slow)` 240ms | photo zoom, accordion open |
+| `--ease-premium` | `var(--ease)` | every interaction transition |
+| `--hover-lift` | `-2px` | translateY on hover — in hard-offset language a "lift" is the ink shadow growing under the element, never a blur bloom |
+| `--hover-press` | `4px` | `:active` translate, matches the `--sh-2` offset so the element lands flat on its own shadow |
+| `--photo-zoom` | `1.05` | image scale inside a fixed `overflow-hidden` frame; the frame never grows |
+| `--underline-d` | `200ms` | left→right underline draw on text links |
+
+Matrix (utilities live in `app/globals.css`, applied by class — no per-component improvisation):
+- **Primary / secondary / ghost button** (`.press`): hover `translateY(--hover-lift)` + shadow `--sh-2`→`--sh-3`; `:active` translate(4px,4px) + shadow none, 0ms (1-frame mechanical press, §5); focus-visible 2px `--ring` offset 2px.
+- **Linked card** (`.cell-hover` + `group`): hover lifts to `--sh-2`, border/background strengthen, title takes `--primary-deep`, `→` affordance shifts; whole cell is the link.
+- **Photo inside a card** (`.photo-frame`): scales to `--photo-zoom` on group hover/focus, `1.02` on `:active` for touch parity.
+- **Text link / footer link** (`.link-draw`): underline draws left→right in `--underline-d`.
+- **Nav item**: `.link-draw` + colour shift; `aria-current` gets a persistent orange marker.
+- **FAQ row**: hover background tint; open rotates the `+` 45° into `×` and animates height via `::details-content` (progressive enhancement, instant open where unsupported).
+- **Sede card**: the `Cómo llegar` action row is always visible (touch parity is the baseline, hover only strengthens it).
+- **Logo row**: 60% opacity at rest → 100% on hover, `--transition-base`.
+- Every hover state has an `:active` equivalent so touch gets feedback, and a `focus-visible` state that matches the hover intent.
+- No form inputs exist on the homepage; the input row of the matrix lands with `/cotizar/`.
+
+## 9. Photography
+`content/images.ts` is the manifest: one entry per slot (`heroMain`, `siloBodegaje`, `siloMudanzas`, `sedeCalle197`…`sedePaloquemao`, `segmentHogar`, `segmentEmpresa`, `sizeSmall`…`sizeCustom`, `ctaClosing`, `bogotaBand`), each `{ src, alt, credit, blur }`. Client sede photographs swap in there and nowhere else (spec Open Item 1).
+`components/Photo.tsx` is the only place `next/image` is configured: fill + `sizes`, `placeholder="blur"` from the manifest's 4 dominant-colour quadrants, and the §7 photo treatment (one contrast curve + a light steel `mix-blend-multiply` cast) so mixed sources read as one art-directed set. `priority` is passed on the hero image only. Images never carry copy.
+
+## 10. Footer
+- **Orange never fills the footer.** It appears only as the 8px keyline on the NAP plate and as
+  label text on ink (`--primary` on `--ink` = 5.14:1). The plate itself is ink.
+- **No alpha on any orange surface, ever.** Ink-on-orange starts at 5.14:1, so `ink/90` = 4.68 and
+  `ink/80` = 4.12 — both below AA. The previous orange NAP block failed on three of five text
+  styles for exactly this reason. Alpha de-emphasis stays legal on ink, where paper starts at
+  16.57:1 (`bg/75` = 9.53, `bg/65` = 7.39, `bg/55` = 5.61 all pass).
+- **Labels are 12px minimum**, mono, uppercase. 11px is below the floor for metadata/legal text.
+- **Focus rings use the standard `--ring`.** Orange is visible on ink, so the `ring-ink` swap the
+  old orange block needed is gone.
+- **Two tiers, not four equal columns.** The three short link lists (Bodegaje, Mudanzas,
+  Empresa) sit side by side; the sede index spans the full width below them with its four zones
+  in a row. Forcing the sede index into a quarter-width column made it 726px tall against a
+  208px neighbour — 518px of dead space above the NAP plate. Two tiers cut that to 102px.
+- **Columns are accordions below `md`, plain columns at and above it.** Progressive enhancement
+  only: the server renders every `<details>` open, and JS collapses all but the first once it
+  knows the viewport is narrow. Never invert this — forcing them open with `::details-content`
+  would hide desktop content in browsers lacking that selector. `open` is set imperatively on the
+  element, never as a React prop, so React does not fight the user's clicks.
+- **All seven addresses stay as text**, each its own `label + <address>` pair, including the three
+  identical Toberín strings. `content/images.ts`-style grouping by `zone` is visual only; the
+  repetition is the local-SEO consistency signal (spec §01-3). Never dedupe.
+- `.press` and `RevealRule` are unusable on the footer: both are ink-coloured
+  (`--sh-2` is an ink shadow, `RevealRule` is `bg-ink/30`) and vanish on an ink surface. Use a
+  paper-border invert for controls.
+- **Rules are structural only — never decoration under a heading.** The footer earns exactly
+  four at desktop: the footer boundary (`border-bg/25`), the masthead under the wordmark
+  (`border-bg/15`), the tier divider above the sede index (`border-bg/15`), and the NAP plate
+  frame (`border-bg/25`). Nothing else. Eight hairlines at four different widths read as noise;
+  display type and the orange zone labels carry the hierarchy on their own, and spacing does
+  the separating. Below `md` each accordion row keeps its own rule as tap affordance — that one
+  is functional, not decorative. Boundary rules use `/25`, internal rules `/15`; do not mix.
+
+## 11. Declared exceptions (do not "fix")
 - Em/en dash ban upheld: every `—` from the brief is rendered `·` (ticker, sede codes, tags, marquee).
 - Sede codes (`SEDE 01 · …`) are functional spec-sheet metadata per the brief, not section-number eyebrows.
 - The closing-band marquee (`COTIZA HOY ·`) is brief-mandated, decorative (`aria-hidden`), pausable, and not a third CTA wording — the button says «Cotizar».
