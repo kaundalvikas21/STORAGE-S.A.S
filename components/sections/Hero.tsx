@@ -11,15 +11,16 @@ const headline = "Minibodegas y bodegaje en Bogotá";
  * animation (40ms apart, delay set inline), so nothing here waits on hydration and the whole
  * hero is readable with JavaScript disabled.
  *
- * The photograph is the section background, washed back behind a paper scrim so the ink
- * headline and body keep their contrast — the image illustrates, the HTML carries the message.
+ * The photograph is the section background. It fades to paper on its left at source and the
+ * `fade` scrim carries that dissolve across the text column, so the ink headline and body keep
+ * their contrast while the racks and forklift stay in full colour on the right.
  * Only its parallax drift is client-side.
  */
 export default function Hero() {
   return (
     <section aria-labelledby="hero-title" className="relative isolate overflow-hidden border-b-[1.5px] border-ink">
       <Parallax className="absolute inset-0 -z-10">
-        <Photo slot="heroMain" className="absolute inset-0" sizes="100vw" priority quality={70} scrim="paper" />
+        <Photo slot="heroMain" className="absolute inset-0" sizes="100vw" priority quality={70} scrim="fade" position="right center" />
       </Parallax>
       <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 pt-14 pb-16 md:pt-20 md:pb-24 lg:pt-28 lg:pb-32">
         <h1 id="hero-title" className="font-display text-display font-bold uppercase text-ink max-w-[14ch]">

@@ -23,10 +23,10 @@ export type ImageSlot = {
 export const images = {
   // Client-supplied editorial photograph (local asset, not a placeholder).
   heroMain: {
-    src: "/img/hero_editorial_bg.png",
-    alt: "Pasillo de minibodegas con puertas enrollables blancas y una bodega abierta con cajas apiladas sobre una estiba",
+    src: "/img/hero_img_bg_1.png",
+    alt: "Bodega con estantería naranja llena de cajas, un montacargas y la ciudad de Bogotá al fondo",
     credit: "Storage S.A.S",
-    blur: ["#e2e1e1", "#bcb3aa", "#e6e6e6", "#b3a89d"],
+    blur: ["#efeae3", "#c9b8a4", "#e9e5df", "#b39a84"],
   },
   siloBodegaje: {
     src: "https://images.unsplash.com/photo-1662320154145-7263e998e7a2?fm=jpg&fit=crop&w=2000&q=80",
@@ -77,28 +77,28 @@ export const images = {
     blur: ["#5a636a", "#677780", "#5d5e5a", "#667174"],
   },
   sizeSmall: {
-    src: "https://images.unsplash.com/photo-1609143739217-01b60dad1c67?fm=jpg&fit=crop&w=2000&q=80",
-    alt: "Torres de cajas de cartón organizadas sobre estibas contra una pared blanca",
-    credit: "Unsplash · photo-1609143739217",
-    blur: ["#b1a299", "#7c7160", "#b4a298", "#877865"],
+    src: "/img/small.png",
+    alt: "Tres cajas de mudanza, una lámpara, libros y una planta: lo que cabe en una bodega pequeña",
+    credit: "Storage S.A.S",
+    blur: ["#faf9f4", "#faf9f4", "#e9e6de", "#e9e6de"],
   },
   sizeMedium: {
-    src: "https://images.unsplash.com/photo-1663625318264-695d2d04f11a?fm=jpg&fit=crop&w=2000&q=80",
-    alt: "Cajas de mudanza apiladas junto a la ventana de un apartamento",
-    credit: "Unsplash · photo-1663625318264",
-    blur: ["#635e5c", "#bcbbac", "#1d131c", "#6f6b68"],
+    src: "/img/medium.png",
+    alt: "Sofá, silla, maleta y cajas de mudanza: el contenido de un apartamento pequeño",
+    credit: "Storage S.A.S",
+    blur: ["#faf9f4", "#faf9f4", "#e9e6de", "#e9e6de"],
   },
   sizeLarge: {
-    src: "https://images.unsplash.com/photo-1757837593538-b4a8654132f1?fm=jpg&fit=crop&w=2000&q=80",
-    alt: "Pared completa de cajas de inventario apiladas del piso al techo",
-    credit: "Unsplash · photo-1757837593538",
-    blur: ["#73777a", "#807d79", "#48413e", "#534c40"],
+    src: "/img/big.png",
+    alt: "Nevera, cama, sofá, cómoda y varias cajas: el trasteo de una casa completa",
+    credit: "Storage S.A.S",
+    blur: ["#faf9f4", "#faf9f4", "#e9e6de", "#e9e6de"],
   },
   sizeCustom: {
-    src: "https://images.unsplash.com/photo-1771530789155-b1f03fbf82b5?fm=jpg&fit=crop&w=2000&q=80",
-    alt: "Nave industrial vacía de gran altura con piso pulido y estructura metálica a la vista",
-    credit: "Unsplash · photo-1771530789155",
-    blur: ["#7a7768", "#958b85", "#c1bfb7", "#d0ccc9"],
+    src: "/img/customized.png",
+    alt: "Estantería industrial con estibas, cajas y un montacargas: espacio a la medida de una operación",
+    credit: "Storage S.A.S",
+    blur: ["#faf9f4", "#faf9f4", "#e9e6de", "#e9e6de"],
   },
   ctaClosing: {
     src: "https://images.unsplash.com/photo-1696976004140-3d547f62667b?fm=jpg&fit=crop&w=2000&q=80",

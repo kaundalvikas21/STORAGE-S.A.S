@@ -4,7 +4,11 @@ import Photo from "@/components/Photo";
 import Reveal, { RevealItem, RevealStagger } from "@/components/motion/Reveal";
 import { sizes } from "@/content/site";
 
-/** Ledger rows: one data-table row per size, single hairline between rows, one thumbnail per row. */
+/**
+ * Four size tiers as illustration-first cards. Each card opens with a wide "well" that blends
+ * the transparent PNG into the paper palette (cream to deep cream; the differential tier gets
+ * a primary-soft flush), then the ledger data underneath: name, range, what fits.
+ */
 export default function SizeStrip() {
   return (
     <section aria-labelledby="sizes-title" className="order-6 border-y-[1.5px] border-ink bg-bg-deep/60">
@@ -14,29 +18,34 @@ export default function SizeStrip() {
           <p className="mt-3 text-[15px] text-muted max-w-[52ch]">Bodegas por meses desde 1 m³. Cambias de tamaño cuando tu necesidad cambia.</p>
         </Reveal>
 
-        <RevealStagger as="ul" className="mt-8 border-[1.5px] border-ink bg-surface" role="list">
-          {sizes.map((s, i) => (
-            <RevealItem as="li" key={s.href} className={i > 0 ? "border-t border-line" : ""}>
+        <RevealStagger as="ul" className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5" role="list">
+          {sizes.map((s) => (
+            <RevealItem as="li" key={s.href} className="flex">
               <Link
                 href={s.href}
-                className="group grid grid-cols-[72px_minmax(0,1fr)] items-center gap-4 p-5 md:grid-cols-[104px_minmax(0,1fr)_auto] md:gap-8 md:px-7 hover:bg-bg-deep transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                className="group flex w-full flex-col border-[1.5px] border-ink bg-surface transition-[transform,box-shadow] duration-fast ease-soft hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
               >
-                <Photo slot={s.img} className="relative aspect-square w-full border-[1.5px] border-ink" sizes="104px" />
-                <div>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="font-display text-xl md:text-2xl font-bold uppercase text-ink break-words group-hover:text-primary-deep transition-colors duration-fast ease-soft">{s.name}</h3>
-                    {s.differential && (
-                      <span className="border-[1.5px] border-ink bg-primary px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-[0.08em] text-on-primary">
-                        Diferencial · Nadie más lo ofrece
-                      </span>
-                    )}
+                <div
+                  className={`relative border-b-[1.5px] border-ink bg-gradient-to-b ${
+                    s.differential ? "from-primary-soft via-primary-soft/40 to-surface" : "from-surface via-bg to-bg-deep"
+                  }`}
+                >
+                  <div className="p-[7%]">
+                    <Photo slot={s.img} className="relative aspect-[5/4] w-full" sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 90vw" contain scrim="none" />
                   </div>
-                  <p className="mt-1.5 text-[14px] text-ink-2 max-w-[60ch]">{s.fits}</p>
-                  <span className="mt-2 inline-block font-mono text-lg font-bold tnum text-ink md:hidden">{s.range}</span>
+                  {s.differential && (
+                    <span className="absolute left-3 top-3 border-[1.5px] border-ink bg-primary px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-[0.08em] text-on-primary">
+                      Diferencial
+                    </span>
+                  )}
                 </div>
-                <div className="hidden md:flex items-center gap-6">
-                  <span className="font-mono text-xl md:text-2xl font-bold tnum text-ink">{s.range}</span>
-                  <ArrowUpRight size={20} weight="bold" aria-hidden="true" className="text-ink transition-transform duration-fast ease-soft group-hover:text-primary-deep group-hover:translate-x-1 group-hover:-translate-y-1" />
+                <div className="flex flex-1 flex-col p-5">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="min-w-0 font-display text-xl lg:text-[clamp(1.05rem,1.6vw,1.5rem)] leading-tight font-bold uppercase text-ink group-hover:text-primary-deep transition-colors duration-fast ease-soft">{s.name}</h3>
+                    <ArrowUpRight size={20} weight="bold" aria-hidden="true" className="mt-1 shrink-0 text-ink transition-transform duration-fast ease-soft group-hover:text-primary-deep group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  </div>
+                  <span className="mt-1 font-mono text-lg font-bold tnum text-ink">{s.range}</span>
+                  <p className="mt-2 text-[14px] text-ink-2">{s.fits}</p>
                 </div>
               </Link>
             </RevealItem>

@@ -65,6 +65,8 @@ Aliases so the premium-polish matrix has names while §6 keeps the real values (
 | `--hover-lift` | `-2px` | translateY on hover — in hard-offset language a "lift" is the ink shadow growing under the element, never a blur bloom |
 | `--hover-press` | `4px` | `:active` translate, matches the `--sh-2` offset so the element lands flat on its own shadow |
 | `--photo-zoom` | `1.05` | image scale inside a fixed `overflow-hidden` frame; the frame never grows |
+| `--d-photo` | `600ms` | photo zoom duration: longer than `--d-slow` on purpose, a 5% scale over 240ms reads as a snap |
+| `--ease-photo` | `cubic-bezier(0.22, 1, 0.36, 1)` | photo zoom easing (long ease-out); the image sits on its own compositor layer |
 | `--underline-d` | `200ms` | left→right underline draw on text links |
 
 Matrix (utilities live in `app/globals.css`, applied by class — no per-component improvisation):

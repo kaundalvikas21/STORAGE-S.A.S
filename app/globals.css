@@ -44,6 +44,8 @@
   --hover-lift: -2px;
   --hover-press: 4px;
   --photo-zoom: 1.05;
+  --d-photo: 600ms;
+  --ease-photo: cubic-bezier(0.22, 1, 0.36, 1);
   --underline-d: 200ms;
 
   /* Header utility bar height. The bar is `hidden md:flex`, so below md it has no height and
@@ -156,9 +158,14 @@ body {
 /* Photo zoom happens inside the frame; the frame never grows. */
 .photo-frame {
   overflow: hidden;
+  /* Own compositing layer so the clipped, scaling child never re-rasterises the card. */
+  transform: translateZ(0);
 }
 .photo-frame img {
-  transition: transform var(--transition-base) var(--ease-premium);
+  /* Slow ease-out on a promoted layer: the zoom glides instead of snapping. */
+  transition: transform var(--d-photo) var(--ease-photo);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 .group:hover .photo-frame img,
 .group:focus-visible .photo-frame img {

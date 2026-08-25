@@ -16,6 +16,12 @@ const scrims = {
    * These values sit just above both, so the photograph reads while text keeps its margin.
    */
   paper: "bg-bg/[0.55] md:bg-bg/[0.48]",
+  /**
+   * Hero blend: the photograph is left-faded at source, so the scrim only has to finish the
+   * job. Opaque paper on the text column, dissolving into the photo on the right. Below md the
+   * copy spans the full width, so the veil stays heavier across the frame.
+   */
+  fade: "bg-gradient-to-r from-bg from-[28%] via-bg/85 via-[58%] to-bg/50 md:from-[22%] md:via-bg/55 md:via-[52%] md:to-bg/0",
   soft: "bg-accent/10 mix-blend-multiply",
   base: "bg-accent/[0.18] mix-blend-multiply",
   deep: "bg-ink/55 mix-blend-multiply",
@@ -41,6 +47,10 @@ type Props = {
   mono?: boolean;
   /** Allowlisted in next.config.mjs: 70 (default) or 65. */
   quality?: 65 | 70;
+  /** Transparent illustration: letterbox it, skip the contrast curve and the quadrant blur. */
+  contain?: boolean;
+  /** CSS object-position, e.g. "right center". */
+  position?: string;
 };
 
 /**
@@ -52,7 +62,7 @@ type Props = {
  * The frame is `overflow-hidden` (.photo-frame): a parent carrying `group` zooms the image
  * to --photo-zoom on hover without the frame ever changing size.
  */
-export default function Photo({ slot, className, sizes, priority = false, scrim = "base", mono = false, quality = 70 }: Props) {
+export default function Photo({ slot, className, sizes, priority = false, scrim = "base", mono = false, quality = 70, contain = false, position }: Props) {
   const img = images[slot];
   const [tl, tr, bl, br] = img.blur;
   // 4-quadrant blur built from the manifest's dominant colours. URI-encoded, not base64,
@@ -73,9 +83,10 @@ export default function Photo({ slot, className, sizes, priority = false, scrim 
         sizes={sizes}
         quality={quality}
         priority={priority}
-        placeholder="blur"
+        placeholder={contain ? "empty" : "blur"}
         blurDataURL={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`}
-        className={`object-cover ${mono ? "grayscale contrast-125" : "contrast-[1.08]"}`}
+        style={position ? { objectPosition: position } : undefined}
+        className={contain ? "object-contain" : `object-cover ${mono ? "grayscale contrast-125" : "contrast-[1.08]"}`}
       />
       {scrim !== "none" && <div className={`absolute inset-0 ${scrims[scrim]}`} aria-hidden="true" />}
     </div>
