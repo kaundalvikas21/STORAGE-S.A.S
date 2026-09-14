@@ -27,9 +27,9 @@ export default function ClosingBand() {
             </RevealItem>
             <RevealItem className="mt-9 flex flex-col items-center gap-3 sm:flex-row">
               <Magnetic>
-                <Button href={QUOTE_URL}>Cotizar</Button>
+                <Button href={QUOTE_URL} intent="cotizar">Cotizar</Button>
               </Magnetic>
-              <Button href={CALC_URL} variant="secondary">
+              <Button href={CALC_URL} variant="secondary" intent="calcular">
                 Calcular mi espacio
               </Button>
             </RevealItem>

@@ -6,11 +6,12 @@ import { intentCards } from "@/content/site";
 // `profileFor` is shared and the calculator deep link reads the same value.
 // ponytail: module singleton, fine for the single homepage route; move to React
 // context if a second route ever needs isolated calculator state.
-let m3 = 9;
+let m3 = 18;
 const subs = new Set<() => void>();
 
+// Client size table: smallest unit 2 m³, custom spaces from 60 m³.
 export function setM3(v: number) {
-  m3 = Math.min(50, Math.max(1, Math.round(v)));
+  m3 = Math.min(60, Math.max(2, Math.round(v)));
   subs.forEach((f) => f());
 }
 
@@ -21,11 +22,12 @@ export function useM3() {
       return () => subs.delete(cb);
     },
     () => m3,
-    () => 9,
+    () => 18,
   );
 }
 
-/** m³ → intent profile. Boundaries mirror the intentCards ranges (1-3 / 4-8 / 9-15 / 16+). */
+/** m³ → intent profile. Boundaries mirror the intentCards ranges (2-5 / 6-10 / 15-20 / 25+);
+ *  values in the client's gaps (11-14, 21-24) round up to the next tier. */
 export function profileFor(v: number) {
-  return intentCards[v <= 3 ? 0 : v <= 8 ? 1 : v <= 15 ? 2 : 3];
+  return intentCards[v <= 5 ? 0 : v <= 10 ? 1 : v <= 20 ? 2 : 3];
 }

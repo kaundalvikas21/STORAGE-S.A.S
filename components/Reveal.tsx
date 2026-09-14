@@ -40,11 +40,12 @@ export default function Reveal({ children, className, as = "div", delay = 0, gro
   );
 }
 
-export function RevealItem({ children, className, as = "div" }: Omit<Props, "delay" | "group" | "role">) {
+/** `layout`: animate position when the list reorders (SedeList's nearest-first sort). Off under reduced motion. */
+export function RevealItem({ children, className, as = "div", layout = false }: Omit<Props, "delay" | "group" | "role"> & { layout?: boolean }) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
   return (
-    <Tag className={className} variants={reduce ? riseInstant : rise} transition={reduce ? instant : undefined}>
+    <Tag className={className} layout={layout && !reduce} variants={reduce ? riseInstant : rise} transition={reduce ? instant : undefined}>
       {children}
     </Tag>
   );

@@ -4,13 +4,13 @@ import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Plus } from "@phosphor-icons/react/dist/ssr";
 import { CALC_URL, QUOTE_URL, company, nav } from "@/content/site";
-import { btnClass } from "@/components/Button";
+import { CtaIcon, btnClass } from "@/components/Button";
 import { focusRing, menus } from "@/components/header/MegaMenu";
 import { snap } from "@/lib/motion";
 
 type Props = { open: boolean; close: () => void };
 
-/** Full-height drawer (<lg): accordion groups mirroring the mega-menu (Calle 197 first),
+/** Full-height drawer (<lg): accordion groups mirroring the mega-menu (Autopista Norte first),
  *  CTAs pinned at the bottom. Rendered as a sibling of <header> (a transformed header would
  *  hijack fixed positioning): z-[35] sits above the sticky bottom bar (30), below the header (40). */
 export default function MobileDrawer({ open, close }: Props) {
@@ -96,9 +96,11 @@ export default function MobileDrawer({ open, close }: Props) {
           <div className="border-t border-line bg-surface p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
             <div className="mx-auto grid max-w-md grid-cols-1 gap-3 sm:grid-cols-2">
               <Link href={CALC_URL} onClick={close} className={btnClass("secondary", "md")}>
+                <CtaIcon intent="calcular" />
                 Calcular mi espacio
               </Link>
               <Link href={QUOTE_URL} onClick={close} className={btnClass("primary", "md")}>
+                <CtaIcon intent="cotizar" />
                 Cotizar
               </Link>
             </div>

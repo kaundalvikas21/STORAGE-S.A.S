@@ -18,12 +18,12 @@ export default function SizeStrip() {
       <div className="mx-auto max-w-site px-5 py-14 md:px-8 md:py-20 lg:px-10 lg:py-24">
         <Reveal>
           <h2 id="sizes-title" className="max-w-[20ch] font-display text-3xl font-semibold text-ink">Minibodegas del tamaño justo</h2>
-          <p className="mt-3 max-w-[52ch] text-[15px] text-muted">Bodegas por meses desde 1 m³. Cambias de tamaño cuando tu necesidad cambia.</p>
+          <p className="mt-3 max-w-[52ch] text-[15px] text-muted">Bodegas por meses desde 2 m³. Cambias de tamaño cuando tu necesidad cambia.</p>
         </Reveal>
 
         <Reveal group as="ul" className="mt-10 grid gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-4" role="list">
           {sizes.map((s, i) => (
-            <RevealItem as="li" key={s.href}>
+            <RevealItem as="li" key={s.href} className="min-w-0">
               <Link
                 href={s.href}
                 className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-lg border border-line bg-surface shadow-1 transition-[transform,box-shadow,border-color] duration ease-soft hover:-translate-y-0.5 hover:border-muted-2 hover:shadow-2 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"

@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Phone, ChatText } from "@phosphor-icons/react/dist/ssr";
-import { btnClass } from "@/components/Button";
+import { CtaIcon, btnClass } from "@/components/Button";
 import { QUOTE_URL, company } from "@/content/site";
 
 /** Fixed bottom bar <768px. Cotizar → qualifying form (never a chat deep link). Llamar → tel:. */
@@ -12,11 +11,11 @@ export default function MobileStickyBar() {
     >
       <div className="grid grid-cols-2 gap-2 p-2">
         <Link href={QUOTE_URL} className={btnClass("primary", "md")}>
-          <ChatText size={20} weight="regular" aria-hidden="true" />
+          <CtaIcon intent="cotizar" />
           Cotizar
         </Link>
         <a href={`tel:${company.phone.replace(/\s/g, "")}`} className={btnClass("secondary", "md")}>
-          <Phone size={20} weight="regular" aria-hidden="true" />
+          <CtaIcon intent="llamar" />
           Llamar
         </a>
       </div>

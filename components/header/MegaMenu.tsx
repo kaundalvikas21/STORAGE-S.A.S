@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
-import { SEDES_URL, footerCols, nav, needs, sedes, sizes } from "@/content/site";
+import { SEDES_URL, footerCols, nav, needs, sedePages, sizes } from "@/content/site";
 import { snap } from "@/lib/motion";
 
 type Col = {
@@ -14,7 +14,7 @@ type Col = {
   more?: { label: string; href: string };
 };
 
-/* Dropdown contents, all derived from content/site.ts (Calle 197 first by array order). */
+/* Dropdown contents, all derived from content/site.ts (Autopista Norte first by array order). */
 export const menus: Record<string, Col[]> = {
   "/bodegaje-bogota/": [
     { title: "Por tamaño", items: sizes.map((s) => ({ label: s.name, href: s.href })) },
@@ -22,14 +22,14 @@ export const menus: Record<string, Col[]> = {
     {
       title: "Por sede",
       priority: true,
-      items: sedes.map((s) => ({ label: s.name, href: `/sedes/${s.slug}/`, badge: s.badge })),
+      items: sedePages.map((s) => ({ label: s.name, href: `/sedes/${s.slug}/`, badge: s.badge })),
       more: { label: "Ver las 7 sedes", href: SEDES_URL },
     },
   ],
   [SEDES_URL]: [
     {
       title: "Sedes en Bogotá",
-      items: sedes.map((s) => ({ label: `${s.name} · ${s.zone}`, href: `/sedes/${s.slug}/`, badge: s.badge })),
+      items: sedePages.map((s) => ({ label: s.name.includes(s.zone) ? s.name : `${s.name} · ${s.zone}`, href: `/sedes/${s.slug}/`, badge: s.badge })),
       more: { label: "Ver las 7 sedes", href: SEDES_URL },
     },
   ],

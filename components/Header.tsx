@@ -1,11 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { CaretDown, ChatText, Clock, MapPin, Phone } from "@phosphor-icons/react/dist/ssr";
 import { CALC_URL, QUOTE_URL, company, nav } from "@/content/site";
-import { btnClass } from "@/components/Button";
+import { CtaIcon, btnClass } from "@/components/Button";
 import MegaMenu, { focusRing, menus } from "@/components/header/MegaMenu";
 import MobileDrawer from "@/components/header/MobileDrawer";
 
@@ -83,8 +84,9 @@ export default function Header() {
 
         {/* The header (z-40) paints above the drawer (z-[35]), so logo + X stay clickable. */}
         <div className="relative flex items-center justify-between gap-4 py-3" onMouseLeave={hide}>
-          <Link href="/" aria-current="page" className={`font-display text-lg font-semibold text-ink cursor-pointer ${focusRing}`} aria-label={`${company.brand}, inicio`}>
-            Storage <span className="text-primary">S.A.S</span>
+          {/* Client logo (public/site-logo-storage-sas.png, 189x94, the same file the live site uses). */}
+          <Link href="/" aria-current="page" className={`flex shrink-0 cursor-pointer items-center rounded-sm ${focusRing}`} aria-label={`${company.brand}, inicio`}>
+            <Image src="/site-logo-storage-sas.png" alt="" width={189} height={94} priority className="h-14 w-auto" />
           </Link>
 
           <nav aria-label="Principal" className="hidden items-center gap-1 lg:flex">
@@ -116,9 +118,12 @@ export default function Header() {
 
           <div className="hidden items-center gap-2 md:flex">
             <Link href={CALC_URL} className={btnClass("secondary", "md")}>
+              {/* Icons hide at lg only: nav + both CTAs share the row there and "Calcular mi espacio" would wrap. */}
+              <CtaIcon intent="calcular" className="lg:hidden xl:block" />
               Calcular mi espacio
             </Link>
             <Link href={QUOTE_URL} className={btnClass("primary", "md")}>
+              <CtaIcon intent="cotizar" className="lg:hidden xl:block" />
               Cotizar
             </Link>
           </div>

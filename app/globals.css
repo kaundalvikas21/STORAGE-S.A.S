@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tokens — mirror of design-system/MASTER.md («El Calculista»). Brand hex pending: swap here only. */
+/* Tokens: mirror of design-system/MASTER.md («El Calculista»), palette taken from the Storage S.A.S logo
+   (yellow fill, near-black type, kraft box). Swap here only. */
 :root {
   --bg: #f5f6f8;
   --bg-deep: #14161b;
@@ -12,15 +13,26 @@
   --muted: #565d6b;
   --muted-2: #5f6673;
   --line: #e3e6ec;
-  --primary: #3d5afe;
-  --primary-deep: #2a3eb1;
-  --primary-soft: #eaedff;
+  /* Exact logo pixels (storagebogota.com logo PNG). Yellow: primary CTA FILL only, always with
+     --on-brand text (13.8:1). Never text on light (1.2:1). */
+  --brand: #efe635;
+  --brand-deep: #d9cf22;
+  --on-brand: #14161b;
+  /* Links, icons, active states: the logo's near-black #262324 (15.6:1); hover warms to dark kraft (7.1:1). */
+  --primary: #262324;
+  --primary-deep: #6b5434;
+  --primary-soft: #fcfadb;
   --on-primary: #ffffff;
-  --accent: #c6f432;
-  --accent-deep: #a9d71e;
-  --accent-soft: #f2fbd8;
-  --on-accent: #14161b;
-  --ring: #3d5afe;
+  /* Kraft (the logo's cardboard box) #866a41: tags and availability chips. White text on it
+     (5.1:1); near-black would only reach 3.6:1. */
+  --accent: #866a41;
+  --accent-deep: #6b5434;
+  --accent-soft: #f2ece3;
+  --on-accent: #ffffff;
+  --ring: #262324;
+  /* WhatsApp brand green (official #25D366): the floating chat bubble only. White icon on it. */
+  --whatsapp: #25d366;
+  --whatsapp-deep: #1ebe5b;
 
   --r-sm: 8px;
   --r-md: 12px;
@@ -51,7 +63,8 @@
 }
 
 /* Dark featured cell: a local variable scope, NOT a dark mode (MASTER.md §1/§8.3).
-   Token classes keep resolving — components stay zero-hex. Lime family untouched (13-14:1 on dark). */
+   Token classes keep resolving, components stay zero-hex. On dark, links and accents switch to the
+   logo yellow: yellow with near-black is the logo's own pairing (13:1), where kraft would sit at 5:1. */
 .dark-cell {
   --bg: #14161b;
   --surface: #1b1e26;
@@ -60,11 +73,14 @@
   --muted: #9ba3b5;
   --muted-2: #9ba3b5;
   --line: rgba(255, 255, 255, 0.12);
-  --primary: #93a5ff;
-  --primary-deep: #b9c4ff;
-  --primary-soft: rgba(61, 90, 254, 0.22);
+  --primary: #efe635;
+  --primary-deep: #f6f08f;
+  --primary-soft: rgba(239, 230, 53, 0.16);
   --on-primary: #14161b;
-  --ring: #93a5ff;
+  --accent: #efe635;
+  --accent-deep: #d9cf22;
+  --on-accent: #14161b;
+  --ring: #efe635;
   background: var(--bg);
   color: var(--ink);
 }
@@ -158,7 +174,7 @@ body::after {
   }
 }
 
-/* Sede map pins: Calle 197 pulses ONCE (not looping) after the band settles. */
+/* Sede map pins: Autopista Norte pulses ONCE (not looping) after the band settles. */
 @keyframes pin-pulse {
   50% {
     transform: scale(1.45);
@@ -168,34 +184,50 @@ body::after {
   animation: pin-pulse 1.2s var(--ease) 0.6s 1;
 }
 
-/* Interactive sede map (Leaflet): branded divIcon pins, token-styled chrome.
-   Card hover/focus highlights its pins — pure CSS :has(), zero JS (interactive moment 3). */
+/* Interactive sede map (Leaflet) inside a `.dark-cell`, in the spirit of the client's
+   "Estamos en toda Bogotá" banner: dark gray tiles, logo-yellow pins with a soft glow.
+   Card hover/focus highlights its pin — pure CSS :has(), zero JS (interactive moment 3). */
 .sede-tiles {
-  filter: grayscale(1) contrast(0.95) brightness(1.03);
+  filter: grayscale(1) contrast(0.9) brightness(0.9);
 }
 .map-pin {
   display: block;
   width: 100%;
   height: 100%;
   border-radius: 9999px;
-  background: var(--muted-2);
-  border: 2px solid var(--surface);
-  box-shadow: var(--sh-1);
+  background: var(--brand);
+  border: 2px solid var(--bg-deep);
+  box-shadow: 0 0 0 4px rgba(239, 230, 53, 0.18);
 }
 .map-pin-featured {
-  background: var(--primary);
   border-width: 3px;
-  box-shadow: 0 0 0 4px var(--accent);
+  box-shadow: 0 0 0 6px rgba(239, 230, 53, 0.25);
 }
 [data-pin] {
-  transition: transform var(--d) var(--ease), background-color var(--d) var(--ease);
+  transition: transform var(--d) var(--ease), box-shadow var(--d) var(--ease);
 }
+/* One rule per sede id (content/site.ts sedes[]): add a line here when a sede is added. */
 .sede-band:has([data-sede="autopista-norte-197"]:is(:hover, :focus-visible, :focus-within)) [data-pin="autopista-norte-197"],
-.sede-band:has([data-sede="toberin"]:is(:hover, :focus-visible, :focus-within)) [data-pin="toberin"],
+.sede-band:has([data-sede="toberin-1"]:is(:hover, :focus-visible, :focus-within)) [data-pin="toberin-1"],
+.sede-band:has([data-sede="toberin-2"]:is(:hover, :focus-visible, :focus-within)) [data-pin="toberin-2"],
+.sede-band:has([data-sede="toberin-4"]:is(:hover, :focus-visible, :focus-within)) [data-pin="toberin-4"],
 .sede-band:has([data-sede="spring-calle-135"]:is(:hover, :focus-visible, :focus-within)) [data-pin="spring-calle-135"],
-.sede-band:has([data-sede="paloquemao"]:is(:hover, :focus-visible, :focus-within)) [data-pin="paloquemao"] {
-  transform: scale(1.35);
-  background-color: var(--primary);
+.sede-band:has([data-sede="paloquemao-1"]:is(:hover, :focus-visible, :focus-within)) [data-pin="paloquemao-1"],
+.sede-band:has([data-sede="paloquemao-2"]:is(:hover, :focus-visible, :focus-within)) [data-pin="paloquemao-2"] {
+  transform: scale(1.4);
+  box-shadow: 0 0 0 8px rgba(239, 230, 53, 0.28);
+}
+/* Dashed arcs linking the sedes (SedeLeafletMap polyline), like the banner. */
+.sede-arc {
+  stroke: var(--brand);
+  stroke-opacity: 0.35;
+  stroke-dasharray: 4 6;
+}
+
+/* Pop-up scrim (components/Popups.tsx). Raw value on purpose: older engines don't let ::backdrop
+   inherit custom properties, and a var() there would leave the page unscrimmed. Mirrors --bg-deep at 60%. */
+dialog::backdrop {
+  background: rgba(20, 22, 27, 0.6);
 }
 /* leaflet.css loads later (lazy chunk), so these overrides need higher specificity. */
 .sede-band .leaflet-container {
@@ -206,10 +238,14 @@ body::after {
   z-index: 0;
   isolation: isolate;
 }
+.sede-band .leaflet-popup-content-wrapper,
+.sede-band .leaflet-popup-tip {
+  background: var(--surface);
+  color: var(--ink);
+}
 .sede-band .leaflet-popup-content-wrapper {
   border-radius: var(--r-md);
   box-shadow: var(--sh-3);
-  color: var(--ink);
 }
 .sede-band .leaflet-popup-content a {
   color: var(--primary);
@@ -217,9 +253,18 @@ body::after {
 }
 .sede-band .leaflet-bar a {
   color: var(--ink);
+  background: var(--surface);
   border-color: var(--line);
 }
+.sede-band .leaflet-control-attribution {
+  background: rgba(20, 22, 27, 0.75);
+  color: var(--muted);
+}
+.sede-band .leaflet-control-attribution a {
+  color: var(--ink-2);
+}
 .leaflet-tooltip.map-tag {
+  text-align: center;
   background: var(--accent);
   color: var(--on-accent);
   border: none;
@@ -232,6 +277,10 @@ body::after {
 .leaflet-tooltip.map-tag::before {
   display: none; /* leaflet tooltip arrow */
 }
+.leaflet-tooltip.map-tag strong {
+  display: block;
+  font-weight: 600;
+}
 
 /* Single permitted marquee (ClientLogos). CSS-only; pauses on hover/focus. */
 @keyframes marquee {
@@ -241,6 +290,9 @@ body::after {
 }
 .marquee {
   overflow: hidden;
+  /* Logos fade in and out at both edges instead of being clipped. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
 }
 .marquee-track {
   display: flex;
@@ -272,7 +324,11 @@ details > summary::-webkit-details-marker {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-  /* Marquee degrades to a static wrapped row; the aria-hidden duplicate disappears. */
+  /* Marquee degrades to a static wrapped row; the aria-hidden duplicates disappear, so no edge fade. */
+  .marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
   .marquee-track {
     animation: none;
     width: auto;

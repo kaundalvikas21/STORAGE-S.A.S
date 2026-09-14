@@ -20,21 +20,23 @@ Single-page marketing site for Storage S.A.S (minibodegas, Bogotá), Spanish (`e
 ## Architecture (the parts that span files)
 
 **Content lives in one file.** `content/site.ts` holds all copy, NAP, sedes, FAQ, nav, reviews, URLs. Components import from it; nothing else hardcodes contact data. Values tagged `PENDIENTE CONFIRMAR` are awaiting the client — swap them there only.
-- `sedes[]`: Calle 197 must stay first. Never sort/randomize.
-- CTAs go to `QUOTE_URL` / `CALC_URL`; WhatsApp is displayed as text only.
+- `sedes[]`: one entry per physical point (7), each with its map coordinates; `allAddresses` and `sedePages` (one per sede page, for menus) are derived from it. Names/addresses come from the client's "Estamos en toda Bogotá" banner (Toberín 1/2/4, Paloquemao 1/2), nomenclature still PENDIENTE CONFIRMAR. Autopista Norte (id `autopista-norte-197`) must stay first in the array and in the server-rendered order. The only re-sort is `SedeList`'s opt-in "Ordenar por cercanía" after the visitor grants location (client checklist 2026-09). Never randomize. Card↔pin highlight rules in `globals.css` are keyed by sede `id`: add one when adding a sede.
+- Engagement config (newsletter / exit pop-ups, social feed) lives in `content/engagement.ts`, re-exported from `site.ts`.
+- CTAs go to `QUOTE_URL` / `CALC_URL`. WhatsApp chat links are built ONLY through `waLink(text)` in `content/site.ts` (number from `company.whatsapp`): the floating `components/WhatsAppWidget.tsx`, the "Cotizas" step, the ContactBand tile and the exit pop-up "Cotizar por WhatsApp". Header/hero/closing "Cotizar" stay on `QUOTE_URL`. No bot or further integration (client checklist §5).
+- The social feed is a post grid rendered from `content/social-posts.ts` (a dated SNAPSHOT of the client's real posts; images in `public/social/`). Profiles + `snapshotDate` live in `content/engagement.ts`. `npm run social:sync` (`scripts/fetch-social.mjs`, needs `INSTAGRAM_TOKEN`/`IG_USER_ID`, optional `FACEBOOK_TOKEN`/`FB_PAGE_ID`) regenerates both from the Graph API; without tokens it is a no-op. No iframes, no keys in the repo.
 - `faq` and `company`/`nav` also feed JSON-LD (`app/page.tsx` FAQPage, `app/layout.tsx` Organization/WebSite/ItemList), so edits propagate to schema automatically.
 
-**Design tokens flow MASTER.md → globals.css → tailwind.config.ts.** `design-system/MASTER.md` (currently the «El Calculista» variant; other variants live on the `la-boveda` / `el-contenedor` / `el-sistema` branches) is the source of truth; `app/globals.css` mirrors it 1:1 as CSS variables; `tailwind.config.ts` maps every color/radius/shadow/font/duration to those variables. Add a token in all three, in that order. `design-system/storage-sas/` is the superseded ui-ux-pro-max baseline — don't use it. Brand hex codes are pending from client, hence everything is a variable.
+**Design tokens flow MASTER.md → globals.css → tailwind.config.ts.** `design-system/MASTER.md` (currently the «El Calculista» variant; other variants live on the `la-boveda` / `el-contenedor` / `el-sistema` branches) is the source of truth; `app/globals.css` mirrors it 1:1 as CSS variables; `tailwind.config.ts` maps every color/radius/shadow/font/duration to those variables. Add a token in all three, in that order. `design-system/storage-sas/` is the superseded ui-ux-pro-max baseline — don't use it. The palette now comes from the client's logo (yellow `--brand` CTA fill, near-black `--primary`, kraft `--accent`); everything stays a variable so a refined brand spec is still a one-file swap.
 
 **Fonts:** Bricolage Grotesque (`--font-display`, variable opsz) + Inter (`--font-body`) loaded via `next/font/google` in `app/layout.tsx`.
 
 **Motion:** `lib/motion.ts` defines the shared `snap`/`rise`/`stagger` variants. `components/Reveal.tsx` (`Reveal`, `RevealItem` named export — not `Reveal.Item`) is the scroll-reveal wrapper; it renders static markup under `prefers-reduced-motion`. Use it rather than hand-rolled `motion.*` in sections.
 
-**Server/client split:** sections are server components by default. Only `Header` (+ `header/MegaMenu`, `header/MobileDrawer`), `Reveal`, `AnimatedNumber`, `IntentCards`, `ShowcaseCycler`, `ScrollRow`, `Magnetic`, `SedeMap` + `SedeLeafletMap` (Leaflet, lg-only lazy chunk) are `"use client"`. `Photo` (components/Photo.tsx, renders content/images.ts slots) is a server component. Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
+**Server/client split:** sections are server components by default. Only `Header` (+ `header/MegaMenu`, `header/MobileDrawer`), `Reveal`, `AnimatedNumber`, `IntentCards`, `ShowcaseCycler`, `ScrollRow`, `Magnetic`, `SedeMap` + `SedeLeafletMap` (Leaflet, lg-only lazy chunk), `SedeList` (lays out the sedes header tools, map and cards it receives server-rendered as props; owns the nearest-first sort) `SocialGrid` (post filter; `SocialTile` itself is a server component), `Popups` (newsletter + exit-intent `<dialog>`) and `WhatsAppWidget` (both mounted in `app/layout.tsx`) are `"use client"`. `Photo` (components/Photo.tsx, renders content/images.ts slots) is a server component. Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
 
 **Page order is SEO-locked.** `app/page.tsx` DOM order follows wireframe T1; mobile reorders (zone selector under hero) use CSS `order-*` on the flex column, never JSX reordering.
 
-`public/img/` holds the hero background plates (`hero_img_bg*.png`, 1672x941, shot with an empty left band for the headline); the hero uses `hero_img_bg.png`. Every other photo slot is still placeholder Unsplash photography, mapped in `content/images.ts`.
+`public/img/` holds the hero background plates (`hero_img_bg*.png`, 1672x941, shot with an empty left band for the headline); the hero uses `hero_img_bg_3.png` (the client-approved storage-first style). The Bodegaje showcase uses generated `showcase-1..3`; social posts live in `public/social/`; the remaining photo slots are still Unsplash placeholders, all mapped in `content/images.ts`.
 
 ## The Anti-Slop Ban System
 
@@ -61,10 +63,10 @@ Source of truth: `.claude/skills/design-taste-frontend/SKILL.md` (taste-skill, t
 - ui-ux-pro-max CRITICAL tier: removing focus rings, icon-only buttons without `aria-label`, tap targets under 44×44, hover-only affordances, emoji as icons, placeholder-only form labels, disabling zoom, horizontal page scroll, raw hex in components (use the Tailwind token names).
 
 **Declared exceptions (justified in `design-system/MASTER.md` §8, do not "fix" them):**
-- The current variant's knowing rule-breaks (hand-rolled SVG volume boxes + noise, single marquee, dark cells, lime second accent, auto-cycling showcase, text wordmark logos, closing frosted panel, hero backdrop photo, sede name/badge over the card photo) are enumerated and defended in MASTER.md §8. Read it before "correcting" any of them.
+- The current variant's knowing rule-breaks (hand-rolled SVG volume boxes + noise, single marquee, dark cells, kraft/yellow second accent, auto-cycling showcase, PNG client logos, closing frosted panel, hero backdrop photo, sede name/badge over the card photo) are enumerated and defended in MASTER.md §8. Read it before "correcting" any of them.
 - If the client's real brand hex codes arrive, the palette swap happens in `globals.css` variables only.
 
-**Known open violations:** visible address strings in `content/site.ts` (`sedes[]`, `allAddresses[]`) contain `—` before `PENDIENTE CONFIRMAR`. They are client placeholders; when real addresses land, the dashes go with them. Do not add new ones.
+**Known open placeholders:** address strings in `content/site.ts` `sedes[]` still end in `(PENDIENTE CONFIRMAR nomenclatura)` (the old `—` separators are gone). They are client placeholders; swap them when real addresses land.
 
 ## File Line-Count Limits
 

@@ -4,7 +4,9 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileStickyBar from "@/components/MobileStickyBar";
-import { CALC_URL, QUOTE_URL, SITE_URL, allAddresses, company, nav } from "@/content/site";
+import Popups from "@/components/Popups";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
+import { CALC_URL, QUOTE_URL, SITE_URL, allAddresses, company, nav, social } from "@/content/site";
 
 const display = Bricolage_Grotesque({ subsets: ["latin"], display: "swap", variable: "--font-display" });
 const body = Inter({ subsets: ["latin"], display: "swap", variable: "--font-body" });
@@ -13,14 +15,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Storage S.A.S | Minibodegas y bodegaje en Bogotá",
   description:
-    "7 sedes en Bogotá con más de 500 minibodegas. Espacios desde 1 m³ para hogar y empresa, sin permanencia mínima. Calcula tu espacio y cotiza en línea.",
+    "7 sedes en Bogotá con más de 1000 minibodegas. Espacios desde 2 m³ para hogar y empresa, sin permanencia mínima. Calcula tu espacio y cotiza en línea.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "es_CO",
     siteName: company.brand,
     title: "Minibodegas y bodegaje en Bogotá | Storage S.A.S",
-    description: "7 sedes · más de 500 bodegas · desde 1 m³ · sin permanencia mínima.",
+    description: "7 sedes · más de 1000 bodegas · desde 2 m³ · sin permanencia mínima.",
   },
 };
 
@@ -32,6 +34,8 @@ const jsonLd = [
     name: company.legalName,
     alternateName: company.brand,
     url: SITE_URL,
+    logo: `${SITE_URL}/site-logo-storage-sas.png`,
+    sameAs: social.profiles.map((p) => p.href),
     foundingDate: String(company.founded),
     telephone: company.phone,
     email: company.email,
@@ -81,6 +85,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Footer />
         <MobileStickyBar />
+        <WhatsAppWidget />
+        <Popups />
       </body>
     </html>
   );

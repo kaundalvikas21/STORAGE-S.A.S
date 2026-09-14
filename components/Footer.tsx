@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Phone, ChatText, Clock } from "@phosphor-icons/react/dist/ssr";
 import Reveal, { RevealItem } from "@/components/Reveal";
@@ -60,6 +61,9 @@ export default function Footer() {
             availability/positive states only (MASTER.md §1/§7). */}
         <div className="mt-14 rounded-lg border border-primary/20 bg-primary-soft p-6 md:p-8 grid gap-6 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
           <div>
+            <Link href="/" aria-label={`${company.brand}, inicio`} className="mb-4 inline-flex cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+              <Image src="/site-logo-storage-sas.png" alt="" width={189} height={94} className="h-16 w-auto" />
+            </Link>
             <p className="text-lg font-semibold text-ink">{company.legalName}</p>
             <p className="mt-1 text-[13px] text-muted">Minibodegas, bodegaje y mudanzas en Bogotá desde {company.founded}.</p>
             <p className="mt-3 text-[13px] text-muted flex items-start gap-2">

@@ -35,7 +35,7 @@ export default function Hero() {
         <div>
           <p className="hero-fade" style={{ "--hd": "0ms" } as CSSProperties}>
             <span className="tnum eyebrow inline-flex rounded-lg border border-line bg-surface px-4 py-2 md:rounded-full">
-              7 sedes · más de 500 bodegas · desde 1 m³ · sin permanencia mínima
+              7 sedes · más de 1000 bodegas · desde 2&nbsp;m³ · sin permanencia mínima
             </span>
           </p>
           <h1 id="hero-title" className="mt-6 max-w-[19ch] font-display text-display font-semibold text-ink">
@@ -51,8 +51,8 @@ export default function Hero() {
             Mini bodegas independientes con tu propio candado, por meses, para guardar trasteos, inventario o lo que no cabe en casa.
           </p>
           <div className="hero-fade mt-8 flex flex-col gap-3 sm:flex-row" style={{ "--hd": "480ms" } as CSSProperties}>
-            <Button href={CALC_URL}>Calcular mi espacio</Button>
-            <Button href={SEDES_URL} variant="secondary">
+            <Button href={CALC_URL} intent="calcular">Calcular mi espacio</Button>
+            <Button href={SEDES_URL} variant="secondary" intent="sedes">
               Ver sedes
             </Button>
           </div>
