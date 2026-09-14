@@ -33,20 +33,28 @@ export default function SiloDoors() {
 
         <Reveal group delay={0.1} className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-5">
           <RevealItem className="sm:col-span-2">
-            <Link href={silos.bodegaje.href} className="dark-cell group flex h-full cursor-pointer flex-col rounded-lg p-6 shadow-3 transition-[transform,box-shadow,border-color] duration ease-soft hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:p-8">
+            {/* Not one big <Link>: the showcase has its own buttons (dots, pause), and interactive
+                controls inside a link navigate on every click. The title link is stretched over the
+                card (after:inset-0) and the showcase sits above it (z-10), so the card stays fully
+                clickable while the controls only control the gallery. */}
+            <div className="dark-cell group relative flex h-full flex-col rounded-lg p-6 shadow-3 transition-[transform,box-shadow] duration ease-soft hover:-translate-y-0.5 has-[a:active]:scale-[0.98] has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring has-[a:focus-visible]:ring-offset-2 md:p-8">
               <div className="flex items-center justify-between">
                 <Vault size={26} weight="regular" aria-hidden="true" className={icon} />
                 <span className="rounded-full bg-accent px-2.5 py-1 text-[12px] font-medium text-on-accent">Recomendado</span>
               </div>
-              <h3 className={`mt-5 font-display text-2xl font-semibold text-ink ${title}`}>{silos.bodegaje.title}</h3>
+              <h3 className={`mt-5 font-display text-2xl font-semibold text-ink ${title}`}>
+                <Link href={silos.bodegaje.href} className="cursor-pointer after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none">
+                  {silos.bodegaje.title}
+                </Link>
+              </h3>
               <p className="mt-2 max-w-[52ch] text-[15px] leading-relaxed text-ink-2">
                 {silos.bodegaje.lead} {silos.bodegaje.body}
               </p>
               <ShowcaseCycler />
-              <span className={cta}>
+              <span aria-hidden="true" className={cta}>
                 Ver bodegaje <ArrowRight size={15} aria-hidden="true" className={arrow} />
               </span>
-            </Link>
+            </div>
           </RevealItem>
 
           <div className="grid gap-4 sm:col-span-2 sm:grid-cols-2 md:col-span-1 md:grid-cols-1 md:grid-rows-[auto_1fr] md:gap-5">

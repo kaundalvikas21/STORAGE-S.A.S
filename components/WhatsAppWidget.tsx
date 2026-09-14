@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { X } from "@phosphor-icons/react/dist/ssr";
+import BackToTop from "@/components/BackToTop";
 import { waLink, whatsappWidget } from "@/content/site";
 
 const SEEN = "storage:wa-greeting";
@@ -41,7 +42,9 @@ export default function WhatsAppWidget() {
   };
 
   return (
-    <div className="fixed bottom-[calc(env(safe-area-inset-bottom)+5rem)] right-4 z-30 flex items-end gap-3 md:bottom-6 md:right-6">
+    <div className="fixed bottom-[calc(env(safe-area-inset-bottom)+5rem)] right-4 z-30 flex flex-col items-end gap-3 md:bottom-6 md:right-6">
+      <BackToTop />
+      <div className="flex items-end gap-3">
       {greeting && (
         <div role="status" className="hero-fade flex max-w-[min(70vw,22rem)] items-center gap-1 rounded-lg border border-line bg-surface pl-4 pr-1 shadow-2">
           <a href={href} target="_blank" rel="noopener noreferrer" onClick={dismiss} className={`py-3 text-[14px] font-medium leading-snug text-ink ${focus} rounded-sm`}>
@@ -68,6 +71,7 @@ export default function WhatsAppWidget() {
         {/* Official WhatsApp mark (Simple Icons, brand glyph), not a Phosphor approximation. */}
         <Image src="/img/whatsapp-logo.svg" alt="" width={30} height={30} aria-hidden="true" />
       </a>
+      </div>
     </div>
   );
 }
