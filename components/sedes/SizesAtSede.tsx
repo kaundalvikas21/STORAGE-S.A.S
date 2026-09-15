@@ -37,7 +37,7 @@ export default function SizesAtSede({ slug, detail }: { slug: string; detail: Se
                       width={1254}
                       height={1254}
                       sizes="(min-width: 1024px) 18vw, (min-width: 640px) 40vw, 80vw"
-                      className="h-full w-auto max-w-none origin-bottom translate-y-[10%] transform-gpu transition-transform duration-slow ease-soft group-hover:scale-zoom"
+                      className="h-full w-auto max-w-none origin-bottom translate-y-[10%] transition-transform duration-slow ease-soft group-hover:scale-zoom"
                     />
                   </span>
                   <span className="flex flex-1 flex-col px-5 pb-5 pt-4">

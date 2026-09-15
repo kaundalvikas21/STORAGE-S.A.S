@@ -41,7 +41,7 @@ export default function SizeStrip() {
                     width={1254}
                     height={1254}
                     sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="h-[118%] w-auto max-w-none translate-y-[8%] transform-gpu will-change-transform transition-transform duration-slow ease-soft group-hover:scale-zoom"
+                    className="h-[118%] w-auto max-w-none translate-y-[8%] transition-transform duration-slow ease-soft group-hover:scale-zoom"
                   />
                 </span>
                 <span className="flex flex-1 flex-col p-6">

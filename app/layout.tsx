@@ -75,7 +75,9 @@ const jsonLd = [
  *  Every page's <main> carries id="main" for the skip link and BackToTop focus. */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es-CO" className={`${display.variable} ${body.variable}`}>
+    // data-scroll-behavior: Next 16 only turns off the CSS `scroll-behavior: smooth` during route changes
+    // when asked. Without it the scroll-to-top animates and gets cut short, so pages open part-way down.
+    <html lang="es-CO" data-scroll-behavior="smooth" className={`${display.variable} ${body.variable}`}>
       <body className="font-body">
         <a
           href="#main"

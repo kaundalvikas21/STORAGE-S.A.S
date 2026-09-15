@@ -34,7 +34,7 @@ export default function Photo({ img, sizes, className = "", scrim = "none", tint
         placeholder="blur"
         blurDataURL={BLUR}
         priority={priority}
-        className={`object-cover ${zoom ? "transform-gpu will-change-transform transition-transform duration-slow ease-soft group-hover:scale-zoom" : ""}`}
+        className={`object-cover ${zoom ? "transition-transform duration-slow ease-soft group-hover:scale-zoom" : ""}`}
       />
       {tint && <span aria-hidden="true" className="absolute inset-0 bg-primary-soft/25 mix-blend-multiply" />}
       {scrim === "bottom" && (

@@ -30,7 +30,7 @@ export default function SocialTile({ post, dim }: { post: SocialPost; dim: boole
           sizes={post.feature ? "(min-width: 1024px) 40vw, (min-width: 768px) 66vw, 100vw" : "(min-width: 1024px) 20vw, (min-width: 768px) 33vw, 50vw"}
           placeholder="blur"
           blurDataURL={BLUR}
-          className="object-cover transform-gpu transition-transform duration-slow ease-soft group-hover:scale-zoom group-focus-visible:scale-zoom"
+          className="object-cover transition-transform duration-slow ease-soft group-hover:scale-zoom group-focus-visible:scale-zoom"
         />
         {/* Icon-only network badge; the network name is in the link's aria-label. */}
         <span className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-bg-deep/70 backdrop-blur-sm">
