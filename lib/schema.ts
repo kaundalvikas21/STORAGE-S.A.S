@@ -53,9 +53,10 @@ export const selfStorage = (p: Sede, image: string) => ({
 
 type Page = { name: string; description: string; path: string };
 
-export const webPage = ({ name, description, path }: Page) => ({
+/** `type`: a WebPage subtype where the spec names one (/contacto/ → ContactPage). */
+export const webPage = ({ name, description, path, type = "WebPage" }: Page & { type?: string }) => ({
   "@context": context,
-  "@type": "WebPage",
+  "@type": type,
   name,
   description,
   url: abs(path),

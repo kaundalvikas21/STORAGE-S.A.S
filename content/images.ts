@@ -23,6 +23,27 @@ export const coveragePhoto: Photo = {
   credit: "Imagen generada · sede junto a avenida con Monserrate",
 };
 
+/** /seguridad/ slots, 1536x1024 generated plates. Intro: the client's own padlock (capability, R5).
+ *  CCTV bento cell: the camera sits top-centre so both the 16:10 phone crop and the tall lg crop keep it. */
+export const seguridadPhoto: Photo = {
+  src: "/img/seguridad-candado.png",
+  alt: "Mano cerrando un candado propio en la puerta amarilla de una minibodega, con un pasillo de bodegas y los cerros de Bogotá al fondo",
+  credit: "Imagen generada · candado propio del cliente",
+};
+export const cctvPhoto: Photo = {
+  src: "/img/seguridad-cctv.png",
+  alt: "Cámara de seguridad en el techo de un pasillo de minibodegas con puertas amarillas y un ventanal hacia los cerros de Bogotá",
+  credit: "Imagen generada · CCTV en pasillo interior",
+};
+
+/** /precios/ intro: four open units growing left to right, so the picture says "the price follows the
+ *  size". No numbers or price tags in the plate (spec Open Item 4). */
+export const preciosPhoto: Photo = {
+  src: "/img/precios-tamanos.png",
+  alt: "Cuatro minibodegas abiertas de puertas amarillas, de menor a mayor tamaño, con cajas, estantería y muebles cubiertos con plástico",
+  credit: "Imagen generada · cuatro tamaños de bodega",
+};
+
 /** Shared blur placeholder: solid --line color, so every photo fades in from the page's own neutral. */
 export const BLUR =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10'%3E%3Crect width='16' height='10' fill='%23E3E6EC'/%3E%3C/svg%3E";

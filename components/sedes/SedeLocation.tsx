@@ -1,7 +1,7 @@
 import { Car, NavigationArrow } from "@phosphor-icons/react/dist/ssr";
 import Reveal, { RevealItem } from "@/components/Reveal";
 import SedeMap from "@/components/sections/SedeMap";
-import { sedePage as t, type SedePage } from "@/content/sedes";
+import { sedePage as t, type Sede } from "@/content/sedes";
 import { directionsUrl, wazeUrl } from "@/lib/maps";
 
 const link =
@@ -10,19 +10,20 @@ const link =
 /** Sede page block 6 (spec T5): the hub's Leaflet map cell with only this page's pins (lg only, like
  *  the hub), plus one card per physical point with Google Maps and Waze deep links (spec note 5).
  *  `data-sede` lights the matching pin through the `.sede-band` rules on <main>. Several points: map
- *  left, cards right. One point: map full width, card below. Below lg the cards carry everything. */
-export default function SedeLocation({ page }: { page: SedePage }) {
-  const multi = page.points.length > 1;
+ *  left, cards right. One point: map full width, card below. Below lg the cards carry everything.
+ *  /contacto/ passes all seven sedes in content order (197 first, R6) with its own title. */
+export default function SedeLocation({ points, title = t.locationTitle }: { points: Sede[]; title?: string }) {
+  const multi = points.length > 1;
   return (
     <section id="ubicacion" aria-labelledby="location-title" className="scroll-mt-24 border-t border-line">
       <div className="mx-auto max-w-site px-5 py-14 md:px-8 md:py-20 lg:px-10">
-        <h2 id="location-title" className="font-display text-3xl font-semibold text-ink">{t.locationTitle}</h2>
+        <h2 id="location-title" className="font-display text-3xl font-semibold text-ink">{title}</h2>
         <div className={`mt-8 grid gap-5 ${multi ? "lg:grid-cols-[1.6fr_1fr]" : ""}`}>
           <div className="hidden lg:block">
-            <SedeMap points={page.points} />
+            <SedeMap points={points} />
           </div>
           <Reveal group as="ul" role="list" className={`grid gap-3 ${multi ? "md:grid-cols-2 lg:grid-cols-1 lg:content-start" : ""}`}>
-            {page.points.map((p) => (
+            {points.map((p) => (
               <RevealItem as="li" key={p.id}>
                 <article data-sede={p.id} className={`h-full rounded-lg border border-line bg-surface p-5 shadow-1 ${multi ? "" : "md:flex md:items-center md:justify-between md:gap-6"}`}>
                   <div>

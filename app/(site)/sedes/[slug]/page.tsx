@@ -52,7 +52,7 @@ export default async function SedeRoute({ params }: { params: Params }) {
       <SedeGallery photos={sedeGallery[slug]} />
       <SizesAtSede slug={slug} detail={detail} />
       <AccessSecurity detail={detail} />
-      <SedeLocation page={page} />
+      <SedeLocation points={page.points} />
       <ZonesServed detail={detail} photo={zonePhotos[slug]} />
       <SedeReviews />
       <ClosingBand title={t.ctaTitle} body={t.ctaBody} quoteHref={quoteHref} />

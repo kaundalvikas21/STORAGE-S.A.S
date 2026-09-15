@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Breadcrumb from "@/components/Breadcrumb";
+import PageIntro from "@/components/PageIntro";
 import SchemaScript from "@/components/SchemaScript";
 import AxisChooser from "@/components/bodegaje/AxisChooser";
 import FaqAccordion from "@/components/bodegaje/FaqAccordion";
 import IncludedGrid from "@/components/bodegaje/IncludedGrid";
-import PillarIntro from "@/components/bodegaje/PillarIntro";
 import PriceBand from "@/components/bodegaje/PriceBand";
 import ClosingBand from "@/components/sections/ClosingBand";
 import HowItWorks from "@/components/sections/HowItWorks";
 import SegmentStrip from "@/components/sections/SegmentStrip";
+import { pillarPhoto } from "@/content/images";
 import { QUOTE_URL, bodegajePillar as t, silos } from "@/content/site";
 import { faqPage, pageMeta } from "@/lib/schema";
 
@@ -28,7 +29,7 @@ export default function BodegajePage() {
     <main id="main" tabIndex={-1} className="focus:outline-none">
       <SchemaScript data={faqPage(t.faq)} />
       <Breadcrumb items={[{ name: t.crumb, href: silos.bodegaje.href }]} />
-      <PillarIntro />
+      <PageIntro h1={t.h1} intro={t.intro} photo={pillarPhoto} />
       <AxisChooser variant="size" />
       {/* SWAP: drop `href` when the T3 segment pages ship, so each card uses its own segments[].href. */}
       <SegmentStrip title={t.segment.title} body={t.segment.body} href={QUOTE_URL} />

@@ -1,7 +1,8 @@
 // Content entry point. Components import from here; data is split by domain (data-file rule in
 // CLAUDE.md, spec P1: each file becomes an ACF field group):
 //   facts.ts (URLs, company/NAP, size bands, stats) · sedes.ts · segments.ts · faqs.ts ·
-//   conversion.ts (/cotizar/ + calculator copy) · engagement.ts (pop-ups, social feed).
+//   conversion.ts (/cotizar/ + calculator copy) · engagement.ts (pop-ups, social feed) ·
+//   bodegaje.ts · pricing.ts (/precios/) · seguridad.ts · contacto.ts.
 // Values marked "PENDIENTE CONFIRMAR" are client deliverables: swap them in those files only.
 import { CALC_URL, QUOTE_URL, SEDES_URL } from "./facts";
 
@@ -12,6 +13,9 @@ export * from "./faqs";
 export * from "./conversion";
 export * from "./engagement";
 export * from "./bodegaje";
+export * from "./pricing";
+export * from "./seguridad";
+export * from "./contacto";
 
 export const silos = {
   bodegaje: { title: "Bodegaje y minibodegas", lead: "Guarda lo que no cabe. Espacios desde 2 m³.", body: "Mini bodegas con candado propio, por meses y sin permanencia mínima.", href: "/bodegaje-bogota/" },

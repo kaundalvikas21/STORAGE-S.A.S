@@ -2,7 +2,7 @@
 // sentence restates facts already in facts.ts, faqs.ts or sedes.ts: no prices, no cheapest claim, no
 // new dimensions (R5). Price intent is answered with the quote, never with numbers.
 import { company, securityLine } from "./facts";
-import { faq, type FaqItem } from "./faqs";
+import { faq, permanenciaFaq, type FaqItem } from "./faqs";
 
 export type IncludedId = "seguridad" | "acceso" | "flexibilidad";
 
@@ -13,18 +13,11 @@ const included: { id: IncludedId; title: string; body: string }[] = [
 ];
 
 const faqItems: FaqItem[] = [
-  {
-    q: faq[0].q,
-    a: "Depende del tamaño, de la sede y del tiempo que guardes. Cada espacio se cotiza según lo que necesitas, sin costos ocultos y sin permanencia mínima. Pide tu cotización y te enviamos el valor exacto el mismo día.",
-    link: faq[0].link,
-  },
+  faq[0],
   faq[1],
   // Homepage answer without its /seguridad/ link: cross-silo links stay in header/footer (R3).
   { q: faq[2].q, a: faq[2].a },
-  {
-    q: "¿Hay permanencia mínima?",
-    a: "No. Los contratos son flexibles y por meses: guardas el tiempo que necesites y puedes cambiar de tamaño cuando lo necesites.",
-  },
+  permanenciaFaq,
 ];
 
 export const bodegajePillar = {
