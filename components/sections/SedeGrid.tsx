@@ -12,7 +12,7 @@ const card =
   "group flex h-full cursor-pointer items-center gap-3 rounded-md border border-line bg-surface p-2 pr-3 shadow-1 transition-[transform,box-shadow,border-color] duration ease-soft hover:-translate-y-0.5 hover:border-muted-2 hover:shadow-2 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 
 /** Compact map-first locator (client checklist §2, approved artifact v2): the dark map cell on
- *  the left (lg only) and the 7 physical points as slim cards on the right, one card per pin,
+ *  the left at lg (stacked above the cards below lg) and the 7 physical points as slim cards on the right, one card per pin,
  *  same name and address on both. Card hover/focus highlights its pin (CSS :has on `.sede-band`,
  *  keyed by id). Cards, heading and map render here on the server; SedeList lays them out (sort
  *  button inline with the "Ver las 7 sedes" link, approved artifact) and only reorders the cards. Autopista Norte first by default (content/site.ts). A slim quote

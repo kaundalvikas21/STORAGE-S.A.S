@@ -11,7 +11,7 @@ type Props = {
   heading: ReactNode;
   /** "Ver las 7 sedes" link, sits inline with the sort button (approved artifact layout). */
   link: ReactNode;
-  /** The map cell (lg only). */
+  /** The map cell: beside the cards at lg, stacked above them below. */
   map: ReactNode;
 };
 

@@ -256,6 +256,22 @@ dialog::backdrop {
   background: var(--surface);
   border-color: var(--line);
 }
+/* Touch screens (phones and tablets): Leaflet's 30px zoom buttons grow to the 44px tap-target minimum.
+   Gated on pointer: coarse because Leaflet adds .leaflet-touch in every pointer-events browser, desktop included. */
+@media (pointer: coarse) {
+  .sede-band .leaflet-touch .leaflet-bar a {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+  }
+}
+/* Phone-width maps: the tile attribution wraps to two lines across the full width, so lift the
+   bottom-left zoom buttons above it (the attribution itself must stay visible, Esri terms). */
+@media (max-width: 639px) {
+  .sede-band .leaflet-bottom.leaflet-left .leaflet-control-zoom {
+    margin-bottom: 40px;
+  }
+}
 .sede-band .leaflet-control-attribution {
   background: rgba(20, 22, 27, 0.75);
   color: var(--muted);

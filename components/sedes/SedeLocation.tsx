@@ -7,10 +7,10 @@ import { directionsUrl, wazeUrl } from "@/lib/maps";
 const link =
   "group inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 rounded-sm text-[15px] font-medium text-primary hover:text-primary-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
-/** Sede page block 6 (spec T5): the hub's Leaflet map cell with only this page's pins (lg only, like
- *  the hub), plus one card per physical point with Google Maps and Waze deep links (spec note 5).
- *  `data-sede` lights the matching pin through the `.sede-band` rules on <main>. Several points: map
- *  left, cards right. One point: map full width, card below. Below lg the cards carry everything.
+/** Sede page block 6 (spec T5): the hub's Leaflet map cell with only this page's pins, plus one card
+ *  per physical point with Google Maps and Waze deep links (spec note 5). `data-sede` lights the
+ *  matching pin through the `.sede-band` rules on <main>. Several points: map left, cards right at lg.
+ *  One point: map full width, card below. Below lg the map stacks above the cards (every breakpoint).
  *  /contacto/ passes all seven sedes in content order (197 first, R6) with its own title. */
 export default function SedeLocation({ points, title = t.locationTitle }: { points: Sede[]; title?: string }) {
   const multi = points.length > 1;
@@ -19,9 +19,7 @@ export default function SedeLocation({ points, title = t.locationTitle }: { poin
       <div className="mx-auto max-w-site px-5 py-14 md:px-8 md:py-20 lg:px-10">
         <h2 id="location-title" className="font-display text-3xl font-semibold text-ink">{title}</h2>
         <div className={`mt-8 grid gap-5 ${multi ? "lg:grid-cols-[1.6fr_1fr]" : ""}`}>
-          <div className="hidden lg:block">
-            <SedeMap points={points} />
-          </div>
+          <SedeMap points={points} />
           <Reveal group as="ul" role="list" className={`grid gap-3 ${multi ? "md:grid-cols-2 lg:grid-cols-1 lg:content-start" : ""}`}>
             {points.map((p) => (
               <RevealItem as="li" key={p.id}>
