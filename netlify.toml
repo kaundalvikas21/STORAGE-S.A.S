@@ -1,0 +1,14 @@
+# Netlify client-review deploy. Next.js runs on Netlify's OpenNext adapter (zero config, auto-updated):
+# static pages from the CDN, /cotizar/ and POST /api/lead as functions, next/image via Netlify Image CDN.
+[build]
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# REVIEW ONLY: keep the *.netlify.app preview out of search results so it never competes with
+# storagebogota.com. Remove this block when the site goes live on the client's domain.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

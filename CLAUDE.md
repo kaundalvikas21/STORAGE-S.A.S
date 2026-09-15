@@ -12,7 +12,7 @@ npm run lint    # eslint . (eslint.config.mjs, eslint-config-next + max-lines)
 node --experimental-strip-types scripts/check-conversion.mjs   # asserts for lib/calculator.ts + lib/lead.ts
 ```
 
-No test suite beyond that self-check. Git repo; design variants live on branches.
+No test suite beyond that self-check. Git repo; design variants live on branches. Client review deploys to Netlify from `el-calculista` (`netlify.toml`: Node 22, OpenNext adapter, site-wide `X-Robots-Tag: noindex` header to remove at launch; optional env `LEAD_WEBHOOK_URL`).
 
 ## What this is
 
