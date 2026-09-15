@@ -8,9 +8,12 @@ import { segments } from "@/content/site";
 const icons = [House, Buildings];
 const photos = [segmentHogar, segmentEmpresa];
 
+type More = { label: string; links: { label: string; href: string }[] };
+
 /** Homepage segment cards; also the /bodegaje-bogota/ segment chooser. Inner pages pass their own
- *  `title`/`body`, and `href` to point every card at one URL until the segment pages ship. */
-export default function SegmentStrip({ title = "Espacio para tu hogar o tu empresa", body, href }: { title?: string; body?: string; href?: string }) {
+ *  `title`/`body`; `more` adds a text-link row to the other segment pages, so the pillar links down to
+ *  all of silo 1A (R3). */
+export default function SegmentStrip({ title = "Espacio para tu hogar o tu empresa", body, more }: { title?: string; body?: string; more?: More }) {
   return (
     <section aria-labelledby="segments-title" className="order-7">
       <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 py-14 md:py-20 lg:py-24">
@@ -23,7 +26,7 @@ export default function SegmentStrip({ title = "Espacio para tu hogar o tu empre
             const Icon = icons[i];
             return (
               <RevealItem as="li" key={s.href}>
-                <Link href={href ?? s.href} className={`group flex h-full flex-col rounded-lg border border-line p-8 shadow-1 md:p-10 transition-[transform,box-shadow,border-color] duration ease-soft hover:-translate-y-0.5 hover:shadow-2 active:scale-[0.98] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${i === 1 ? "bg-primary-soft" : "bg-surface"}`}>
+                <Link href={s.href} className={`group flex h-full flex-col rounded-lg border border-line p-8 shadow-1 md:p-10 transition-[transform,box-shadow,border-color] duration ease-soft hover:-translate-y-0.5 hover:shadow-2 active:scale-[0.98] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${i === 1 ? "bg-primary-soft" : "bg-surface"}`}>
                   {/* lg+: title left, link at the row's right end, body below. Narrower cards: title,
                       body, then link (DOM order), so the link never wedges between title and body.
                       The photo closes the card, so the padding reads the same on all four sides. */}
@@ -45,6 +48,21 @@ export default function SegmentStrip({ title = "Espacio para tu hogar o tu empre
             );
           })}
         </Reveal>
+        {more && (
+          <p className="mt-6 flex flex-wrap items-center gap-x-6 text-[15px]">
+            <span className="text-muted">{more.label}</span>
+            {more.links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="group inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 rounded-[2px] font-medium text-primary hover:text-primary-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <span className="link-draw">{l.label}</span>
+                <ArrowRight size={15} aria-hidden="true" className="transition-transform duration-fast ease-soft group-hover:translate-x-1" />
+              </Link>
+            ))}
+          </p>
+        )}
       </div>
     </section>
   );

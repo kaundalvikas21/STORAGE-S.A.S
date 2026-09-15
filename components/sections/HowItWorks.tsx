@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, Calculator, Key, Receipt } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, Calculator, Key, Receipt, Truck } from "@phosphor-icons/react/dist/ssr";
 import Reveal, { RevealItem, RevealRule } from "@/components/Reveal";
-import { steps } from "@/content/site";
+import { steps as homeSteps, type Step, type StepIcon } from "@/content/site";
 
-const icons = [Calculator, Receipt, Key];
+const icons = { calcular: Calculator, cotizar: Receipt, guardar: Key, mover: Truck } satisfies Record<StepIcon, unknown>;
 
 /**
  * "Cómo funciona", ported from el-sistema (client checklist §1). The heading follows the page's
@@ -11,9 +11,9 @@ const icons = [Calculator, Receipt, Key];
  * steps keep el-sistema's timeline: icon tiles on a hairline that draws in on scroll, centered
  * columns and 01/02/03 badges marking the sequence (declared exception, MASTER.md §8.17), in the
  * logo yellow. Calculas and Cotizas link to their tools; "Guardas con nosotros" is the outcome,
- * so it stays plain text. Placed right after the calculator cards.
+ * so it stays plain text. Placed right after the calculator cards. The mudanzas pillar passes its own `steps`.
  */
-export default function HowItWorks() {
+export default function HowItWorks({ steps = homeSteps }: { steps?: Step[] }) {
   return (
     <section aria-labelledby="how-title" className="order-2">
       <div className="mx-auto max-w-site px-5 py-14 md:px-8 md:py-20 lg:px-10 lg:py-24">
@@ -26,7 +26,7 @@ export default function HowItWorks() {
           <ol className="relative mt-10 grid gap-8 md:grid-cols-3 md:gap-6">
             <RevealRule className="absolute inset-x-[16%] top-7 hidden md:block" />
             {steps.map((s, i) => {
-              const Icon = icons[i];
+              const Icon = icons[s.icon];
               return (
                 <RevealItem as="li" key={s.verb} className="relative flex gap-4 md:flex-col md:items-center md:gap-0 md:text-center">
                   <div className="relative flex shrink-0 md:mb-5">

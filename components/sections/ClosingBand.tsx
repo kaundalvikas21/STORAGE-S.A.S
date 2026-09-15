@@ -9,16 +9,26 @@ import { CALC_URL, QUOTE_URL, reassurance } from "@/content/site";
  *  Bogotá night photo as a static backdrop under a dark scrim (no hover zoom on this band);
  *  the message sits on a frosted panel (§8.11). Reveal order: headline, copy, buttons, microcopy.
  *  Inner pages pass their own title/body; the buttons stay the site's two CTA wordings.
- *  `quoteHref` lets a sede page pre-select itself on the form (/cotizar/?sede=). */
+ *  `quoteHref` lets a sede page pre-select itself on the form (/cotizar/?sede=). `primary="calcular"`
+ *  makes the calculator the magnetic primary (segment pages, spec T3 CTA "Calcular mi espacio"). */
 export default function ClosingBand({
   title = "¿Listo para liberar espacio?",
   body = "Cuéntanos qué necesitas guardar y en qué zona. Te enviamos la sede y el tamaño que mejor se ajustan, el mismo día.",
   quoteHref = QUOTE_URL,
+  primary = "cotizar",
 }: {
   title?: string;
   body?: string;
   quoteHref?: string;
+  primary?: "cotizar" | "calcular";
 }) {
+  const calc = primary === "calcular";
+  const quote = (variant: "primary" | "secondary") => (
+    <Button href={quoteHref} variant={variant} intent="cotizar">Cotizar</Button>
+  );
+  const calculate = (variant: "primary" | "secondary") => (
+    <Button href={CALC_URL} variant={variant} intent="calcular">Calcular mi espacio</Button>
+  );
   return (
     <section aria-labelledby="cta-title" className="dark-cell relative order-12 overflow-hidden border-t border-line">
       <div aria-hidden="true" className="absolute inset-0">
@@ -36,12 +46,8 @@ export default function ClosingBand({
               <p className="text-[15px] text-ink-2">{body}</p>
             </RevealItem>
             <RevealItem className="mt-9 flex flex-col items-center gap-3 sm:flex-row">
-              <Magnetic>
-                <Button href={quoteHref} intent="cotizar">Cotizar</Button>
-              </Magnetic>
-              <Button href={CALC_URL} variant="secondary" intent="calcular">
-                Calcular mi espacio
-              </Button>
+              <Magnetic>{calc ? calculate("primary") : quote("primary")}</Magnetic>
+              {calc ? quote("secondary") : calculate("secondary")}
             </RevealItem>
             <RevealItem className="mt-5">
               <p className="text-[14px] text-muted">¿No estás seguro? {reassurance}</p>

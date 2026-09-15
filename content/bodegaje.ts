@@ -4,9 +4,11 @@
 import { company, securityLine } from "./facts";
 import { faq, permanenciaFaq, type FaqItem } from "./faqs";
 
-export type IncludedId = "seguridad" | "acceso" | "flexibilidad";
+// IncludedGrid cells; the mudanzas pillar reuses the block with its own three ids.
+export type IncludedId = "seguridad" | "acceso" | "flexibilidad" | "equipo" | "empaque" | "poliza";
+export type IncludedItem = { id: IncludedId; title: string; body: string };
 
-const included: { id: IncludedId; title: string; body: string }[] = [
+const included: IncludedItem[] = [
   { id: "seguridad", title: "Seguridad", body: securityLine },
   { id: "acceso", title: "Acceso", body: `Entras libremente en el horario de atención de tu sede: ${company.hours}.` },
   { id: "flexibilidad", title: "Flexibilidad", body: "Pagas por meses, sin permanencia mínima, y cambias de tamaño cuando tu necesidad cambia." },
@@ -33,7 +35,7 @@ export const bodegajePillar = {
     "Pagas por meses, sin permanencia mínima, y cambias de tamaño cuando tu necesidad cambia. Entras a tu bodega libremente en el horario de atención de tu sede, de lunes a sábado. Usa la calculadora para saber qué tamaño necesitas, o cotiza y recibe el valor exacto el mismo día.",
   ],
   size: { title: "Elige tu bodega por tamaño", body: "Cuatro tamaños por meses, desde 2 m³ hasta espacios personalizados de más de 60 m³.", cardLink: "Ver bodegas" },
-  segment: { title: "Minibodegas para hogar y empresa", body: "Mudanzas y remodelaciones en casa, o inventario y archivo en tu negocio." },
+  segment: { title: "Minibodegas para hogar y empresa", body: "Mudanzas y remodelaciones en casa, o inventario y archivo en tu negocio.", more: "También para" },
   sede: { title: "Elige tu sede", body: "Siete puntos en cuatro sedes. Autopista Norte con Calle 197 tiene la mayor disponibilidad.", all: "Ver todas las sedes" },
   included: { title: "Qué incluye tu minibodega", items: included },
   price: {

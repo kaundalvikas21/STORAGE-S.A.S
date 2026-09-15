@@ -1,11 +1,23 @@
 // Open isometric storage unit with contents inside. Hand-rolled SVG ILLUSTRATION (MASTER.md
 // §8.1; the Phosphor-only rule covers icons). Server-safe: no hooks, all fills are tokens.
+import type { ArtId } from "@/content/segments";
 
 type Pt = [number, number];
 const pts = (a: Pt[]) => a.map((p) => p.join(",")).join(" ");
 
 /** [x, y, w, d, h] from the item's front-bottom corner, in unit space (floor spans x 10-62, y 28-56). */
 export type Item = readonly [number, number, number, number, number];
+
+/** What sits inside each unit, mirroring the intent cards' hint copy: cajas → two boxes;
+ *  apartaestudio → bed + nevera; apartamento → sofá + mesa + caja; empresa → estibas apiladas.
+ *  Shared by IntentCards (homepage) and M3Guide (segment pages); lives here because IntentCards is a
+ *  client module and a server component can't read plain values out of one. */
+export const unitContents = {
+  cajas: [[30, 50, 8, 8, 8], [40, 46, 7, 7, 7]],
+  apartaestudio: [[22, 50, 16, 9, 5], [44, 46, 7, 7, 16]],
+  apartamento: [[20, 51, 13, 7, 7], [36, 51, 9, 9, 5], [45, 43, 6, 6, 6]],
+  empresa: [[24, 51, 10, 10, 8], [24, 43, 10, 10, 8], [36, 46, 10, 10, 8], [36, 38, 10, 10, 8]],
+} as const satisfies Record<ArtId, readonly Item[]>;
 
 // 2:1 isometric box: returns the three visible faces.
 function faces(px: number, py: number, w: number, d: number, h: number) {

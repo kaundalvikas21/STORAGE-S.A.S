@@ -1,15 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, Buildings, Package, Truck } from "@phosphor-icons/react/dist/ssr";
 import Photo from "@/components/Photo";
 import Reveal, { RevealItem } from "@/components/Reveal";
 import { sizeArt } from "@/components/sections/SizeStrip";
-import { sedePhotos } from "@/content/images";
-import { QUOTE_URL, SEDES_URL, bodegajePillar as t, sedePages, sedesHub, sizes } from "@/content/site";
+import { sedePhotos, trasteoPhoto } from "@/content/images";
+import { QUOTE_URL, SEDES_URL, bodegajePillar as t, mudanzasPillar, sedePages, sedesHub, sizes, type ServiceId } from "@/content/site";
 
 const card =
   "group flex h-full cursor-pointer overflow-hidden rounded-lg border border-line bg-surface shadow-1 transition-[transform,box-shadow,border-color] duration ease-soft hover:-translate-y-0.5 hover:border-muted-2 hover:shadow-2 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 const arrow = "transition-transform duration-fast ease-soft group-hover:translate-x-1";
+const cardLink = "mt-auto inline-flex items-center gap-1.5 pt-4 text-[14px] font-medium text-primary group-hover:text-primary-deep";
 
 /** 4-up illustration cards, the homepage SizeStrip idiom (same art, same hover). */
 function SizeCards() {
@@ -38,7 +39,7 @@ function SizeCards() {
               <h3 className="text-lg font-semibold text-ink transition-colors duration-fast ease-soft group-hover:text-primary">{s.name}</h3>
               <p className="tnum mt-1 text-2xl font-semibold text-ink">{s.range}</p>
               <p className="mt-2 text-[14px] text-ink-2">{s.fits}</p>
-              <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-[14px] font-medium text-primary group-hover:text-primary-deep">
+              <span className={cardLink}>
                 {t.size.cardLink} <ArrowRight size={14} aria-hidden="true" className={arrow} />
               </span>
             </div>
@@ -85,18 +86,67 @@ function SedeCards() {
   );
 }
 
-const grids = { size: SizeCards, sede: SedeCards };
+const serviceIcons = { trasteos: Truck, empresariales: Buildings, mercancias: Package } satisfies Record<ServiceId, unknown>;
 
-/** /bodegaje-bogota/ blocks 2 and 4 (spec T2): choose by size (1B) or sede (1C). Every card is an internal
- *  link DOWN into silo 1 (R3). Block 3, choose by segment (1A), is the homepage SegmentStrip itself. */
-export default function AxisChooser({ variant }: { variant: keyof typeof grids }) {
+/** /mudanzas-bogota/ children (spec T2b). Trasteos, the highest-volume term, is the wide photo card; the
+ *  other two sit beside it at lg (1.6fr/1fr/1fr, never three equal cards), under it at md, stacked on
+ *  phones. The second cell is tinted for background rhythm. Hrefs are SWAP-marked in content/mudanzas.ts. */
+function ServiceCards() {
+  const s = mudanzasPillar.services;
+  const [lead, ...rest] = s.items;
+  const LeadIcon = serviceIcons[lead.id];
+  return (
+    <Reveal group as="ul" role="list" className="mt-10 grid gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-[1.6fr_1fr_1fr]">
+      <RevealItem as="li" className="md:col-span-2 lg:col-span-1">
+        <Link href={lead.href} className={`${card} flex-col`}>
+          <Photo img={trasteoPhoto} sizes="(min-width: 1024px) 45vw, 100vw" className="aspect-[16/9] w-full lg:aspect-[2/1]" />
+          <div className="flex flex-1 items-start gap-4 p-6 md:p-7">
+            <LeadIcon size={26} aria-hidden="true" className="mt-1 shrink-0 text-primary" />
+            <div className="flex h-full flex-1 flex-col">
+              <h3 className="font-display text-2xl font-semibold text-ink transition-colors duration-fast ease-soft group-hover:text-primary">{lead.title}</h3>
+              <p className="mt-2 max-w-[48ch] text-[15px] leading-relaxed text-ink-2">{lead.body}</p>
+              <span className={cardLink}>
+                {s.cardLink} <ArrowRight size={14} aria-hidden="true" className={arrow} />
+              </span>
+            </div>
+          </div>
+        </Link>
+      </RevealItem>
+      {rest.map((it, i) => {
+        const Icon = serviceIcons[it.id];
+        return (
+          <RevealItem as="li" key={it.id}>
+            <Link href={it.href} className={`${card} flex-col p-6 md:p-7 ${i === 0 ? "!bg-primary-soft" : ""}`}>
+              <span aria-hidden="true" className="flex h-12 w-12 items-center justify-center rounded-md border border-line bg-surface text-primary">
+                <Icon size={24} />
+              </span>
+              <h3 className="mt-6 text-xl font-semibold text-ink transition-colors duration-fast ease-soft group-hover:text-primary">{it.title}</h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-ink-2">{it.body}</p>
+              <span className={cardLink}>
+                {s.cardLink} <ArrowRight size={14} aria-hidden="true" className={arrow} />
+              </span>
+            </Link>
+          </RevealItem>
+        );
+      })}
+    </Reveal>
+  );
+}
+
+const grids = { size: SizeCards, sede: SedeCards, services: ServiceCards };
+const copy = { size: t.size, sede: t.sede, services: mudanzasPillar.services };
+
+/** Pillar choosers (spec T2): by size (1B) or sede (1C) on /bodegaje-bogota/, by service on /mudanzas-bogota/.
+ *  Every card is an internal link DOWN into its silo (R3). Segment pages reuse the sede variant as their
+ *  "nearest sede" block with their own `title`/`body`. Choose by segment (1A) is the homepage SegmentStrip. */
+export default function AxisChooser({ variant, title = copy[variant].title, body = copy[variant].body }: { variant: keyof typeof grids; title?: string; body?: string }) {
   const Grid = grids[variant];
   return (
     <section aria-labelledby={`axis-${variant}`}>
       <div className="mx-auto max-w-site px-5 py-14 md:px-8 md:py-20 lg:px-10">
         <Reveal>
-          <h2 id={`axis-${variant}`} className="max-w-[24ch] font-display text-3xl font-semibold text-ink">{t[variant].title}</h2>
-          <p className="mt-3 max-w-[65ch] text-[15px] text-muted">{t[variant].body}</p>
+          <h2 id={`axis-${variant}`} className="max-w-[24ch] font-display text-3xl font-semibold text-ink">{title}</h2>
+          <p className="mt-3 max-w-[65ch] text-[15px] text-muted">{body}</p>
         </Reveal>
         <Grid />
       </div>

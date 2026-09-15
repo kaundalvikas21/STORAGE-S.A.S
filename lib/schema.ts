@@ -64,7 +64,18 @@ export const webPage = ({ name, description, path, type = "WebPage" }: Page & { 
   isPartOf: { "@id": `${SITE_URL}/#website` },
 });
 
-export const webApplication = ({ name, description, path }: Page) => ({
+/** Segment pages and the mudanzas pillar (spec tab 02: Service · BreadcrumbList). */
+export const service = ({ name, description, path }: Page) => ({
+  "@context": context,
+  "@type": "Service",
+  name,
+  description,
+  url: abs(path),
+  areaServed: { "@type": "City", name: "Bogotá" },
+  provider: { "@id": `${SITE_URL}/#organization` },
+});
+
+export const webApplication =({ name, description, path }: Page) => ({
   "@context": context,
   "@type": "WebApplication",
   name,

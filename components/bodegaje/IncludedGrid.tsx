@@ -1,20 +1,20 @@
-import { ArrowsClockwise, Clock, LockKey } from "@phosphor-icons/react/dist/ssr";
+import { ArrowsClockwise, Clock, LockKey, Package, ShieldCheck, UsersThree } from "@phosphor-icons/react/dist/ssr";
 import Reveal, { RevealItem } from "@/components/Reveal";
-import { bodegajePillar as t, type IncludedId } from "@/content/site";
+import { bodegajePillar as t, type IncludedId, type IncludedItem } from "@/content/site";
 
-const icons = { seguridad: LockKey, acceso: Clock, flexibilidad: ArrowsClockwise } satisfies Record<IncludedId, unknown>;
+const icons = { seguridad: LockKey, acceso: Clock, flexibilidad: ArrowsClockwise, equipo: UsersThree, empaque: Package, poliza: ShieldCheck } satisfies Record<IncludedId, unknown>;
 
 /** /bodegaje-bogota/ block 5: what every minibodega includes. Security copy is capability, never fear (R5).
- *  A bento, not three equal cards: Seguridad is the tall tinted cell spanning both rows at md+, Acceso and
- *  Flexibilidad stack beside it. Below md all three stack. */
-export default function IncludedGrid() {
+ *  A bento, not three equal cards: the first item is the tall tinted cell spanning both rows at md+, the
+ *  other two stack beside it. Below md all three stack. The mudanzas pillar passes its own title and items. */
+export default function IncludedGrid({ title = t.included.title, items = t.included.items }: { title?: string; items?: IncludedItem[] }) {
   return (
     <section aria-labelledby="included-title" className="mx-auto max-w-site px-5 py-14 md:px-8 md:py-20 lg:px-10">
       <Reveal>
-        <h2 id="included-title" className="max-w-[24ch] font-display text-3xl font-semibold text-ink">{t.included.title}</h2>
+        <h2 id="included-title" className="max-w-[24ch] font-display text-3xl font-semibold text-ink">{title}</h2>
       </Reveal>
       <Reveal group as="ul" role="list" className="mt-10 grid gap-4 md:grid-cols-[1.1fr_1fr] md:grid-rows-2 md:gap-5">
-        {t.included.items.map((it, i) => {
+        {items.map((it, i) => {
           const Icon = icons[it.id];
           const lead = i === 0;
           return (

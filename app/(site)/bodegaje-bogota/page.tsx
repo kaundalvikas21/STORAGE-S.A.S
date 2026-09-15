@@ -10,7 +10,7 @@ import ClosingBand from "@/components/sections/ClosingBand";
 import HowItWorks from "@/components/sections/HowItWorks";
 import SegmentStrip from "@/components/sections/SegmentStrip";
 import { pillarPhoto } from "@/content/images";
-import { QUOTE_URL, bodegajePillar as t, silos } from "@/content/site";
+import { bodegajePillar as t, needs, silos } from "@/content/site";
 import { faqPage, pageMeta } from "@/lib/schema";
 
 /*
@@ -23,7 +23,7 @@ export const metadata: Metadata = pageMeta({ title: t.metaTitle, description: t.
 /** /bodegaje-bogota/ (spec T2 money-silo pillar). Blocks: breadcrumb → intro → choose by size /
  *  segment / sede → included → how it works → price band → FAQ → dual CTA band. Silo law (R3): the
  *  axis cards link down into silo 1; the only other body links are /precios/ (spec block 7) and the
- *  two conversion tools. */
+ *  two conversion tools. Nothing here links to /mudanzas-bogota/: that bridge runs one direction only. */
 export default function BodegajePage() {
   return (
     <main id="main" tabIndex={-1} className="focus:outline-none">
@@ -31,8 +31,7 @@ export default function BodegajePage() {
       <Breadcrumb items={[{ name: t.crumb, href: silos.bodegaje.href }]} />
       <PageIntro h1={t.h1} intro={t.intro} photo={pillarPhoto} />
       <AxisChooser variant="size" />
-      {/* SWAP: drop `href` when the T3 segment pages ship, so each card uses its own segments[].href. */}
-      <SegmentStrip title={t.segment.title} body={t.segment.body} href={QUOTE_URL} />
+      <SegmentStrip title={t.segment.title} body={t.segment.body} more={{ label: t.segment.more, links: needs.slice(2) }} />
       <AxisChooser variant="sede" />
       <IncludedGrid />
       <HowItWorks />

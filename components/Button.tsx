@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Calculator, EnvelopeSimple, MapPin, Phone, Receipt, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
+import { Calculator, EnvelopeSimple, MapPin, Phone, Receipt, Warehouse, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import type { ReactNode } from "react";
 
 /** One intent, one icon, everywhere (MASTER.md §7). Mirrors the icons the same intents already use
@@ -11,6 +11,8 @@ export const ctaIcons = {
   llamar: Phone,
   whatsapp: WhatsappLogo,
   suscribir: EnvelopeSimple,
+  // The /mudanzas-bogota/ bridge into the bodegaje silo ("Conoce nuestras minibodegas").
+  minibodegas: Warehouse,
 } as const;
 export type CtaIntent = keyof typeof ctaIcons;
 

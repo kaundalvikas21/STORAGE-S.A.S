@@ -2,19 +2,9 @@
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import Reveal, { RevealItem } from "@/components/Reveal";
-import IsoBox, { type Item } from "@/components/sections/IsoBox";
+import IsoBox, { unitContents as contents } from "@/components/sections/IsoBox";
 import { CALC_URL, intentCards } from "@/content/site";
 import { profileFor, setM3, useM3 } from "@/lib/calc-store";
-
-/** What sits inside each unit, mirroring the card's hint copy: cajas → two boxes;
- *  apartaestudio → bed + nevera; apartamento → sofá + mesa + caja; empresa → estibas apiladas.
- *  Each entry is [x, y, w, d, h] in the unit's own space (unit floor spans x 10-62, y 28-56). */
-const contents = {
-  cajas: [[30, 50, 8, 8, 8], [40, 46, 7, 7, 7]],
-  apartaestudio: [[22, 50, 16, 9, 5], [44, 46, 7, 7, 16]],
-  apartamento: [[20, 51, 13, 7, 7], [36, 51, 9, 9, 5], [45, 43, 6, 6, 6]],
-  empresa: [[24, 51, 10, 10, 8], [24, 43, 10, 10, 8], [36, 46, 10, 10, 8], [36, 38, 10, 10, 8]],
-} as const satisfies Record<string, readonly Item[]>;
 
 const scale = { cajas: 0.55, apartaestudio: 0.7, apartamento: 0.85, empresa: 1 } as const;
 

@@ -2,7 +2,7 @@
 // CLAUDE.md, spec P1: each file becomes an ACF field group):
 //   facts.ts (URLs, company/NAP, size bands, stats) · sedes.ts · segments.ts · faqs.ts ·
 //   conversion.ts (/cotizar/ + calculator copy) · engagement.ts (pop-ups, social feed) ·
-//   bodegaje.ts · pricing.ts (/precios/) · seguridad.ts · contacto.ts.
+//   bodegaje.ts · mudanzas.ts · pricing.ts (/precios/) · seguridad.ts · contacto.ts.
 // Values marked "PENDIENTE CONFIRMAR" are client deliverables: swap them in those files only.
 import { CALC_URL, QUOTE_URL, SEDES_URL } from "./facts";
 
@@ -13,6 +13,7 @@ export * from "./faqs";
 export * from "./conversion";
 export * from "./engagement";
 export * from "./bodegaje";
+export * from "./mudanzas";
 export * from "./pricing";
 export * from "./seguridad";
 export * from "./contacto";
@@ -24,10 +25,13 @@ export const silos = {
 };
 
 // "Cómo funciona" (ported from el-sistema, checklist §1). Calculas → calculator, Cotizas → quote form.
-export const steps: { verb: string; body: string; href?: string }[] = [
-  { verb: "Calculas", body: "Usa la calculadora y conoce tu tamaño en dos minutos.", href: CALC_URL },
-  { verb: "Cotizas", body: "Recibe el valor exacto el mismo día.", href: QUOTE_URL },
-  { verb: "Guardas con nosotros", body: "Llegas con tu candado y entras cuando quieras." },
+// `icon` is a key HowItWorks maps to a Phosphor glyph (content stays plain data).
+export type StepIcon = "calcular" | "cotizar" | "guardar" | "mover";
+export type Step = { verb: string; body: string; href?: string; icon: StepIcon };
+export const steps: Step[] = [
+  { verb: "Calculas", body: "Usa la calculadora y conoce tu tamaño en dos minutos.", href: CALC_URL, icon: "calcular" },
+  { verb: "Cotizas", body: "Recibe el valor exacto el mismo día.", href: QUOTE_URL, icon: "cotizar" },
+  { verb: "Guardas con nosotros", body: "Llegas con tu candado y entras cuando quieras.", icon: "guardar" },
 ];
 
 export type Review = { author: string; rating: number; text: string; date: string; sede?: string };
