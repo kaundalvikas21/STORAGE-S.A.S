@@ -7,8 +7,8 @@ import { ArrowUp } from "@phosphor-icons/react/dist/ssr";
  * Back-to-top button, stacked above the WhatsApp bubble (rendered inside WhatsAppWidget's fixed
  * column so the two never overlap). Appears after one viewport of scroll (framer useScroll, no
  * window scroll listener). Smooth scroll to the top, instant under reduced motion; focus moves to
- * the header logo so keyboard users continue from the top of the page. Hidden state uses
- * `invisible`, which also takes it out of the tab order.
+ * the page's <main id="main"> so keyboard users continue from the top on any route. Hidden state
+ * uses `invisible`, which also takes it out of the tab order.
  */
 export default function BackToTop() {
   const [show, setShow] = useState(false);
@@ -18,8 +18,7 @@ export default function BackToTop() {
 
   const toTop = () => {
     window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
-    // The logo link (aria-current="page"): the first `header a` is the phone link, hidden below md.
-    document.querySelector<HTMLElement>('header a[aria-current="page"]')?.focus({ preventScroll: true });
+    document.getElementById("main")?.focus({ preventScroll: true });
   };
 
   return (

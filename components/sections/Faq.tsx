@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, Plus } from "@phosphor-icons/react/dist/ssr";
-import Reveal, { RevealItem } from "@/components/Reveal";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import Reveal from "@/components/Reveal";
+import FaqList from "@/components/FaqList";
 import { faq, priceSummary } from "@/content/site";
 
 /** Bento pair: dark cell restates the honest price range; white cell holds the exclusive
- *  native <details name="faq"> accordion. Content mirrored in FAQPage JSON-LD (app/page.tsx).
+ *  native <details name="faq"> accordion (FaqList). Content mirrored in FAQPage JSON-LD (app/(site)/page.tsx).
  *  Row hover is a title + icon colour shift, the same idiom as the SiloDoors and SedeGrid
  *  cards: a background fill here would paint --bg inside a --surface card, reading as a hole
  *  and colliding with the card's own corner radius on the first row. */
@@ -30,24 +31,7 @@ export default function Faq() {
             </Link>
           </Reveal>
 
-          <Reveal group className="rounded-lg border border-line bg-surface px-6 shadow-1 md:px-7">
-            {faq.map((f, i) => (
-              <RevealItem key={f.q}>
-                <details name="faq" className={`group faq-item ${i < faq.length - 1 ? "border-b border-line" : ""}`} open={i === 0}>
-                  <summary className="-mx-2 flex cursor-pointer items-center justify-between gap-4 rounded-md px-2 py-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
-                    <h3 className="text-lg font-semibold text-ink transition-colors duration-fast ease-soft group-hover:text-primary">{f.q}</h3>
-                    <Plus size={18} weight="bold" aria-hidden="true" className="shrink-0 text-muted transition-all duration ease-soft group-hover:text-primary group-open:rotate-45" />
-                  </summary>
-                  <div className="pb-8">
-                    <p className="max-w-[65ch] text-[15px] leading-relaxed text-ink-2">{f.a}</p>
-                    <Link href={f.link.href} className="group/link mt-3 inline-flex items-center gap-1.5 rounded-[2px] text-[14px] font-medium text-primary hover:text-primary-deep cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                      <span className="link-draw">{f.link.label}</span> <ArrowRight size={14} aria-hidden="true" className="transition-transform duration-fast ease-soft group-hover/link:translate-x-1" />
-                    </Link>
-                  </div>
-                </details>
-              </RevealItem>
-            ))}
-          </Reveal>
+          <FaqList items={faq} name="faq" />
         </div>
       </div>
     </section>

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { CaretDown, ChatText, Clock, MapPin, Phone } from "@phosphor-icons/react/dist/ssr";
@@ -26,6 +27,7 @@ export default function Header() {
   const utilRef = useRef<HTMLParagraphElement>(null);
   const lastY = useRef(0);
   const { scrollY } = useScroll();
+  const home = usePathname() === "/";
 
   useMotionValueEvent(scrollY, "change", (y) => {
     setScrolled(y > 24);
@@ -85,7 +87,7 @@ export default function Header() {
         {/* The header (z-40) paints above the drawer (z-[35]), so logo + X stay clickable. */}
         <div className="relative flex items-center justify-between gap-4 py-3" onMouseLeave={hide}>
           {/* Client logo (public/site-logo-storage-sas.png, 189x94, the same file the live site uses). */}
-          <Link href="/" aria-current="page" className={`flex shrink-0 cursor-pointer items-center rounded-sm ${focusRing}`} aria-label={`${company.brand}, inicio`}>
+          <Link href="/" aria-current={home ? "page" : undefined} className={`flex shrink-0 cursor-pointer items-center rounded-sm ${focusRing}`} aria-label={`${company.brand}, inicio`}>
             <Image src="/site-logo-storage-sas.png" alt="" width={189} height={94} priority className="h-14 w-auto" />
           </Link>
 

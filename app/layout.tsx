@@ -1,29 +1,22 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import MobileStickyBar from "@/components/MobileStickyBar";
-import Popups from "@/components/Popups";
+import SchemaScript from "@/components/SchemaScript";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import { CALC_URL, QUOTE_URL, SITE_URL, allAddresses, company, nav, social } from "@/content/site";
+import { ogBase } from "@/lib/schema";
 
 const display = Bricolage_Grotesque({ subsets: ["latin"], display: "swap", variable: "--font-display" });
 const body = Inter({ subsets: ["latin"], display: "swap", variable: "--font-body" });
 
+// Defaults only. Canonical + OpenGraph title live on each page (lib/schema.ts pageMeta), otherwise
+// every inner page would canonicalize to "/".
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Storage S.A.S | Minibodegas y bodegaje en Bogotá",
   description:
     "7 sedes en Bogotá con más de 1000 minibodegas. Espacios desde 2 m³ para hogar y empresa, sin permanencia mínima. Calcula tu espacio y cotiza en línea.",
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    locale: "es_CO",
-    siteName: company.brand,
-    title: "Minibodegas y bodegaje en Bogotá | Storage S.A.S",
-    description: "7 sedes · más de 1000 bodegas · desde 2 m³ · sin permanencia mínima.",
-  },
+  openGraph: ogBase,
 };
 
 const jsonLd = [
@@ -76,17 +69,23 @@ const jsonLd = [
   },
 ];
 
+/** Root shell: fonts, skip link, site-wide JSON-LD and the WhatsApp bubble (every route, client
+ *  checklist §5). Chrome lives in the route-group layouts (spec R8): app/(site) = full
+ *  header/footer, app/(conversion) = simplified checkout chrome.
+ *  Every page's <main> carries id="main" for the skip link and BackToTop focus. */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es-CO" className={`${display.variable} ${body.variable}`}>
       <body className="font-body">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-        <Header />
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface focus:px-4 focus:py-3 focus:text-[15px] focus:font-medium focus:text-ink focus:shadow-3 focus:outline-none focus:ring-2 focus:ring-ring"
+        >
+          Saltar al contenido
+        </a>
+        <SchemaScript data={jsonLd} />
         {children}
-        <Footer />
-        <MobileStickyBar />
         <WhatsAppWidget />
-        <Popups />
       </body>
     </html>
   );

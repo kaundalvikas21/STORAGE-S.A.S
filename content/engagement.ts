@@ -1,10 +1,14 @@
-// Engagement: WhatsApp widget, pop-ups and social feed (client checklist §5 + §6). Re-exported from
+// Engagement: WhatsApp bubble, pop-ups and social feed (client checklist §5 + §6). Re-exported from
 // content/site.ts. Every PENDIENTE here is a client deliverable; components show honest placeholders until then.
+// WhatsApp URLs are built only in lib/lead.ts (`waChatUrl`), with the number from `company.whatsapp`.
 
-// Floating click-to-chat bubble (no bot). PENDIENTE CONFIRMAR: greeting copy and prefilled message.
+// Floating click-to-chat bubble on every page, same behaviour as the current site's widget:
+// opens WhatsApp with the business number and this prefilled message. No bot yet (chatbot
+// integration later; this build is for client review). PENDIENTE CONFIRMAR: greeting + message copy.
 export const whatsappWidget = {
   greeting: "Estamos disponibles, chatea ahora",
   message: "Hola! Vi su web y me gustaría recibir una cotización.",
+  label: "Chatear por WhatsApp (se abre en una pestaña nueva)",
   /** ms after load before the greeting card slides in beside the bubble. */
   greetingDelayMs: 1500,
 };
@@ -26,8 +30,7 @@ export const newsletter = {
 export const exitOffer = {
   title: "10% de descuento en tu primer mes",
   body: "Cotiza hoy tu minibodega y te aplicamos el descuento de bienvenida.",
-  cta: "Cotizar por WhatsApp",
-  message: "Hola! Quiero cotizar una minibodega con el 10% de descuento del primer mes.",
+  cta: "Cotizar",
   terms: "Aplican términos y condiciones.",
   termsHref: "/terminos-y-condiciones/",
 };

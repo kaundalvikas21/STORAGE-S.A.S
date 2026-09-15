@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useMotionValueEvent, useScroll, useVelocity } from "framer-motion";
 import { SealPercent, WarningCircle, X } from "@phosphor-icons/react/dist/ssr";
 import { CtaIcon, btnClass } from "@/components/Button";
-import { exitOffer, newsletter, waLink } from "@/content/site";
+import { QUOTE_URL, exitOffer, newsletter } from "@/content/site";
 
 type Kind = "newsletter" | "exit";
 const DAY = 86_400_000;
@@ -103,16 +103,10 @@ export default function Popups() {
               <SealPercent size={32} weight="regular" aria-hidden="true" className="text-primary-deep" />
               <h2 id="popup-title" className={`mt-4 ${title}`}>{exitOffer.title}</h2>
               <p className="mt-2 text-[15px] text-ink-2">{exitOffer.body}</p>
-              <a
-                href={waLink(exitOffer.message)}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={close}
-                className={`${btnClass("primary")} mt-6 w-full`}
-              >
-                <CtaIcon intent="whatsapp" />
+              <Link href={QUOTE_URL} onClick={close} className={`${btnClass("primary")} mt-6 w-full`}>
+                <CtaIcon intent="cotizar" />
                 {exitOffer.cta}
-              </a>
+              </Link>
               <p className="mt-3 text-[13px] text-muted">
                 {exitOffer.terms}{" "}
                 <Link href={exitOffer.termsHref} onClick={close} className="underline underline-offset-2 hover:text-ink">Ver términos</Link>

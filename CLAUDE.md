@@ -8,23 +8,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 npm run dev     # next dev on :3000
 npm run build   # next build — the only type-check; run before declaring work done
-npm run lint    # next lint (eslint-config-next)
+npm run lint    # eslint . (eslint.config.mjs, eslint-config-next + max-lines)
+node --experimental-strip-types scripts/check-conversion.mjs   # asserts for lib/calculator.ts + lib/lead.ts
 ```
 
-No test suite. Not a git repo.
+No test suite beyond that self-check. Git repo; design variants live on branches.
 
 ## What this is
 
-Single-page marketing site for Storage S.A.S (minibodegas, Bogotá), Spanish (`es-CO`). Next.js 14 App Router, React 18, Tailwind 3, framer-motion, Phosphor icons. One route: `app/page.tsx`. Brief and wireframe: `Storage_SAS_Wireframe_Silo_Spec.xlsx` / `Storage_SAS_Wireframe_Visual.html`.
+Marketing site for Storage S.A.S (minibodegas, Bogotá), Spanish (`es-CO`). Next.js 16 App Router (`searchParams` is a Promise), React 19, Tailwind 3, framer-motion, Phosphor icons. Routes: `/` (`app/(site)/page.tsx`), `/cotizar/` and `/calculadora-de-espacio/` (`app/(conversion)/`), `POST /api/lead` (`app/api/lead/route.ts`). `trailingSlash: true`. Brief and wireframe: `Storage_SAS_Wireframe_Silo_Spec.xlsx` / `Storage_SAS_Wireframe_Visual.html`; inner pages use the spec's URLs only, never invented slugs. The site may be rebuilt in WordPress after approval: content stays in plain typed objects, sections stay self-contained blocks, calculator/lead logic stays framework-free, no server actions.
 
 ## Architecture (the parts that span files)
 
-**Content lives in one file.** `content/site.ts` holds all copy, NAP, sedes, FAQ, nav, reviews, URLs. Components import from it; nothing else hardcodes contact data. Values tagged `PENDIENTE CONFIRMAR` are awaiting the client — swap them there only.
+**Content is split by domain, imported through `content/site.ts`.** `facts.ts` (URLs, `company`/NAP, size bands `sizes` with `id`/`label`/`maxM3`, `trust` stats, `securityLine`), `sedes.ts`, `segments.ts`, `faqs.ts` (`faq`, `calcFaq`), `conversion.ts` (page copy for /cotizar/ and the calculator), `engagement.ts`; `site.ts` keeps nav/footer/silos/steps/reviews/clients and re-exports the rest. Components import from it (client components may import the domain file directly to keep bundles small); no prose or contact data hardcoded in JSX. Values tagged `PENDIENTE CONFIRMAR` are awaiting the client: swap them there only. Never invent prices, dimensions, reviewer names or phone numbers.
 - `sedes[]`: one entry per physical point (7), each with its map coordinates; `allAddresses` and `sedePages` (one per sede page, for menus) are derived from it. Names/addresses come from the client's "Estamos en toda Bogotá" banner (Toberín 1/2/4, Paloquemao 1/2), nomenclature still PENDIENTE CONFIRMAR. Autopista Norte (id `autopista-norte-197`) must stay first in the array and in the server-rendered order. The only re-sort is `SedeList`'s opt-in "Ordenar por cercanía" after the visitor grants location (client checklist 2026-09). Never randomize. Card↔pin highlight rules in `globals.css` are keyed by sede `id`: add one when adding a sede.
 - Engagement config (newsletter / exit pop-ups, social feed) lives in `content/engagement.ts`, re-exported from `site.ts`.
-- CTAs go to `QUOTE_URL` / `CALC_URL`. WhatsApp chat links are built ONLY through `waLink(text)` in `content/site.ts` (number from `company.whatsapp`): the floating `components/WhatsAppWidget.tsx`, the "Cotizas" step, the ContactBand tile and the exit pop-up "Cotizar por WhatsApp". Header/hero/closing "Cotizar" stay on `QUOTE_URL`. No bot or further integration (client checklist §5).
+- Every CTA goes to `QUOTE_URL` / `CALC_URL`. **The only wa.me link in rendered pages is the floating WhatsApp bubble** (`components/WhatsAppWidget.tsx`, mounted once in `app/layout.tsx`, `BackToTop` in its column; client request 2026-09-15, declared R4 exception in MASTER.md §8.18): on every route, greeting "Estamos disponibles, chatea ahora" after load until dismissed (session), click opens WhatsApp with `company.whatsapp` + `whatsappWidget.message`. No bot yet (chatbot integration later). Every other CTA (header, hero, Cotizas step, ContactBand, exit pop-up) stays on `/cotizar/` / the calculator. WhatsApp URLs are built only by `waChatUrl()` in `lib/lead.ts`. The /cotizar/ form submits: POST `/api/lead` (forwards to `LEAD_WEBHOOK_URL` when set; CRM endpoint is spec Open Item 12) → `dataLayer.push` (GTM ID TODO) → WhatsApp prefilled. If the POST fails WhatsApp still opens. Calculator hands off with `/cotizar/?tamano=<band id>`; `?sede=<id or slug>` pre-selects the sede.
+- `lib/calculator.ts` and `lib/lead.ts` have zero imports (data passed in as arguments) so they port verbatim to a WordPress widget; keep them that way and extend `scripts/check-conversion.mjs` when their logic changes.
+- Chrome lives in route-group layouts, never in pages: `app/(site)/layout.tsx` (Header, Footer, MobileStickyBar, Popups) and `app/(conversion)/layout.tsx` (`ConversionHeader` logo + phone, `NapBand` footer, sticky bar with Llamar only). The root `app/layout.tsx` has fonts, skip link, Organization/WebSite JSON-LD and the WhatsApp bubble. Every page's `<main>` needs `id="main" tabIndex={-1}`. Inner pages add `<Breadcrumb>` (emits BreadcrumbList), `export const metadata = pageMeta(...)` (sets canonical; the root sets none) and `SchemaScript` + builders from `lib/schema.ts`.
 - The social feed is a post grid rendered from `content/social-posts.ts` (a dated SNAPSHOT of the client's real posts; images in `public/social/`). Profiles + `snapshotDate` live in `content/engagement.ts`. `npm run social:sync` (`scripts/fetch-social.mjs`, needs `INSTAGRAM_TOKEN`/`IG_USER_ID`, optional `FACEBOOK_TOKEN`/`FB_PAGE_ID`) regenerates both from the Graph API; without tokens it is a no-op. No iframes, no keys in the repo.
-- `faq` and `company`/`nav` also feed JSON-LD (`app/page.tsx` FAQPage, `app/layout.tsx` Organization/WebSite/ItemList), so edits propagate to schema automatically.
+- `faq`/`calcFaq` and `company`/`nav` also feed JSON-LD (`app/(site)/page.tsx` and the calculator page FAQPage, `app/layout.tsx` Organization/WebSite/ItemList), so edits propagate to schema automatically.
 
 **Design tokens flow MASTER.md → globals.css → tailwind.config.ts.** `design-system/MASTER.md` (currently the «El Calculista» variant; other variants live on the `la-boveda` / `el-contenedor` / `el-sistema` branches) is the source of truth; `app/globals.css` mirrors it 1:1 as CSS variables; `tailwind.config.ts` maps every color/radius/shadow/font/duration to those variables. Add a token in all three, in that order. `design-system/storage-sas/` is the superseded ui-ux-pro-max baseline — don't use it. The palette now comes from the client's logo (yellow `--brand` CTA fill, near-black `--primary`, kraft `--accent`); everything stays a variable so a refined brand spec is still a one-file swap.
 
@@ -32,9 +35,9 @@ Single-page marketing site for Storage S.A.S (minibodegas, Bogotá), Spanish (`e
 
 **Motion:** `lib/motion.ts` defines the shared `snap`/`rise`/`stagger` variants. `components/Reveal.tsx` (`Reveal`, `RevealItem` named export — not `Reveal.Item`) is the scroll-reveal wrapper; it renders static markup under `prefers-reduced-motion`. Use it rather than hand-rolled `motion.*` in sections.
 
-**Server/client split:** sections are server components by default. Only `Header` (+ `header/MegaMenu`, `header/MobileDrawer`), `Reveal`, `AnimatedNumber`, `IntentCards`, `ShowcaseCycler`, `ScrollRow`, `Magnetic`, `SedeMap` + `SedeLeafletMap` (Leaflet, lg-only lazy chunk), `SedeList` (lays out the sedes header tools, map and cards it receives server-rendered as props; owns the nearest-first sort) `SocialGrid` (post filter; `SocialTile` itself is a server component), `Popups` (newsletter + exit-intent `<dialog>`) and `WhatsAppWidget` (both mounted in `app/layout.tsx`; the widget's fixed column also renders `BackToTop`) are `"use client"`. `Photo` (components/Photo.tsx, renders content/images.ts slots) is a server component. Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
+**Server/client split:** sections are server components by default. Only `Header` (+ `header/MegaMenu`, `header/MobileDrawer`), `Reveal`, `AnimatedNumber`, `IntentCards`, `ShowcaseCycler`, `ScrollRow`, `Magnetic`, `SedeMap` + `SedeLeafletMap` (Leaflet, lg-only lazy chunk), `SedeList` (lays out the sedes header tools, map and cards it receives server-rendered as props; owns the nearest-first sort) `SocialGrid` (post filter; `SocialTile` itself is a server component), `Popups` (newsletter + exit-intent `<dialog>`, mounted in `app/(site)/layout.tsx`), `WhatsAppWidget` + `BackToTop` (mounted in `app/layout.tsx`) and `conversion/QuoteForm` + `conversion/Calculator` are `"use client"`. `Photo` (components/Photo.tsx, renders content/images.ts slots) is a server component. Keep that boundary — importing a client-only hook into a section without the directive is the build error that bit last time.
 
-**Page order is SEO-locked.** `app/page.tsx` DOM order follows wireframe T1; mobile reorders (zone selector under hero) use CSS `order-*` on the flex column, never JSX reordering.
+**Page order is SEO-locked.** `app/(site)/page.tsx` DOM order follows wireframe T1; mobile reorders (zone selector under hero) use CSS `order-*` on the flex column, never JSX reordering.
 
 `public/img/` holds the hero background plates (`hero_img_bg*.png`, 1672x941, shot with an empty left band for the headline); the hero uses `hero_bg.png` (yellow-door facility, forklift, Monserrate; the earlier `hero_img_bg_1..3` plates are unused). Every other photo slot (Bodegaje showcase `showcase-1..3`, Mudanzas `silo-mudanzas`, segments `segment-hogar`/`segment-empresa`, closing `cta-closing`, 7 sede thumbnails `sede-*`) is a generated local image mapped in `content/images.ts`; `sede-alt-1..3` and `segment-empresa-alt` are unused alternates. No external image host remains (the Unsplash `remotePatterns` entry was removed from `next.config.mjs`). Social posts live in `public/social/`.
 
@@ -52,7 +55,7 @@ Source of truth: `.claude/skills/design-taste-frontend/SKILL.md` (taste-skill, t
 - Split-header (big headline left, small explainer paragraph right). Stack vertically, body `max-w-[65ch]`.
 - 3+ consecutive image+text zigzag sections. Break with full-width, bento, marquee, or stacked layout.
 - Same layout family used twice on the page (8 sections need at least 4 families).
-- Two CTAs with the same intent. Here: one "Calcular" intent (`CALC_URL`) and one "Cotizar" intent (`QUOTE_URL`); do not add a third wording of either.
+- Two CTAs with the same intent. Here: one "Calcular" intent (`CALC_URL`) and one "Cotizar" intent (`QUOTE_URL`, plus "Ver mi cotización" as the calculator hand-off only); do not add another wording of either. The /cotizar/ submit "Enviar y continuar por WhatsApp" is the declared 5-word exception (MASTER.md §8.18).
 - CTA label that wraps at desktop. Max 3 words.
 - Button/form contrast below WCAG AA (4.5:1 body, 3:1 large). No ghost buttons over photos without a scrim.
 - Hero stack beyond 4 text elements (eyebrow, headline, subtext, CTAs). Trust strips, logo rows, pricing teasers, taglines under CTAs all move below the hero.
@@ -66,11 +69,11 @@ Source of truth: `.claude/skills/design-taste-frontend/SKILL.md` (taste-skill, t
 - The current variant's knowing rule-breaks (hand-rolled SVG volume boxes + noise, single marquee, dark cells, kraft/yellow second accent, auto-cycling showcase, PNG client logos, closing frosted panel, hero backdrop photo, sede name/badge over the card photo) are enumerated and defended in MASTER.md §8. Read it before "correcting" any of them.
 - If the client's real brand hex codes arrive, the palette swap happens in `globals.css` variables only.
 
-**Known open placeholders:** address strings in `content/site.ts` `sedes[]` still end in `(PENDIENTE CONFIRMAR nomenclatura)` (the old `—` separators are gone). They are client placeholders; swap them when real addresses land.
+**Known open placeholders:** sede street nomenclature and coordinates in `content/sedes.ts` are PENDIENTE CONFIRMAR, as are the phone/email in `content/facts.ts` (Open Item 7), the CRM webhook (Open Item 12), the GTM container ID and the response-time promise.
 
 ## File Line-Count Limits
 
-Enforced via ESLint `max-lines` (`.eslintrc.json` overrides) on every `npm run lint`. Blank lines and comments don't count. No Husky hook yet: this folder is not a git repo; wire lint-staged when it becomes one.
+Enforced via ESLint `max-lines` (`eslint.config.mjs` overrides) on every `npm run lint`. Blank lines and comments don't count. No Husky hook yet; wire lint-staged when needed.
 Tailwind inline classes add ~30–50 lines vs CSS modules, so limits are adjusted accordingly.
 
 | File type | Limit | Location pattern |

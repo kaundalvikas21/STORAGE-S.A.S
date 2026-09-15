@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Hero from "@/components/sections/Hero";
 import IntentCards from "@/components/sections/IntentCards";
 import ZoneSelector from "@/components/sections/ZoneSelector";
@@ -13,16 +14,18 @@ import ClientLogos from "@/components/sections/ClientLogos";
 import Faq from "@/components/sections/Faq";
 import ClosingBand from "@/components/sections/ClosingBand";
 import SocialFeed from "@/components/sections/SocialFeed";
+import SchemaScript from "@/components/SchemaScript";
 import { faq } from "@/content/site";
+import { faqPage, ogBase } from "@/lib/schema";
 
-const faqLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faq.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
+// Title and description come from the root layout defaults.
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: {
+    ...ogBase,
+    title: "Minibodegas y bodegaje en Bogotá | Storage S.A.S",
+    description: "7 sedes · más de 1000 bodegas · desde 2 m³ · sin permanencia mínima.",
+  },
 };
 
 /**
@@ -33,8 +36,8 @@ const faqLd = {
  */
 export default function HomePage() {
   return (
-    <main className="flex flex-col">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+    <main id="main" tabIndex={-1} className="flex flex-col focus:outline-none">
+      <SchemaScript data={faqPage(faq)} />
       <div className="order-0"><Hero /></div>
       <IntentCards />
       <HowItWorks />

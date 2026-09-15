@@ -44,7 +44,6 @@ export default function HowItWorks() {
                     {s.href ? (
                       <Link
                         href={s.href}
-                        {...(s.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                         className="group inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 rounded-sm text-xl font-semibold text-ink transition-colors duration-fast ease-soft hover:text-primary-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                       >
                         <span className="link-draw">{s.verb}</span>
