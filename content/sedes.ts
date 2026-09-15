@@ -66,12 +66,45 @@ export const sedes: Sede[] = [
 
 // One entry per sede PAGE for navigation (mega menu, drawer): the three Toberín and two Paloquemao
 // points share a page, so they collapse into "Toberín (3 puntos)". Same order, Autopista Norte first.
+// `title` is the bare page name ("Toberín"), `points` the physical sedes that page lists.
 export const sedePages = sedes
   .filter((s, i, all) => all.findIndex((x) => x.slug === s.slug) === i)
   .map((s) => {
-    const points = sedes.filter((x) => x.slug === s.slug).length;
-    return { ...s, name: points > 1 ? `${s.name.replace(/ \d+$/, "")} (${points} puntos)` : s.name };
+    const points = sedes.filter((x) => x.slug === s.slug);
+    const title = points.length > 1 ? s.name.replace(/ \d+$/, "") : s.name;
+    return { ...s, title, points, name: points.length > 1 ? `${title} (${points.length} puntos)` : s.name };
   });
+
+// /sedes/ hub copy (spec T4). Title, description and h1 are the spec's exact strings. The coverage
+// prose only restates each sede's `coverage` above; nothing about areas between sedes is promised.
+export const sedesHub = {
+  metaTitle: "Nuestras Sedes | 7 Bodegas en Bogotá | Storage",
+  description: "7 sedes de minibodegas en Bogotá: Toberín, Spring Calle 135, Paloquemao y Autopista Norte Calle 197. Encuentra la más cercana.",
+  crumb: "Sedes",
+  h1: "Nuestras sedes en Bogotá",
+  intro: "Siete puntos en el norte, noroccidente, centro y Sabana Norte de Bogotá, agrupados en cuatro sedes. Elige la que te quede más cerca de tu casa o tu negocio.",
+  featured: {
+    badge: "Nueva sede · mayor disponibilidad",
+    facts: "~200 bodegas · acceso vehicular · CCTV 24/7", // PENDIENTE CONFIRMAR número de bodegas (spec Open Item 3)
+    catchment: "Atiende Sabana Norte: Chía, Cajicá, Cota, Sopó.",
+    view: "Ver sede",
+    directions: "Cómo llegar",
+  },
+  gridTitle: "Más sedes en Bogotá",
+  points: "puntos",
+  zonesLabel: "Zonas que atiende",
+  cardLink: "Ver detalles",
+  coverageTitle: "¿Qué sede te queda más cerca?",
+  coverage: [
+    "Si vives o trabajas en Chía, Cajicá, Cota, Sopó o en el norte de Usaquén, la sede Autopista Norte con Calle 197 es la más directa: está sobre la autopista, a la entrada de Bogotá desde la Sabana.",
+    "Para Usaquén, Cedritos, Toberín y Santa Bárbara están los tres puntos de Toberín, a pocas cuadras entre sí sobre la Calle 163 y la Carrera 19B. Desde Suba, Colina, Niza o Pasadena, la sede Spring en la Calle 135 suele ser la opción más cómoda.",
+    "En el centro, los dos puntos de Paloquemao atienden Puente Aranda, Los Mártires y Ricaurte. Si estás en Chapinero, Teusaquillo u otra zona entre sedes, la mejor opción depende de tu ruta: en la cotización elige «La más cercana a mí» y te recomendamos la sede y el tamaño.",
+  ],
+  cta: {
+    title: "¿No sabes qué sede elegir?",
+    body: "Cuéntanos qué necesitas guardar y en qué zona. Te recomendamos la sede y el tamaño que mejor se ajustan, el mismo día.",
+  },
+};
 
 // Footer + Organization JSON-LD list the 7 physical addresses (spec §01-3). Derived, so the
 // footer, the cards and the map pins can never disagree.

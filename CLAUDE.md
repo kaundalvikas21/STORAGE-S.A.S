@@ -16,7 +16,7 @@ No test suite beyond that self-check. Git repo; design variants live on branches
 
 ## What this is
 
-Marketing site for Storage S.A.S (minibodegas, Bogotá), Spanish (`es-CO`). Next.js 16 App Router (`searchParams` is a Promise), React 19, Tailwind 3, framer-motion, Phosphor icons. Routes: `/` (`app/(site)/page.tsx`), `/cotizar/` and `/calculadora-de-espacio/` (`app/(conversion)/`), `POST /api/lead` (`app/api/lead/route.ts`). `trailingSlash: true`. Brief and wireframe: `Storage_SAS_Wireframe_Silo_Spec.xlsx` / `Storage_SAS_Wireframe_Visual.html`; inner pages use the spec's URLs only, never invented slugs. The site may be rebuilt in WordPress after approval: content stays in plain typed objects, sections stay self-contained blocks, calculator/lead logic stays framework-free, no server actions.
+Marketing site for Storage S.A.S (minibodegas, Bogotá), Spanish (`es-CO`). Next.js 16 App Router (`searchParams` is a Promise), React 19, Tailwind 3, framer-motion, Phosphor icons. Routes: `/` (`app/(site)/page.tsx`), `/sedes/` hub (`app/(site)/sedes/page.tsx`, blocks in `components/sedes/`, copy in `sedesHub`), `/cotizar/` and `/calculadora-de-espacio/` (`app/(conversion)/`), `POST /api/lead` (`app/api/lead/route.ts`). `trailingSlash: true`. Brief and wireframe: `Storage_SAS_Wireframe_Silo_Spec.xlsx` / `Storage_SAS_Wireframe_Visual.html`; inner pages use the spec's URLs only, never invented slugs. The site may be rebuilt in WordPress after approval: content stays in plain typed objects, sections stay self-contained blocks, calculator/lead logic stays framework-free, no server actions.
 
 ## Architecture (the parts that span files)
 
@@ -39,7 +39,7 @@ Marketing site for Storage S.A.S (minibodegas, Bogotá), Spanish (`es-CO`). Next
 
 **Page order is SEO-locked.** `app/(site)/page.tsx` DOM order follows wireframe T1; mobile reorders (zone selector under hero) use CSS `order-*` on the flex column, never JSX reordering.
 
-`public/img/` holds the hero background plates (`hero_img_bg*.png`, 1672x941, shot with an empty left band for the headline); the hero uses `hero_bg.png` (yellow-door facility, forklift, Monserrate; the earlier `hero_img_bg_1..3` plates are unused). Every other photo slot (Bodegaje showcase `showcase-1..3`, Mudanzas `silo-mudanzas`, segments `segment-hogar`/`segment-empresa`, closing `cta-closing`, 7 sede thumbnails `sede-*`) is a generated local image mapped in `content/images.ts`; `sede-alt-1..3` and `segment-empresa-alt` are unused alternates. No external image host remains (the Unsplash `remotePatterns` entry was removed from `next.config.mjs`). Social posts live in `public/social/`.
+`public/img/` holds the hero background plates (`hero_img_bg*.png`, 1672x941, shot with an empty left band for the headline); the hero uses `hero_bg.png` (yellow-door facility, forklift, Monserrate; the earlier `hero_img_bg_1..3` plates are unused). Every other photo slot (Bodegaje showcase `showcase-1..3`, Mudanzas `silo-mudanzas`, segments `segment-hogar`/`segment-empresa`, closing `cta-closing`, 7 sede thumbnails `sede-*`) is a generated local image mapped in `content/images.ts`; `sede-alt-3` is the /sedes/ coverage photo (`coveragePhoto`); `sede-alt-1..2` and `segment-empresa-alt` are unused alternates. No external image host remains (the Unsplash `remotePatterns` entry was removed from `next.config.mjs`). Social posts live in `public/social/`.
 
 ## The Anti-Slop Ban System
 

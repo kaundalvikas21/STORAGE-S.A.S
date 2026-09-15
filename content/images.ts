@@ -3,10 +3,18 @@
  * All slots are local assets in public/img/: generated storage-first images in the hero plate's
  * style (client checklist §1.3). This is still the swap point for the client's real sede
  * photographs (spec Open Item 1): replace src/alt per slot. Credits are bookkeeping, never rendered.
- * Unused alternates kept for quick swaps: /img/sede-alt-1..3.png, /img/segment-empresa-alt.png.
+ * Unused alternates kept for quick swaps: /img/sede-alt-1..2.png, /img/segment-empresa-alt.png.
  */
 
 export type Photo = { src: string; alt: string; credit: string };
+
+/** /sedes/ CoverageProse ("¿Qué sede te queda más cerca?"): a sede beside a busy avenue with
+ *  Monserrate behind, so the picture says "access by road, in the city". Not a specific sede. */
+export const coveragePhoto: Photo = {
+  src: "/img/sede-alt-3.png",
+  alt: "Sede de minibodegas amarillas junto a una avenida de Bogotá, con Monserrate y los cerros al fondo",
+  credit: "Imagen generada · sede junto a avenida con Monserrate",
+};
 
 /** Shared blur placeholder: solid --line color, so every photo fades in from the page's own neutral. */
 export const BLUR =

@@ -22,6 +22,12 @@ export const breadcrumbList = (items: { name: string; href: string }[]) => ({
   itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, item: abs(it.href) })),
 });
 
+export const itemList = (items: { name: string; path: string }[]) => ({
+  "@context": context,
+  "@type": "ItemList",
+  itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, url: abs(it.path) })),
+});
+
 export const faqPage = (items: FaqItem[]) => ({
   "@context": context,
   "@type": "FAQPage",
