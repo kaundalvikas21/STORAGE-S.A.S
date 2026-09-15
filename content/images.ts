@@ -241,6 +241,17 @@ export const sedeGallery: Record<string, Photo[]> = {
   ],
 };
 
+/** Blog (spec T9) cover per article, keyed by slug: card photo on /blog/ and the post's cover (its LCP).
+ *  Existing plates reused until dedicated covers exist (FOTOS PENDIENTES: blog-{slug}.png); swap src/alt here. */
+export const articlePhotos: Record<string, Photo> = {
+  "cuanto-espacio-necesito": preciosPhoto,
+  "como-empacar-muebles": segmentHogar,
+  "almacenamiento-durante-una-mudanza": siloMudanzas,
+  "que-se-puede-guardar-en-una-minibodega": sedeGallery["spring-calle-135"][3],
+  "almacenamiento-para-pymes": segmentEmpresa,
+  "como-organizar-tu-bodega": showcase[1],
+};
+
 /** ZonesServed band (sede pages): the catchment itself, not the building, so the photo says "we
  *  serve your area". Keyed by page slug, 1536x1024 generated placeholders. A slug without a photo
  *  keeps its band in one column. */

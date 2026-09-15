@@ -1,6 +1,7 @@
-// Self-check for the framework-free conversion logic (lib/calculator.ts, lib/lead.ts).
+// Self-check for the framework-free logic (lib/calculator.ts, lib/lead.ts, lib/articles.ts).
 // Run: node --experimental-strip-types scripts/check-conversion.mjs
 import assert from "node:assert/strict";
+import { headingId, readingMinutes, splitLinks } from "../lib/articles.ts";
 import { ITEMS, computeTotal, mapToBand } from "../lib/calculator.ts";
 import { buildWhatsAppMessage, buildWhatsAppUrl, normalizeCelular, validateLead } from "../lib/lead.ts";
 
@@ -42,5 +43,20 @@ assert.equal(
 const url = new URL(buildWhatsAppUrl(ok, labels));
 assert.equal(url.origin + url.pathname, "https://wa.me/573144042043");
 assert.equal(url.searchParams.get("text"), buildWhatsAppMessage(ok, labels));
+
+assert.deepEqual(splitLinks("Usa la [calculadora](/calculadora-de-espacio/) hoy."), [
+  { text: "Usa la " },
+  { text: "calculadora", href: "/calculadora-de-espacio/" },
+  { text: " hoy." },
+]);
+assert.deepEqual(splitLinks("Sin enlaces"), [{ text: "Sin enlaces" }]);
+assert.deepEqual(splitLinks("[a](/b/) y [c](/d/)"), [{ text: "a", href: "/b/" }, { text: " y " }, { text: "c", href: "/d/" }]);
+assert.equal(headingId("Por qué las bodegas se miden en m³"), "por-que-las-bodegas-se-miden-en-m3");
+assert.equal(headingId("Cajas firmes, llenas y rotuladas"), "cajas-firmes-llenas-y-rotuladas");
+assert.equal(headingId("¿Tu bodega se quedó pequeña?"), "tu-bodega-se-quedo-pequena");
+assert.equal(readingMinutes([]), 1);
+assert.equal(readingMinutes([{ text: "palabra ".repeat(200) }]), 1);
+assert.equal(readingMinutes([{ text: "palabra ".repeat(201) }]), 2);
+assert.equal(readingMinutes([{ text: "palabra ".repeat(199) }, { items: ["[dos palabras](/x/)"] }]), 2); // a link counts as its label
 
 console.log("check-conversion: ok");

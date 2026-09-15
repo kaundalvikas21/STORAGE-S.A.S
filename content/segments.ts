@@ -1,4 +1,5 @@
 // Segments and need profiles (spec silo 1A).
+import { articles as posts, type ArticleSlug } from "./articles";
 import { CALC_URL, company, sizes } from "./facts";
 import type { FaqItem } from "./faqs";
 
@@ -54,8 +55,9 @@ export type SegmentCopy = {
   h1: string;
   intro: string[];
   useCases: { title: string; items: string[] };
-  /** Three units in m³ inside the client's bands; M3Guide derives the band label from `sizes`. */
-  guide: { title: string; body: string; tiers: { m3: number; art: ArtId; fits: string[] }[] };
+  /** Three units in m³ inside the client's bands; M3Guide derives the band label from `sizes`. A tier with
+   *  `name` and no `m3` (the open-ended personalizada band, content/tamanos.ts) shows the name instead. */
+  guide: { title: string; body: string; tiers: { m3?: number; name?: string; art: ArtId; fits: string[] }[] };
   recommender: { title: string; body: string; recommended: RowId; rows: Record<RowId, string> };
   security: { title: string; body: string };
   sede: { title: string; body: string };
@@ -76,13 +78,19 @@ export const segmentLabels = {
   security: { label: "Cómo cuidamos tu bodega", href: "/seguridad/" },
 };
 
-// Spec tab 06 launch articles. SWAP (T9): add each `href` when /blog/ ships; BlogTeasers renders nothing until then.
+// Spec tab 06 launch articles (T9 shipped): title and href come from content/articles.ts, so a renamed post
+// or slug updates every BlogTeasers row. An unknown slug fails the build.
+const teaser = (slug: ArticleSlug): Teaser => {
+  const a = posts.find((p) => p.slug === slug);
+  if (!a) throw new Error(`Unknown article ${slug}`);
+  return { title: a.title, href: a.path };
+};
 const articles = {
-  espacio: { title: "¿Cuánto espacio necesito? Guía de tamaños de bodega en m³" },
-  empacar: { title: "Cómo empacar muebles para almacenamiento prolongado" },
-  guardar: { title: "Qué se puede y qué no se puede guardar en una minibodega" },
-  pymes: { title: "Almacenamiento para pymes: cuándo deja de ser rentable alquilar oficina" },
-  organizar: { title: "Cómo organizar tu bodega para aprovechar cada metro cúbico" },
+  espacio: teaser("cuanto-espacio-necesito"),
+  empacar: teaser("como-empacar-muebles"),
+  guardar: teaser("que-se-puede-guardar-en-una-minibodega"),
+  pymes: teaser("almacenamiento-para-pymes"),
+  organizar: teaser("como-organizar-tu-bodega"),
 } satisfies Record<string, Teaser>;
 
 const [pequena, mediana, grande] = sizes;

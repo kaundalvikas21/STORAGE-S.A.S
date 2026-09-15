@@ -7,8 +7,18 @@ import { QUOTE_URL, bodegajePillar as t } from "@/content/site";
 /** /bodegaje-bogota/ block 7: honest price framing (R5). No numbers and no cheapest claim; the quote
  *  answers the price intent and /precios/ (spec block 7) carries the ranges. Full-width band: message
  *  left, Cotizar + the /precios/ link right at lg; stacked below lg. The mudanzas pillar passes its own
- *  copy and no `link` (/precios/ lists storage prices only). */
-export default function PriceBand({ title = t.price.title, body = t.price.body, link = t.price.link }: { title?: string; body?: string; link?: { label: string; href: string } | null }) {
+ *  copy and no `link` (/precios/ lists storage prices only). Size pages pass `quoteHref` with ?tamano=. */
+export default function PriceBand({
+  title = t.price.title,
+  body = t.price.body,
+  link = t.price.link,
+  quoteHref = QUOTE_URL,
+}: {
+  title?: string;
+  body?: string;
+  link?: { label: string; href: string } | null;
+  quoteHref?: string;
+}) {
   return (
     <section aria-labelledby="price-title" className="border-y border-line bg-surface">
       <Reveal className="mx-auto flex max-w-site flex-col gap-6 px-5 py-12 md:px-8 md:py-16 lg:flex-row lg:items-end lg:justify-between lg:gap-14 lg:px-10">
@@ -17,7 +27,7 @@ export default function PriceBand({ title = t.price.title, body = t.price.body, 
           <p className="mt-3 max-w-[60ch] text-[16px] leading-relaxed text-ink-2">{body}</p>
         </div>
         <div className="flex shrink-0 flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-6">
-          <Button href={QUOTE_URL} intent="cotizar">Cotizar</Button>
+          <Button href={quoteHref} intent="cotizar">Cotizar</Button>
           {link && (
             <Link
               href={link.href}

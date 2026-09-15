@@ -22,7 +22,7 @@ export const segmentMeta = (slug: SegmentSlug) => {
 /** Spec T3, one template for the five silo-1A pages; each route passes its slug and all copy comes from
  *  content/segments.ts. Blocks: breadcrumb (Bodegaje › segment) → situation-led intro with the up-link to
  *  the pillar → use cases → m³ guide → size recommender (1B) → security teaser → nearest sede (1C, 197
- *  first) → blog teasers (hidden until T9) → segment FAQ → CTA band led by "Calcular mi espacio".
+ *  first) → blog teasers (secondary, to /blog/ posts) → segment FAQ → CTA band led by "Calcular mi espacio".
  *  Silo law (R3): up to /bodegaje-bogota/, sideways to the size and sede axes only; never to mudanzas. */
 export default function SegmentTemplate({ slug }: { slug: SegmentSlug }) {
   const t: SegmentCopy = segmentPages[slug];

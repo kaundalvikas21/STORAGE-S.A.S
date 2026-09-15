@@ -2,7 +2,8 @@
 // CLAUDE.md, spec P1: each file becomes an ACF field group):
 //   facts.ts (URLs, company/NAP, size bands, stats) · sedes.ts · segments.ts · faqs.ts ·
 //   conversion.ts (/cotizar/ + calculator copy) · engagement.ts (pop-ups, social feed) ·
-//   bodegaje.ts · mudanzas.ts · pricing.ts (/precios/) · seguridad.ts · contacto.ts.
+//   bodegaje.ts · mudanzas.ts · pricing.ts (/precios/) · seguridad.ts · contacto.ts ·
+//   articles.ts (blog index; post bodies in content/blog/, imported by pages only) · tamanos.ts (size pages).
 // Values marked "PENDIENTE CONFIRMAR" are client deliverables: swap them in those files only.
 import { CALC_URL, QUOTE_URL, SEDES_URL } from "./facts";
 
@@ -17,6 +18,8 @@ export * from "./mudanzas";
 export * from "./pricing";
 export * from "./seguridad";
 export * from "./contacto";
+export * from "./articles";
+export * from "./tamanos";
 
 export const silos = {
   bodegaje: { title: "Bodegaje y minibodegas", lead: "Guarda lo que no cabe. Espacios desde 2 m³.", body: "Mini bodegas con candado propio, por meses y sin permanencia mínima.", href: "/bodegaje-bogota/" },
@@ -102,6 +105,8 @@ export const footerCols = {
     { label: "Seguridad", href: "/seguridad/" },
     { label: "Preguntas frecuentes", href: "/preguntas-frecuentes/" },
     { label: "Contacto", href: "/contacto/" },
+    // Footer = the sanctioned cross-silo path (R3): the blog's only entry outside the segment teasers.
+    { label: "Blog", href: "/blog/" },
     { label: "Términos y condiciones", href: "/terminos-y-condiciones/" },
     { label: "Tratamiento de datos", href: "/politica-tratamiento-de-datos/" },
     { label: "PQRS", href: "/pqrs/" },

@@ -4,8 +4,8 @@ import Reveal, { RevealItem } from "@/components/Reveal";
 import type { SegmentCopy } from "@/content/site";
 
 /** Segment block 7 (spec T3 "packing tips → blog"): a clearly secondary row list, since commercial pages link
- *  out to articles only here. SWAP (T9): renders only teasers with an `href` (content/segments.ts `articles`);
- *  until /blog/ ships none has one, so the block renders nothing, like SedeReviews before GBP data. */
+ *  out to articles only here (never the reverse of the blog's up-links). Teasers come from content/segments.ts
+ *  `articles`, which reads title + href from content/articles.ts; one without an href is skipped. */
 export default function BlogTeasers({ blog }: { blog: SegmentCopy["blog"] }) {
   const live = blog.teasers.filter((a): a is { title: string; href: string } => Boolean(a.href));
   if (!live.length) return null;

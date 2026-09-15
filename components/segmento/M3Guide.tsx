@@ -20,11 +20,11 @@ export default function M3Guide({ guide }: { guide: SegmentCopy["guide"] }) {
       </Reveal>
       <Reveal group as="ul" role="list" className="mt-10 grid gap-4 md:grid-cols-[0.85fr_1fr_1.15fr] md:gap-5">
         {guide.tiers.map((tier, i) => {
-          const band = sizes.find((s) => tier.m3 <= s.maxM3) ?? sizes[sizes.length - 1];
+          const band = sizes.find((s) => (tier.m3 ?? Infinity) <= s.maxM3) ?? sizes[sizes.length - 1];
           return (
-            <RevealItem as="li" key={tier.m3} className={`flex h-full flex-col rounded-lg border border-line p-6 shadow-1 md:p-7 ${i === 2 ? "bg-primary-soft" : "bg-surface"}`}>
+            <RevealItem as="li" key={tier.name ?? tier.m3} className={`flex h-full flex-col rounded-lg border border-line p-6 shadow-1 md:p-7 ${i === 2 ? "bg-primary-soft" : "bg-surface"}`}>
               <IsoBox items={unitContents[tier.art]} k={ladder[i]} className="h-[136px] w-[146px]" />
-              <p className="tnum mt-5 font-display text-3xl font-semibold leading-none text-ink">{tier.m3} m³</p>
+              <p className="tnum mt-5 font-display text-3xl font-semibold leading-none text-ink">{tier.name ?? `${tier.m3} m³`}</p>
               <p className="mt-2 text-[14px] text-muted">
                 {l.band} {band.label} · <span className="tnum">{band.range}</span>
               </p>

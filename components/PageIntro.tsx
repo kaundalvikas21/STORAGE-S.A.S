@@ -18,13 +18,17 @@ type Props = {
   wholePhoto?: boolean;
   /** A functional right-hand cell instead of a photo (the FAQ hub's theme index). */
   aside?: ReactNode;
+  /** The two CTA temperatures (default). The /blog/ hub drops them: its closing band carries both intents. */
+  actions?: boolean;
+  /** Cotizar target, e.g. /cotizar/?tamano= on a size page. */
+  quoteHref?: string;
 };
 
 /** Block 1 of every inner page: h1 + direct answer, then the two CTA temperatures (R4). Static: it is
  *  the first paint. With a photo: prose left, photo right at lg (fills the text column's height), the
  *  photo stacks under the buttons below lg. With an `aside`: the same split, the cell vertically
  *  centred. With neither: a single column. */
-export default function PageIntro({ h1, intro, link, photo, wholePhoto = false, aside }: Props) {
+export default function PageIntro({ h1, intro, link, photo, wholePhoto = false, aside, actions = true, quoteHref = QUOTE_URL }: Props) {
   const cols = photo ? "lg:grid-cols-[1.15fr_1fr]" : aside ? "lg:grid-cols-[1.4fr_1fr] lg:items-center" : "";
   return (
     <section aria-labelledby="page-h1" className={`mx-auto grid max-w-site gap-8 px-5 pb-14 pt-2 md:px-8 md:pb-20 lg:gap-14 lg:px-10 ${cols}`}>
@@ -44,12 +48,14 @@ export default function PageIntro({ h1, intro, link, photo, wholePhoto = false, 
             <ArrowRight size={15} aria-hidden="true" className="transition-transform duration-fast ease-soft group-hover:translate-x-1" />
           </Link>
         )}
-        <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row">
-          <Button href={QUOTE_URL} intent="cotizar">Cotizar</Button>
-          <Button href={CALC_URL} variant="secondary" intent="calcular">
-            Calcular mi espacio
-          </Button>
-        </div>
+        {actions && (
+          <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row">
+            <Button href={quoteHref} intent="cotizar">Cotizar</Button>
+            <Button href={CALC_URL} variant="secondary" intent="calcular">
+              Calcular mi espacio
+            </Button>
+          </div>
+        )}
       </div>
       {photo && (
         <Photo
