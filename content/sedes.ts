@@ -210,7 +210,7 @@ export const sedePage = {
 
 // Footer + Organization JSON-LD list the 7 physical addresses (spec §01-3). Derived, so the
 // footer, the cards and the map pins can never disagree.
-export const allAddresses = sedes.map((s) => ({ label: s.name, address: s.address }));
+export const allAddresses = sedes.map((s) => ({ label: s.name, address: s.address, href: `/sedes/${s.slug}/` }));
 
 // Map tiles: Esri World Light Gray Canvas (keyless, no watermark). tile.openstreetmap.org
 // answered "Access blocked" (OSMF tile policy) and CARTO's keyless tiles now carry an

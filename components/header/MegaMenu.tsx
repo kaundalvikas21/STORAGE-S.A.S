@@ -33,8 +33,8 @@ export const menus: Record<string, Col[]> = {
       more: { label: "Ver las 7 sedes", href: SEDES_URL },
     },
   ],
-  "/mudanzas-bogota/": [{ title: "Mudanzas", items: footerCols.mudanzas }],
-  "/quienes-somos/": [{ title: "Empresa", items: footerCols.empresa }],
+  // Mudanzas has no dropdown until its child pages ship (content/site.ts nav comment): a plain link.
+  "/contacto/": [{ title: "Empresa", items: footerCols.empresa }],
 };
 
 export const focusRing = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";

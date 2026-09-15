@@ -74,12 +74,16 @@ export const clients = [
   { name: "Semana", src: "/client_logos/logos-aliados-07.png", w: 188, h: 65 },
 ];
 
+// Header and footer link only to routes that exist (dead-link audit 2026-09-15). Add each back here when
+// its page ships: /trasteos-bogota/, /mudanzas-empresariales/, /transporte-de-mercancias/,
+// /empaque-y-embalaje/, /quienes-somos/ (then point "Empresa" back at it and re-key its MegaMenu entry),
+// /terminos-y-condiciones/, /politica-tratamiento-de-datos/ and /pqrs/ (legal texts: client deliverables).
 export const nav = [
   { label: "Bodegaje", href: "/bodegaje-bogota/" },
   { label: "Sedes", href: SEDES_URL },
   { label: "Mudanzas", href: "/mudanzas-bogota/" },
   { label: "Precios", href: "/precios/" },
-  { label: "Empresa", href: "/quienes-somos/" },
+  { label: "Empresa", href: "/contacto/" },
 ];
 
 export const footerCols = {
@@ -89,26 +93,21 @@ export const footerCols = {
     { label: "Bodegas medianas", href: "/bodegas-medianas/" },
     { label: "Bodegas grandes", href: "/bodegas-grandes/" },
     { label: "Espacios personalizados", href: "/espacios-personalizados/" },
-    { label: "Minibodegas para hogar", href: "/minibodegas-para-hogar/" },
-    { label: "Minibodegas para empresas", href: "/minibodegas-para-empresas/" },
     { label: "Precios y tarifas", href: "/precios/" },
   ],
-  mudanzas: [
+  soluciones: [
+    { label: "Minibodegas para hogar", href: "/minibodegas-para-hogar/" },
+    { label: "Minibodegas para empresas", href: "/minibodegas-para-empresas/" },
+    { label: "Bodegas para e-commerce", href: "/bodegas-para-ecommerce/" },
+    { label: "Archivo y documentos", href: "/almacenamiento-de-archivo-y-documentos/" },
+    { label: "Bodegas para constructoras", href: "/bodegas-para-constructoras/" },
     { label: "Mudanzas en Bogotá", href: "/mudanzas-bogota/" },
-    { label: "Trasteos en Bogotá", href: "/trasteos-bogota/" },
-    { label: "Mudanzas empresariales", href: "/mudanzas-empresariales/" },
-    { label: "Transporte de mercancías", href: "/transporte-de-mercancias/" },
-    { label: "Empaque y embalaje", href: "/empaque-y-embalaje/" },
   ],
   empresa: [
-    { label: "Quiénes somos", href: "/quienes-somos/" },
     { label: "Seguridad", href: "/seguridad/" },
     { label: "Preguntas frecuentes", href: "/preguntas-frecuentes/" },
     { label: "Contacto", href: "/contacto/" },
     // Footer = the sanctioned cross-silo path (R3): the blog's only entry outside the segment teasers.
     { label: "Blog", href: "/blog/" },
-    { label: "Términos y condiciones", href: "/terminos-y-condiciones/" },
-    { label: "Tratamiento de datos", href: "/politica-tratamiento-de-datos/" },
-    { label: "PQRS", href: "/pqrs/" },
   ],
 };

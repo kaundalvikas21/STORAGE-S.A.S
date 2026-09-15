@@ -32,7 +32,6 @@ export const exitOffer = {
   body: "Cotiza hoy tu minibodega y te aplicamos el descuento de bienvenida.",
   cta: "Cotizar",
   terms: "Aplican términos y condiciones.",
-  termsHref: "/terminos-y-condiciones/",
 };
 
 export type SocialNetwork = "Instagram" | "Facebook" | "TikTok";

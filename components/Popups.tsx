@@ -107,10 +107,8 @@ export default function Popups() {
                 <CtaIcon intent="cotizar" />
                 {exitOffer.cta}
               </Link>
-              <p className="mt-3 text-[13px] text-muted">
-                {exitOffer.terms}{" "}
-                <Link href={exitOffer.termsHref} onClick={close} className="underline underline-offset-2 hover:text-ink">Ver términos</Link>
-              </p>
+              {/* PENDIENTE: link "Ver términos" once /terminos-y-condiciones/ exists (content/site.ts nav comment). */}
+              <p className="mt-3 text-[13px] text-muted">{exitOffer.terms}</p>
             </>
           ) : (
             <Newsletter onSubscribed={() => write("local", CAP_KEY, String(Date.now() + 365 * DAY))} />
@@ -177,10 +175,8 @@ function Newsletter({ onSubscribed }: { onSubscribed: () => void }) {
           {state !== "sending" && <CtaIcon intent="suscribir" />}
           {state === "sending" ? "Enviando" : "Suscribirme"}
         </button>
-        <p className="text-[13px] text-muted">
-          Al suscribirte aceptas la{" "}
-          <Link href="/politica-tratamiento-de-datos/" className="underline underline-offset-2 hover:text-ink">política de tratamiento de datos</Link>. Puedes darte de baja cuando quieras.
-        </p>
+        {/* PENDIENTE: link the policy once /politica-tratamiento-de-datos/ exists (Ley 1581, client deliverable). */}
+        <p className="text-[13px] text-muted">Al suscribirte aceptas la política de tratamiento de datos. Puedes darte de baja cuando quieras.</p>
       </form>
     </>
   );

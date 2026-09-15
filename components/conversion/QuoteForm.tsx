@@ -158,9 +158,9 @@ export default function QuoteForm({ initial }: { initial: { sede: string; tamano
           ))}
           .
         </p>
+        {/* PENDIENTE: link t.consentLink once /politica-tratamiento-de-datos/ exists (Ley 1581, client deliverable). */}
         <p className="text-[13px] text-muted">
-          {t.consent}{" "}
-          <Link href="/politica-tratamiento-de-datos/" className="underline underline-offset-2 hover:text-ink">{t.consentLink}</Link>.
+          {t.consent} {t.consentLink}.
         </p>
       </div>
     </form>

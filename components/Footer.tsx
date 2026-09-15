@@ -26,7 +26,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {allAddresses.map((a) => (
                 <li key={a.label} className="text-[13px]">
-                  <span className="block font-medium text-ink">{a.label}</span>
+                  <Link href={a.href} className="link-draw font-medium text-ink hover:text-primary-deep transition-colors duration-fast ease-soft cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">{a.label}</Link>
                   <address className="not-italic text-[13px] leading-relaxed text-muted">{a.address}</address>
                 </li>
               ))}
@@ -37,16 +37,16 @@ export default function Footer() {
           </RevealItem>
 
           <RevealItem>
-            <h2 className={colTitle}>Mudanzas</h2>
+            <h2 className={colTitle}>Soluciones</h2>
             <ul className="space-y-2.5">
-              {footerCols.mudanzas.map((l) => (
+              {footerCols.soluciones.map((l) => (
                 <li key={l.href}><Link href={l.href} className={linkCls}>{l.label}</Link></li>
               ))}
             </ul>
           </RevealItem>
 
           <RevealItem>
-            <h2 className={colTitle}>Empresa · Legales · PQRS</h2>
+            <h2 className={colTitle}>Empresa</h2>
             <ul className="space-y-2.5">
               {footerCols.empresa.map((l) => (
                 <li key={l.href}><Link href={l.href} className={linkCls}>{l.label}</Link></li>
