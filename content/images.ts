@@ -3,8 +3,15 @@
  * All slots are local assets in public/img/: generated storage-first images in the hero plate's
  * style (client checklist §1.3). This is still the swap point for the client's real sede
  * photographs (spec Open Item 1): replace src/alt per slot. Credits are bookkeeping, never rendered.
- * Unused alternate kept for quick swaps: /img/sede-alt-1.png (near-duplicate of sede-alt-2).
  */
+
+/** /bodegaje-bogota/ PillarIntro: a whole facility beside a Bogotá avenue, so the first picture says
+ *  "a real place in the city". Not a specific sede. */
+export const pillarPhoto: Photo = {
+  src: "/img/sede-alt-1.png",
+  alt: "Sede de minibodegas con franja amarilla y puertas de persiana junto a una avenida de Bogotá, con los cerros al fondo",
+  credit: "Imagen generada · sede junto a avenida con los cerros",
+};
 
 export type Photo = { src: string; alt: string; credit: string };
 

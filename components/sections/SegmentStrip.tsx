@@ -8,19 +8,22 @@ import { segments } from "@/content/site";
 const icons = [House, Buildings];
 const photos = [segmentHogar, segmentEmpresa];
 
-export default function SegmentStrip() {
+/** Homepage segment cards; also the /bodegaje-bogota/ segment chooser. Inner pages pass their own
+ *  `title`/`body`, and `href` to point every card at one URL until the segment pages ship. */
+export default function SegmentStrip({ title = "Espacio para tu hogar o tu empresa", body, href }: { title?: string; body?: string; href?: string }) {
   return (
     <section aria-labelledby="segments-title" className="order-7">
       <div className="mx-auto max-w-site px-5 md:px-8 lg:px-10 py-14 md:py-20 lg:py-24">
         <Reveal>
-          <h2 id="segments-title" className="font-display text-3xl font-semibold text-ink max-w-[20ch]">Espacio para tu hogar o tu empresa</h2>
+          <h2 id="segments-title" className="font-display text-3xl font-semibold text-ink max-w-[20ch]">{title}</h2>
+          {body && <p className="mt-3 max-w-[52ch] text-[15px] text-muted">{body}</p>}
         </Reveal>
         <Reveal group as="ul" className="mt-10 grid md:grid-cols-2 gap-5" role="list">
           {segments.map((s, i) => {
             const Icon = icons[i];
             return (
               <RevealItem as="li" key={s.href}>
-                <Link href={s.href} className={`group flex h-full flex-col rounded-lg border border-line p-8 shadow-1 md:p-10 transition-[transform,box-shadow,border-color] duration ease-soft hover:-translate-y-0.5 hover:shadow-2 active:scale-[0.98] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${i === 1 ? "bg-primary-soft" : "bg-surface"}`}>
+                <Link href={href ?? s.href} className={`group flex h-full flex-col rounded-lg border border-line p-8 shadow-1 md:p-10 transition-[transform,box-shadow,border-color] duration ease-soft hover:-translate-y-0.5 hover:shadow-2 active:scale-[0.98] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${i === 1 ? "bg-primary-soft" : "bg-surface"}`}>
                   {/* lg+: title left, link at the row's right end, body below. Narrower cards: title,
                       body, then link (DOM order), so the link never wedges between title and body.
                       The photo closes the card, so the padding reads the same on all four sides. */}

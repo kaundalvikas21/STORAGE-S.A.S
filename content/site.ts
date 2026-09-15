@@ -11,6 +11,7 @@ export * from "./segments";
 export * from "./faqs";
 export * from "./conversion";
 export * from "./engagement";
+export * from "./bodegaje";
 
 export const silos = {
   bodegaje: { title: "Bodegaje y minibodegas", lead: "Guarda lo que no cabe. Espacios desde 2 m³.", body: "Mini bodegas con candado propio, por meses y sin permanencia mínima.", href: "/bodegaje-bogota/" },
