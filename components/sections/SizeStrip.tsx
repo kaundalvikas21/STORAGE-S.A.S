@@ -4,8 +4,8 @@ import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import Reveal, { RevealItem } from "@/components/Reveal";
 import { sizes } from "@/content/site";
 
-/** Transparent PNG illustrations (public/img), one per tier, same order as `sizes`. */
-const art = ["/img/small.png", "/img/medium.png", "/img/big.png", "/img/customized.png"];
+/** Transparent PNG illustrations (public/img), one per tier, same order as `sizes`. Also used by sede pages. */
+export const sizeArt =["/img/small.png", "/img/medium.png", "/img/big.png", "/img/customized.png"];
 
 /**
  * 4-up on lg (2-col below), illustration well on top. The well is a token gradient (lime for the hot tier,
@@ -36,7 +36,7 @@ export default function SizeStrip() {
                 >
                   {/* Square art with an empty top band: oversize + drop it so the objects fill the well. */}
                   <Image
-                    src={art[i]}
+                    src={sizeArt[i]}
                     alt=""
                     width={1254}
                     height={1254}

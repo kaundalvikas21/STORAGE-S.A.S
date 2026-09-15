@@ -1,6 +1,7 @@
 // JSON-LD builders and per-page metadata (spec R1/R2). Render through components/SchemaScript.
 import { SITE_URL, company } from "@/content/facts";
 import type { FaqItem } from "@/content/faqs";
+import type { Sede } from "@/content/sedes";
 
 const context = "https://schema.org";
 const abs = (path: string) => `${SITE_URL}${path}`;
@@ -32,6 +33,22 @@ export const faqPage = (items: FaqItem[]) => ({
   "@context": context,
   "@type": "FAQPage",
   mainEntity: items.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+});
+
+/** Sede pages (spec T5): one SelfStorage per physical point, so the Toberín page emits three.
+ *  Street = the address before its first comma. geo is approximate (PENDIENTE CONFIRMAR in sedes.ts). */
+export const selfStorage = (p: Sede, image: string) => ({
+  "@context": context,
+  "@type": "SelfStorage",
+  "@id": abs(`/sedes/${p.slug}/#${p.id}`),
+  name: `${company.brand} ${p.name}`,
+  url: abs(`/sedes/${p.slug}/`),
+  image: abs(image),
+  telephone: company.phone,
+  address: { "@type": "PostalAddress", streetAddress: p.address.split(",")[0], addressLocality: "Bogotá", addressRegion: "Bogotá D.C.", addressCountry: "CO" },
+  geo: { "@type": "GeoCoordinates", latitude: p.lat, longitude: p.lng },
+  openingHoursSpecification: company.openingHoursSpec.map((o) => ({ "@type": "OpeningHoursSpecification", dayOfWeek: o.days, opens: o.opens, closes: o.closes })),
+  parentOrganization: { "@id": `${SITE_URL}/#organization` },
 });
 
 type Page = { name: string; description: string; path: string };

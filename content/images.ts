@@ -3,7 +3,7 @@
  * All slots are local assets in public/img/: generated storage-first images in the hero plate's
  * style (client checklist §1.3). This is still the swap point for the client's real sede
  * photographs (spec Open Item 1): replace src/alt per slot. Credits are bookkeeping, never rendered.
- * Unused alternates kept for quick swaps: /img/sede-alt-1..2.png, /img/segment-empresa-alt.png.
+ * Unused alternate kept for quick swaps: /img/sede-alt-1.png (near-duplicate of sede-alt-2).
  */
 
 export type Photo = { src: string; alt: string; credit: string };
@@ -114,5 +114,97 @@ export const sedePhotos: Record<string, Photo> = {
     src: "/img/sede-paloquemao-2.png",
     alt: "Sede de minibodegas con franja amarilla y pasillo de acceso en Paloquemao",
     credit: "Imagen generada · fachada Paloquemao 2",
+  },
+};
+
+/** Sede page galleries (spec T5 block 2), keyed by page slug, up to 4 photos, no photo repeated across
+ *  pages. FOTOS REALES PENDIENTES · Open Item 1: every slot is a generated placeholder until the client's
+ *  own photographs of that site arrive (swap src/alt per slot). SedeGallery shapes its bento to the count. */
+export const sedeGallery: Record<string, Photo[]> = {
+  "autopista-norte-197": [
+    sedePhotos["autopista-norte-197"],
+    {
+      src: "/img/sede-alt-2.png",
+      alt: "Minibodegas de puertas amarillas junto a la autopista, con patio de acceso vehicular y una bodega abierta con cajas",
+      credit: "Imagen generada · fachada sobre autopista con patio vehicular",
+    },
+    {
+      src: "/img/sede-autopista-norte-acceso.png",
+      alt: "Hombre descargando cajas de una camioneta hacia una minibodega abierta de puertas amarillas, junto a la autopista",
+      credit: "Imagen generada · acceso vehicular",
+    },
+    {
+      src: "/img/sede-autopista-norte-pasillo.png",
+      alt: "Pasillo interior amplio de minibodegas con puertas amarillas, piso de concreto pulido y ventanal hacia los cerros",
+      credit: "Imagen generada · pasillo interior",
+    },
+  ],
+  toberin: [
+    sedePhotos["toberin-1"],
+    sedePhotos["toberin-2"],
+    sedePhotos["toberin-4"],
+    {
+      src: "/img/sede-toberin-pasillo.png",
+      alt: "Pasillo de minibodegas con puertas amarillas y un carro de carga, con una ventana hacia la ciudad",
+      credit: "Imagen generada · pasillo Toberín",
+    },
+  ],
+  "spring-calle-135": [
+    sedePhotos["spring-calle-135"],
+    {
+      src: "/img/sede-spring-entrada.png",
+      alt: "Entrada de vidrio con recepción bajo una marquesina amarilla, en una calle residencial arborizada",
+      credit: "Imagen generada · entrada Spring",
+    },
+    {
+      src: "/img/sede-spring-pasillo.png",
+      alt: "Pasillo iluminado de minibodegas amarillas con una bodega vacía abierta",
+      credit: "Imagen generada · pasillo Spring",
+    },
+    {
+      src: "/img/sede-spring-bodega.png",
+      alt: "Minibodega abierta con cajas, estantería y muebles cubiertos con plástico, con candado en la puerta",
+      credit: "Imagen generada · bodega abierta Spring",
+    },
+  ],
+  paloquemao: [
+    sedePhotos["paloquemao-1"],
+    sedePhotos["paloquemao-2"],
+    {
+      src: "/img/segment-empresa-alt.png",
+      alt: "Mujer revisando inventario con una tableta entre estanterías y minibodegas de puertas amarillas",
+      credit: "Imagen generada · inventario comercial en bodega",
+    },
+    {
+      src: "/img/sede-paloquemao-carga.png",
+      alt: "Operario moviendo una estiba de cajas con un gato hidráulico frente a minibodegas amarillas, junto a un camión de carga",
+      credit: "Imagen generada · muelle de carga Paloquemao",
+    },
+  ],
+};
+
+/** ZonesServed band (sede pages): the catchment itself, not the building, so the photo says "we
+ *  serve your area". Keyed by page slug, 1536x1024 generated placeholders. A slug without a photo
+ *  keeps its band in one column. */
+export const zonePhotos: Record<string, Photo | undefined> = {
+  "autopista-norte-197": {
+    src: "/img/zona-sabana-norte.png",
+    alt: "Autopista saliendo de Bogotá hacia la Sabana entre eucaliptos y potreros verdes, con minibodegas de puertas amarillas junto a la vía",
+    credit: "Imagen generada · Sabana Norte",
+  },
+  toberin: {
+    src: "/img/zona-usaquen-cedritos.png",
+    alt: "Familia cargando cajas de mudanza en un carro, en una calle arborizada de edificios de ladrillo con los cerros al fondo",
+    credit: "Imagen generada · Usaquén y Cedritos",
+  },
+  "spring-calle-135": {
+    src: "/img/zona-suba-colina.png",
+    alt: "Conjuntos residenciales de ladrillo junto a un parque y una avenida arborizada, con los cerros al fondo",
+    credit: "Imagen generada · Suba y Colina",
+  },
+  paloquemao: {
+    src: "/img/zona-centro-paloquemao.png",
+    alt: "Calle comercial del centro de Bogotá con puestos de flores y frutas y una furgoneta descargando cajas, con Monserrate al fondo",
+    credit: "Imagen generada · Centro y Paloquemao",
   },
 };

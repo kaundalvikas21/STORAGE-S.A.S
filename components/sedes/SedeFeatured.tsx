@@ -4,9 +4,7 @@ import Photo from "@/components/Photo";
 import Reveal from "@/components/Reveal";
 import { sedePhotos } from "@/content/images";
 import { sedePages, sedesHub } from "@/content/sedes";
-
-/** Google Maps directions by street address (the lat/lng in sedes.ts are approximate). */
-export const directionsUrl = (address: string) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+import { directionsUrl } from "@/lib/maps";
 
 /** /sedes/ block 2: the first sede page (Autopista Norte, by array order, spec rule 5) as a split
  *  card. `data-sede` lights its map pin on hover through the `.sede-band` :has() rules. */

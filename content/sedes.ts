@@ -74,6 +74,7 @@ export const sedePages = sedes
     const title = points.length > 1 ? s.name.replace(/ \d+$/, "") : s.name;
     return { ...s, title, points, name: points.length > 1 ? `${title} (${points.length} puntos)` : s.name };
   });
+export type SedePage = (typeof sedePages)[number];
 
 // /sedes/ hub copy (spec T4). Title, description and h1 are the spec's exact strings. The coverage
 // prose only restates each sede's `coverage` above; nothing about areas between sedes is promised.
@@ -104,6 +105,107 @@ export const sedesHub = {
     title: "¿No sabes qué sede elegir?",
     body: "Cuéntanos qué necesitas guardar y en qué zona. Te recomendamos la sede y el tamaño que mejor se ajustan, el mismo día.",
   },
+};
+
+// Sede pages (spec T5), one entry per page slug. metaTitle, description and h1 are the spec's exact
+// strings (02 Page Spec), except 197's "Agenda tu visita", which follows the site's single quote
+// wording (decided 2026-09-15). `zoneProse` is what keeps the four pages from being copies of each
+// other: real orientation only (roads, landmarks), no travel times, no promises.
+export type Availability = "Disponible" | "Consultar";
+export type FeatureId = "vehicular" | "candado" | "registro" | "cctv";
+export type SedeDetail = {
+  metaTitle: string;
+  description: string;
+  h1: string;
+  sizesAvailable: Record<string, Availability>; // keyed by facts.ts sizes[].id
+  features: FeatureId[];
+  zonesTitle: string;
+  zones: string[];
+  zoneProse: string[];
+};
+
+// PENDIENTE CONFIRMAR ocupación real por sede (spec Open Item 2): until then only the 197 says Disponible.
+const consultar: Record<string, Availability> = { pequena: "Consultar", mediana: "Consultar", grande: "Consultar", personalizada: "Consultar" };
+const baseFeatures: FeatureId[] = ["candado", "registro", "cctv"];
+
+export const sedeDetails: Record<string, SedeDetail> = {
+  "autopista-norte-197": {
+    metaTitle: "Minibodegas Autopista Norte Calle 197 | Storage",
+    // PENDIENTE CONFIRMAR "200 unidades disponibles" (spec Open Item 3).
+    description: "Minibodegas en Autopista Norte con Calle 197, Bogotá. 200 unidades disponibles, acceso vehicular y CCTV 24/7. Cotiza tu espacio.",
+    h1: "Sede Autopista Norte · Calle 197",
+    sizesAvailable: { pequena: "Disponible", mediana: "Disponible", grande: "Disponible", personalizada: "Disponible" },
+    features: ["vehicular", ...baseFeatures],
+    zonesTitle: "Sabana Norte",
+    zones: ["Chía", "Cajicá", "Cota", "Sopó", "Tocancipá", "Zipaquirá", "Usaquén norte"],
+    zoneProse: [
+      "La sede está sobre la Autopista Norte a la altura de la Calle 197, en el borde norte de Bogotá y al norte del Portal Norte de TransMilenio.",
+      "Quien viene de Chía, Cajicá, Sopó, Tocancipá o Zipaquirá entra por la misma autopista y llega antes del tráfico de la ciudad. Desde Cota y el norte de Usaquén también es la sede más directa.",
+      "Con acceso vehicular, el carro o el camión de la mudanza descarga junto a la bodega.",
+    ],
+  },
+  toberin: {
+    metaTitle: "Minibodegas en Toberín, Bogotá | Storage S.A.S",
+    // PENDIENTE CONFIRMAR "más de 200 unidades" (spec Open Item 3).
+    description: "Minibodegas en Toberín, Usaquén. Tres puntos sobre la Calle 163 y Carrera 19B con más de 200 unidades. Visítanos.",
+    h1: "Sede Toberín · Bogotá Norte",
+    sizesAvailable: consultar,
+    features: baseFeatures,
+    zonesTitle: "Usaquén y Cedritos",
+    zones: ["Usaquén", "Cedritos", "Toberín", "Santa Bárbara"],
+    zoneProse: [
+      "Los tres puntos están en el barrio Toberín, en la localidad de Usaquén, a pocas cuadras entre sí sobre la Calle 163 y la Carrera 19B, cerca de la Autopista Norte y de la estación Toberín de TransMilenio.",
+      "Desde Cedritos y Santa Bárbara se llega subiendo por la Carrera 19 o por la Autopista Norte. Si un punto no tiene el tamaño que buscas, los otros dos quedan a una caminata.",
+    ],
+  },
+  "spring-calle-135": {
+    metaTitle: "Minibodegas Calle 135 Bogotá | Sede Spring",
+    description: "Minibodegas en la Calle 135 con Carrera 46, Bogotá. Espacios seguros con acceso independiente y monitoreo permanente.",
+    h1: "Sede Spring · Calle 135",
+    sizesAvailable: consultar,
+    features: baseFeatures,
+    zonesTitle: "Suba y Colina",
+    zones: ["Suba", "Colina", "Niza", "Pasadena"],
+    zoneProse: [
+      "La sede queda en la Calle 135 con Carrera 46, en el barrio Spring, al occidente de la Autopista Norte.",
+      "Desde Suba, Colina Campestre y Niza se llega por la Calle 138 o la Avenida Boyacá; desde Pasadena, por la Autopista Norte. Es la sede del noroccidente de la ciudad.",
+    ],
+  },
+  paloquemao: {
+    metaTitle: "Minibodegas en Paloquemao, Bogotá | Storage",
+    // PENDIENTE CONFIRMAR "acceso para carga" (spec text, not yet in the feature list).
+    description: "Minibodegas en Paloquemao, Bogotá centro. Dos puntos con acceso para carga y monitoreo 24 horas. Cotiza tu espacio.",
+    h1: "Sede Paloquemao · Bogotá Centro",
+    sizesAvailable: consultar,
+    features: baseFeatures,
+    zonesTitle: "Centro",
+    zones: ["Centro", "Puente Aranda", "Los Mártires", "Ricaurte"],
+    zoneProse: [
+      "Los dos puntos están en Paloquemao, a pocas cuadras de la plaza de mercado, sobre la Carrera 32 y la Calle 17, entre la Avenida NQS y la Calle 13.",
+      "Son las únicas sedes del centro: desde Puente Aranda se llega por la Avenida de las Américas y Ricaurte y Los Mártires quedan al lado. Una ubicación práctica para comerciantes que guardan inventario cerca de sus puntos de venta.",
+    ],
+  },
+};
+
+// Labels shared by the four sede pages.
+export const sedePage = {
+  crumb: "Sedes",
+  hoursLabel: "Horario de atención",
+  quote: "Cotizar",
+  directions: "Cómo llegar",
+  call: "Llamar",
+  galleryTitle: "Fotos de la sede",
+  sizesTitle: "Tamaños en esta sede",
+  sizesNote: "Confirmamos la disponibilidad exacta y el valor en tu cotización.",
+  accessTitle: "Acceso y seguridad",
+  features: { vehicular: "Acceso vehicular", candado: "Candado propio", registro: "Registro individual de ingreso", cctv: "CCTV 24/7" } satisfies Record<FeatureId, string>,
+  locationTitle: "Ubicación",
+  maps: "Google Maps",
+  waze: "Waze",
+  zonesHeading: "Zonas que atiende",
+  allSedes: "Ver todas las sedes",
+  ctaTitle: "¿Te queda cerca esta sede?",
+  ctaBody: "Cuéntanos qué necesitas guardar y te enviamos el tamaño recomendado y el valor en esta sede, el mismo día.",
 };
 
 // Footer + Organization JSON-LD list the 7 physical addresses (spec §01-3). Derived, so the

@@ -8,13 +8,16 @@ import { CALC_URL, QUOTE_URL, reassurance } from "@/content/site";
 /** Oversized close; magnetic Cotizar paired inline with the calculator CTA (MASTER.md §8.9).
  *  Bogotá night photo as a static backdrop under a dark scrim (no hover zoom on this band);
  *  the message sits on a frosted panel (§8.11). Reveal order: headline, copy, buttons, microcopy.
- *  Inner pages pass their own title/body; the buttons stay the site's two CTA wordings. */
+ *  Inner pages pass their own title/body; the buttons stay the site's two CTA wordings.
+ *  `quoteHref` lets a sede page pre-select itself on the form (/cotizar/?sede=). */
 export default function ClosingBand({
   title = "¿Listo para liberar espacio?",
   body = "Cuéntanos qué necesitas guardar y en qué zona. Te enviamos la sede y el tamaño que mejor se ajustan, el mismo día.",
+  quoteHref = QUOTE_URL,
 }: {
   title?: string;
   body?: string;
+  quoteHref?: string;
 }) {
   return (
     <section aria-labelledby="cta-title" className="dark-cell relative order-12 overflow-hidden border-t border-line">
@@ -34,7 +37,7 @@ export default function ClosingBand({
             </RevealItem>
             <RevealItem className="mt-9 flex flex-col items-center gap-3 sm:flex-row">
               <Magnetic>
-                <Button href={QUOTE_URL} intent="cotizar">Cotizar</Button>
+                <Button href={quoteHref} intent="cotizar">Cotizar</Button>
               </Magnetic>
               <Button href={CALC_URL} variant="secondary" intent="calcular">
                 Calcular mi espacio

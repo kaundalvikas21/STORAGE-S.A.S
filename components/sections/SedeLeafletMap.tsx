@@ -3,7 +3,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useEffect, useRef } from "react";
 import { NEAR_EVENT } from "@/components/sections/SedeList";
-import { mapTiles, sedes } from "@/content/site";
+import { mapTiles, sedes, type Sede } from "@/content/site";
 
 const FEATURED = sedes[0].id;
 
@@ -16,7 +16,7 @@ const pinHtml = (id: string, featured: boolean) =>
  *  markers, dashed arcs linking the sedes (like the client's banner), token-styled popups with the
  *  sede's name and address. Scroll-zoom off (no scroll-jack); pan + buttons only. When SedeList
  *  finds the visitor's nearest sede it fires NEAR_EVENT and the map centres on that pin. */
-export default function SedeLeafletMap() {
+export default function SedeLeafletMap({ points: list = sedes }: { points?: Sede[] }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,15 +25,15 @@ export default function SedeLeafletMap() {
     const map = L.map(ref.current, { scrollWheelZoom: false, zoomControl: false });
     L.control.zoom({ position: "bottomleft" }).addTo(map);
     L.tileLayer(mapTiles.url, { attribution: mapTiles.attribution, className: "sede-tiles", maxZoom: 16 }).addTo(map);
-    const points = sedes.map((s) => [s.lat, s.lng] as [number, number]);
+    const points = list.map((s) => [s.lat, s.lng] as [number, number]);
     // Top padding clears SedeMap's caption and the featured pin's tag above it (it is the
-    // north-most pin, so nothing sits above it).
-    map.fitBounds(L.latLngBounds(points), { paddingTopLeft: [40, 120], paddingBottomRight: [40, 56] });
+    // north-most pin, so nothing sits above it). maxZoom: a one-pin sede page stays at street level.
+    map.fitBounds(L.latLngBounds(points), { paddingTopLeft: [40, 120], paddingBottomRight: [40, 56], maxZoom: 15 });
     // Colour comes from the CSS class (stroke: var(--brand)); Leaflet's own `color` is overridden.
     L.polyline(points, { className: "sede-arc", weight: 1.5, interactive: false }).addTo(map);
 
     const markers = new Map<string, L.Marker>();
-    sedes.forEach((s) => {
+    list.forEach((s) => {
       const featured = s.id === FEATURED;
       const size = featured ? 24 : 16;
       const marker = L.marker([s.lat, s.lng], {
@@ -86,7 +86,7 @@ export default function SedeLeafletMap() {
       band?.removeEventListener("focusout", hide);
       map.remove();
     };
-  }, []);
+  }, [list]);
 
   return <div ref={ref} className="h-full w-full" />;
 }
