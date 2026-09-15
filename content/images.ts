@@ -87,26 +87,25 @@ export const segmentEmpresa: Photo = {
 };
 
 /** Segment pages (spec T3) PageIntro photo, keyed by page slug. Hogar and empresas reuse the SegmentStrip
- *  plates. FOTOS PENDIENTES: drop each file into public/img/ and uncomment its slot; until then that intro
- *  renders as one column. */
+ *  plates; the other three have their own. A slug without a photo renders its intro as one column. */
 export const segmentPhotos: Record<string, Photo | undefined> = {
   "minibodegas-para-hogar": segmentHogar,
   "minibodegas-para-empresas": segmentEmpresa,
-  // "bodegas-para-ecommerce": {
-  //   src: "/img/segment-ecommerce.png",
-  //   alt: "Cajas de pedidos rotuladas y una estantería con producto dentro de una minibodega de puerta amarilla",
-  //   credit: "Imagen generada · inventario de tienda en línea",
-  // },
-  // "almacenamiento-de-archivo-y-documentos": {
-  //   src: "/img/segment-archivo.png",
-  //   alt: "Cajas de archivo rotuladas en estanterías metálicas dentro de una minibodega de puerta amarilla",
-  //   credit: "Imagen generada · archivo en estanterías",
-  // },
-  // "bodegas-para-constructoras": {
-  //   src: "/img/segment-obra.png",
-  //   alt: "Camioneta descargando herramienta y material de obra hacia una minibodega de puerta amarilla, con los cerros de Bogotá al fondo",
-  //   credit: "Imagen generada · material de obra hacia minibodega",
-  // },
+  "bodegas-para-ecommerce": {
+    src: "/img/segment-ecommerce.png",
+    alt: "Mesa de empaque con cajas de pedidos rotuladas y estanterías con producto dentro de una minibodega de puerta amarilla",
+    credit: "Imagen generada · inventario de tienda en línea",
+  },
+  "almacenamiento-de-archivo-y-documentos": {
+    src: "/img/segment-archivo.png",
+    alt: "Cajas de archivo rotuladas en estanterías metálicas dentro de una minibodega de puerta amarilla",
+    credit: "Imagen generada · archivo en estanterías",
+  },
+  "bodegas-para-constructoras": {
+    src: "/img/segment-obra.png",
+    alt: "Camioneta con herramienta y cajas junto a una minibodega de puerta amarilla, donde un operario entra cajas en carretilla, con los cerros de Bogotá al fondo",
+    credit: "Imagen generada · material de obra hacia minibodega",
+  },
 };
 
 /** /mudanzas-bogota/ Trasteos card: reuses the Usaquén catchment plate (a family loading moving boxes). */
